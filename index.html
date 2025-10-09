@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
+        /* Custom Styles - Existing */
         body {
             font-family: 'Vazirmatn', sans-serif;
             background-color: #121212;
@@ -125,6 +126,35 @@
         .credit-item { margin-bottom: 24px; padding: 8px 0; color: #E0E0E0; }
         .credit-role { font-size: 1.5rem; font-weight: 700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.4); margin-bottom: 4px; }
         .credit-name { font-size: 2.25rem; font-weight: 900; line-height: 1.2; }
+
+        /* Custom Styles - NEW (Motion Graphic Panel) */
+        .soon-modal-panel {
+            /* Initial state for beautiful motion */
+            transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
+            opacity: 0;
+            transform: scale(0.8) translateY(20px);
+        }
+        .soon-modal.active .soon-modal-panel {
+            /* Target state */
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        .soon-modal {
+            /* Ensure background transitions as well */
+            transition: background-color 0.5s ease;
+        }
+        /* Bounce effect for 'به زودی' text */
+        .soon-text {
+            animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) both;
+            display: inline-block;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+        }
+        @keyframes bounceIn {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            70% { transform: scale(0.9); }
+            100% { transform: scale(1); }
+        }
     </style>
 </head>
 <body class="overflow-hidden">
@@ -150,17 +180,24 @@
             </button>
         </main>
 
+        <!-- FOOTER - EDITED -->
         <footer class="w-full max-w-sm mx-auto pb-2 px-2">
             <div class="bg-black/30 backdrop-blur-sm border border-yellow-400/20 rounded-2xl grid grid-cols-3 gap-2 text-center p-2">
-                <button class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
-                    <span>فروشگاه</span>
+                <!-- NEW: راه ها (Ways/Paths) -->
+                <button id="nav-ways-btn" class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
+                    <!-- Road/Path Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v10m-6 3h12a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z"/>
+                    </svg>
+                    <span>راه ها</span>
                 </button>
-                <button class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
+                <!-- Existing: چالش‌ها (Challenges) -->
+                <button id="nav-challenges-btn" class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.539 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
                     <span>چالش‌ها</span>
                 </button>
-                <button class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
+                <!-- Existing: تاریخچه (History) -->
+                <button id="nav-history-btn" class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>تاریخچه</span>
                 </button>
@@ -168,7 +205,7 @@
         </footer>
     </div>
     
-    <!-- Game Mode Selection Modal -->
+    <!-- Game Mode Selection Modal - Existing -->
     <div id="mode-selection-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
         <div class="card p-8 rounded-lg w-11/12 max-w-md text-center space-y-6">
             <h2 class="text-3xl font-bold gold-gradient-text mb-6">انتخاب حالت بازی</h2>
@@ -187,7 +224,7 @@
         </div>
     </div>
 
-    <!-- Settings Modal -->
+    <!-- Settings Modal - Existing -->
     <div id="settings-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
         <div class="card p-8 rounded-lg w-11/12 max-w-md text-center space-y-4">
             <h2 class="text-2xl font-bold gold-gradient-text mb-6">تنظیمات</h2>
@@ -196,7 +233,22 @@
         </div>
     </div>
 
-    <!-- Creators Screen (Credit Roll) -->
+    <!-- NEW: Coming Soon Modal (Animated Panel) -->
+    <div id="soon-modal" class="soon-modal hidden fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
+        <div id="soon-modal-panel" class="soon-modal-panel card p-8 rounded-2xl w-11/12 max-w-md text-center space-y-6">
+            <h2 class="text-6xl font-black gold-gradient-text soon-text">
+                ✨ به زودی ✨
+            </h2>
+            <p class="text-xl text-gray-300">
+                این بخش هیجان‌انگیز در حال توسعه است و به زودی اضافه خواهد شد!
+            </p>
+            <div class="mt-8">
+                <button id="close-soon-modal-btn" class="w-full btn-golden text-xl py-3">فهمیدم</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Creators Screen (Credit Roll) - Existing -->
     <div id="creators-screen" class="screen fixed inset-0 bg-black/95 flex flex-col items-center z-50">
         <header class="relative w-full text-center py-6 bg-black/50">
             <h1 class="text-3xl font-black gold-gradient-text">اعتبارات سازندگان</h1>
@@ -222,7 +274,7 @@
         </div>
     </div>
     
-    <!-- Gameplay Screen -->
+    <!-- Gameplay Screen - Existing -->
     <div id="gameplay-screen" class="screen p-6 flex flex-col h-screen">
         <header class="flex items-center justify-between mb-8">
             <div class="flex items-center space-x-2 space-x-reverse">
@@ -250,15 +302,15 @@
                 <!-- Input Container (For 2.5 Flash Mode) -->
                 <div id="input-container" class="hidden flex flex-col gap-4 w-full">
                     <input type="text" id="flash-answer-input" placeholder="پاسخ را اینجا تایپ کنید..." 
-                           class="w-full p-4 bg-gray-800 border border-yellow-400/50 rounded-lg text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors text-lg"
-                           style="caret-color: #FFD700;">
+                            class="w-full p-4 bg-gray-800 border border-yellow-400/50 rounded-lg text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors text-lg"
+                            style="caret-color: #FFD700;">
                     <button id="flash-submit-btn" class="w-full btn-golden text-xl py-3">ثبت پاسخ</button>
                 </div>
             </div>
         </main>
     </div>
     
-    <!-- Game Over Screen -->
+    <!-- Game Over Screen - Existing -->
     <div id="game-over-screen" class="screen p-8 flex flex-col justify-center items-center text-center h-screen">
         <div class="card p-8 rounded-lg w-11/12 max-w-md space-y-6">
             <h2 class="text-4xl font-black text-red-400">بازی تمام شد!</h2>
@@ -284,6 +336,8 @@
         };
         const settingsModal = document.getElementById('settings-modal');
         const modeSelectionModal = document.getElementById('mode-selection-modal');
+        const soonModal = document.getElementById('soon-modal'); // NEW
+        const soonModalPanel = document.getElementById('soon-modal-panel'); // NEW for animation
         const timerDisplay = document.getElementById('timer-display');
         const timerCount = document.getElementById('timer-count');
         const inputContainer = document.getElementById('input-container');
@@ -407,6 +461,31 @@
             }
         }
 
+        // --- NEW: Coming Soon Modal Logic ---
+        function showSoonModal() {
+            // Remove 'hidden' and set up for animation
+            soonModal.classList.remove('hidden');
+            soonModal.classList.remove('opacity-0');
+            soonModalPanel.classList.remove('active');
+            
+            // Add 'active' class after a brief moment to trigger CSS transition
+            setTimeout(() => {
+                soonModal.classList.add('active');
+                soonModalPanel.classList.add('active');
+            }, 10);
+        }
+
+        function hideSoonModal() {
+            // Start the fade/scale out animation
+            soonModalPanel.classList.remove('active');
+            soonModal.classList.remove('active');
+
+            // Hide the modal completely after the animation finishes (500ms based on CSS transition)
+            setTimeout(() => {
+                soonModal.classList.add('hidden');
+            }, 500); 
+        }
+        
         // --- UI Update ---
         function updateUI() {
             document.getElementById('menu-username').textContent = gameState.username;
@@ -415,7 +494,7 @@
             document.getElementById('lives-count').textContent = gameState.lives;
         }
         
-        // --- Timer Logic ---
+        // --- Timer Logic - Existing ---
         function startTimer() {
             if (gameState.currentMode !== 'flash') return;
 
@@ -448,7 +527,7 @@
             timerDisplay.classList.remove('timer-flash');
         }
 
-        // --- Game Logic ---
+        // --- Game Logic - Existing ---
         function selectGameMode(mode) {
             gameState.currentMode = mode;
             modeSelectionModal.classList.add('hidden');
@@ -552,7 +631,7 @@
             showScreen('gameOver');
         }
 
-        // --- Creators Screen Logic ---
+        // --- Creators Screen Logic - Existing ---
         function initCreatorsScreen() {
             const content = document.getElementById('creators-content');
             screens.creators.classList.add('active');
@@ -566,7 +645,7 @@
             }, 10);
         }
 
-        // --- Event Listeners ---
+        // --- Event Listeners - EDITED ---
         function setupEventListeners() {
             // Main Menu
             document.getElementById('start-game-btn').addEventListener('click', () => {
@@ -575,6 +654,14 @@
             document.getElementById('settings-btn').addEventListener('click', () => {
                 settingsModal.classList.remove('hidden');
             });
+            
+            // NEW: Navigation Buttons (Challenges, History, Ways)
+            document.getElementById('nav-ways-btn').addEventListener('click', showSoonModal);
+            document.getElementById('nav-challenges-btn').addEventListener('click', showSoonModal);
+            document.getElementById('nav-history-btn').addEventListener('click', showSoonModal);
+            
+            // NEW: Close Soon Modal Button
+            document.getElementById('close-soon-modal-btn').addEventListener('click', hideSoonModal);
             
             // Mode Selection Modal
             document.getElementById('close-mode-selection-btn').addEventListener('click', () => {
@@ -609,7 +696,7 @@
         }
         
 
-        // --- Falling Letters Animation ---
+        // --- Falling Letters Animation - Existing ---
         function startFallingLetters() {
             const canvas = document.getElementById('falling-letters-canvas');
             if (!canvas) return;
@@ -629,32 +716,38 @@
                 ctx.font = `${fontSize}px Vazirmatn`;
 
                 for (let i = 0; i < drops.length; i++) {
-                    const text = letters.charAt(Math.floor(Math.random() * letters.length));
+                    const text = letters[Math.floor(Math.random() * letters.length)];
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
                     if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
                         drops[i] = 0;
                     }
+
                     drops[i]++;
                 }
+                if (document.getElementById('main-menu-screen').style.display === 'flex') {
+                    requestAnimationFrame(draw);
+                }
             }
-            setInterval(draw, 40);
 
-            window.addEventListener('resize', () => {
+            function onResize() {
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
-                drops.length = Math.ceil(canvas.width / fontSize);
-                for(let i=0; i < drops.length; i++) drops[i] = 1;
-            });
+            }
+            window.addEventListener('resize', onResize);
+            requestAnimationFrame(draw);
         }
 
-        // --- App Initialization ---
-        window.onload = () => {
+
+        // --- Initialization ---
+        window.onload = function() {
             loadGameState();
             updateUI();
             setupEventListeners();
             showScreen('mainMenu');
             startFallingLetters();
-        };
+        }
+
     </script>
 </body>
 </html>
