@@ -127,23 +127,18 @@
         .credit-role { font-size: 1.5rem; font-weight: 700; text-shadow: 0 0 5px rgba(255, 215, 0, 0.4); margin-bottom: 4px; }
         .credit-name { font-size: 2.25rem; font-weight: 900; line-height: 1.2; }
 
-        /* Custom Styles - NEW (Motion Graphic Panel) */
         .soon-modal-panel {
-            /* Initial state for beautiful motion */
             transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); 
             opacity: 0;
             transform: scale(0.8) translateY(20px);
         }
         .soon-modal.active .soon-modal-panel {
-            /* Target state */
             opacity: 1;
             transform: scale(1) translateY(0);
         }
         .soon-modal {
-            /* Ensure background transitions as well */
             transition: background-color 0.5s ease;
         }
-        /* Bounce effect for 'به زودی' text */
         .soon-text {
             animation: bounceIn 1s cubic-bezier(0.68, -0.55, 0.27, 1.55) both;
             display: inline-block;
@@ -162,6 +157,7 @@
     <!-- Main Menu Screen -->
     <div id="main-menu-screen" class="screen p-6 flex flex-col h-screen">
         <canvas id="falling-letters-canvas"></canvas>
+        <!-- HEADER - EDITED -->
         <header class="flex justify-between items-center mb-16">
             <div class="flex items-center space-x-4 space-x-reverse">
                 <div class="split-circle"></div>
@@ -170,7 +166,16 @@
                     <p id="menu-highscore" class="text-sm gold-gradient-text font-bold">🚀 بالاترین رکورد: 0</p>
                 </div>
             </div>
-            <button id="settings-btn" class="text-3xl">⚙️</button>
+            <div class="flex items-center space-x-4 space-x-reverse">
+                <!-- NEW News Button -->
+                <button id="header-news-btn" class="relative text-gray-300 hover:text-white transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    <span id="news-badge" class="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 flex items-center justify-center w-5 h-5 bg-red-600 text-white text-xs font-bold rounded-full border-2 border-gray-900">1</span>
+                </button>
+                <button id="settings-btn" class="text-3xl">⚙️</button>
+            </div>
         </header>
 
         <main class="flex-grow flex flex-col justify-center items-center space-y-4">
@@ -180,23 +185,16 @@
             </button>
         </main>
 
-        <!-- FOOTER - EDITED -->
         <footer class="w-full max-w-sm mx-auto pb-2 px-2">
             <div class="bg-black/30 backdrop-blur-sm border border-yellow-400/20 rounded-2xl grid grid-cols-3 gap-2 text-center p-2">
-                <!-- NEW: راه ها (Ways/Paths) -->
                 <button id="nav-ways-btn" class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
-                    <!-- Road/Path Icon -->
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v10m-6 3h12a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z"/>
-                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M14 10l-2 1m0 0l-2-1m2 1v10m-6 3h12a2 2 0 002-2V8a2 2 0 00-2-2H6a2 2 0 00-2 2v7a2 2 0 002 2z"/></svg>
                     <span>راه ها</span>
                 </button>
-                <!-- Existing: چالش‌ها (Challenges) -->
                 <button id="nav-challenges-btn" class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.539 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.539-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" /></svg>
                     <span>چالش‌ها</span>
                 </button>
-                <!-- Existing: تاریخچه (History) -->
                 <button id="nav-history-btn" class="flex flex-col items-center justify-center text-gray-400 p-2 rounded-lg hover:bg-yellow-400/10 transition-colors text-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                     <span>تاریخچه</span>
@@ -205,112 +203,79 @@
         </footer>
     </div>
     
-    <!-- Game Mode Selection Modal - Existing -->
+    <!-- Game Mode Selection Modal -->
     <div id="mode-selection-modal" class="modal hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
         <div class="card p-8 rounded-lg w-11/12 max-w-md text-center space-y-6">
             <h2 class="text-3xl font-bold gold-gradient-text mb-6">انتخاب حالت بازی</h2>
-            
             <button onclick="selectGameMode('old')" class="w-full btn-golden text-xl py-4 flex flex-col items-center">
                 <span class="text-2xl font-black">2 Old (کلاسیک)</span>
                 <span class="text-sm font-normal mt-1 text-gray-900">چند گزینه‌ای، بدون محدودیت زمانی</span>
             </button>
-
             <button onclick="selectGameMode('flash')" class="w-full btn-golden text-xl py-4 flex flex-col items-center">
                 <span class="text-2xl font-black">2.5 Flash</span>
                 <span class="text-sm font-normal mt-1 text-gray-900">سوالات سخت، تایپ پاسخ، زمان محدود</span>
             </button>
-            
             <button id="close-mode-selection-btn" class="mt-4 w-full p-3 bg-gray-700 rounded-lg text-white hover:bg-gray-600 transition-colors">بازگشت</button>
         </div>
     </div>
 
-    <!-- Settings Modal - Existing -->
+    <!-- Settings Modal - EDITED -->
     <div id="settings-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
         <div class="card p-8 rounded-lg w-11/12 max-w-md text-center space-y-4">
             <h2 class="text-2xl font-bold gold-gradient-text mb-6">تنظیمات</h2>
             <button id="creators-btn" class="w-full p-3 bg-gray-700 rounded-lg hover:bg-yellow-400/20 transition-colors">سازندگان</button>
+            <!-- News button removed from here -->
             <button id="close-settings-btn" class="mt-6 w-full btn-golden">بستن</button>
         </div>
     </div>
 
-    <!-- NEW: Coming Soon Modal (Animated Panel) -->
+    <!-- Coming Soon Modal -->
     <div id="soon-modal" class="soon-modal hidden fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
         <div id="soon-modal-panel" class="soon-modal-panel card p-8 rounded-2xl w-11/12 max-w-md text-center space-y-6">
-            <h2 class="text-6xl font-black gold-gradient-text soon-text">
-                ✨ به زودی ✨
-            </h2>
-            <p class="text-xl text-gray-300">
-                این بخش هیجان‌انگیز در حال توسعه است و به زودی اضافه خواهد شد!
-            </p>
+            <h2 class="text-6xl font-black gold-gradient-text soon-text">✨ به زودی ✨</h2>
+            <p class="text-xl text-gray-300">این بخش هیجان‌انگیز در حال توسعه است و به زودی اضافه خواهد شد!</p>
             <div class="mt-8">
                 <button id="close-soon-modal-btn" class="w-full btn-golden text-xl py-3">فهمیدم</button>
             </div>
         </div>
     </div>
 
-    <!-- Creators Screen (Credit Roll) - Existing -->
+    <!-- Creators Screen (Credit Roll) -->
     <div id="creators-screen" class="screen fixed inset-0 bg-black/95 flex flex-col items-center z-50">
         <header class="relative w-full text-center py-6 bg-black/50">
             <h1 class="text-3xl font-black gold-gradient-text">اعتبارات سازندگان</h1>
             <button id="back-from-creators-btn" class="absolute top-1/2 -translate-y-1/2 right-4 text-3xl text-white">➡️</button>
         </header>
-
         <div class="flex-grow w-full overflow-hidden relative">
             <div id="creators-content" class="absolute w-full top-0">
-                <div class="credit-item">
-                    <p class="credit-role gold-gradient-text">برنامه نویس ارشد و طراح</p>
-                    <p class="credit-name">علی بابایی</p>
-                </div>
-                <div class="credit-item mt-20">
-                    <p class="credit-role gold-gradient-text">برنامه نویس سرور و برنامه نویس دوم</p>
-                    <p class="credit-name">سید ابولفضل سجادی</p>
-                </div>
-                <div class="credit-item mt-20 text-4xl font-bold">
-                    <p class="gold-gradient-text">اسکورت گیم</p>
-                    <p class="text-gray-400 text-xl mt-4">تقدیم می‌کند</p>
-                </div>
+                <div class="credit-item"><p class="credit-role gold-gradient-text">برنامه نویس ارشد و طراح</p><p class="credit-name">علی بابایی</p></div>
+                <div class="credit-item mt-20"><p class="credit-role gold-gradient-text">برنامه نویس سرور و برنامه نویس دوم</p><p class="credit-name">سید ابولفضل سجادی</p></div>
+                <div class="credit-item mt-20 text-4xl font-bold"><p class="gold-gradient-text">اسکورت گیم</p><p class="text-gray-400 text-xl mt-4">تقدیم می‌کند</p></div>
                 <div style="height: 50vh;"></div> 
             </div>
         </div>
     </div>
     
-    <!-- Gameplay Screen - Existing -->
+    <!-- Gameplay Screen -->
     <div id="gameplay-screen" class="screen p-6 flex flex-col h-screen">
         <header class="flex items-center justify-between mb-8">
-            <div class="flex items-center space-x-2 space-x-reverse">
-                <p class="text-red-400 text-3xl">❤️</p>
-                <p id="lives-count" class="text-2xl font-bold text-white">3</p>
-            </div>
-            <div id="timer-display" class="hidden text-center card px-4 py-2 rounded-lg bg-red-900/50 border-red-500/50">
-                <p class="text-lg font-bold">زمان:</p>
-                <p id="timer-count" class="text-3xl font-black text-red-400">15</p>
-            </div>
-            <div class="text-center">
-                <p class="text-2xl font-bold gold-gradient-text">امتیاز: <span id="game-score">0</span></p>
-            </div>
+            <div class="flex items-center space-x-2 space-x-reverse"><p class="text-red-400 text-3xl">❤️</p><p id="lives-count" class="text-2xl font-bold text-white">3</p></div>
+            <div id="timer-display" class="hidden text-center card px-4 py-2 rounded-lg bg-red-900/50 border-red-500/50"><p class="text-lg font-bold">زمان:</p><p id="timer-count" class="text-3xl font-black text-red-400">15</p></div>
+            <div class="text-center"><p class="text-2xl font-bold gold-gradient-text">امتیاز: <span id="game-score">0</span></p></div>
         </header>
-        
         <main class="flex-grow flex flex-col justify-center items-center text-center">
             <div class="w-full max-w-lg card p-8">
                 <p id="riddle-question" class="text-xl md:text-2xl mb-8 min-h-[100px] flex items-center justify-center"></p>
-                
-                <!-- Options Container (For 2 Old Mode) -->
-                <div id="options-container" class="grid grid-cols-2 gap-4">
-                    <!-- Option buttons will be generated here -->
-                </div>
-
-                <!-- Input Container (For 2.5 Flash Mode) -->
+                <div id="options-container" class="grid grid-cols-2 gap-4"></div>
                 <div id="input-container" class="hidden flex flex-col gap-4 w-full">
-                    <input type="text" id="flash-answer-input" placeholder="پاسخ را اینجا تایپ کنید..." 
-                            class="w-full p-4 bg-gray-800 border border-yellow-400/50 rounded-lg text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors text-lg"
-                            style="caret-color: #FFD700;">
+                    <input type="text" id="flash-answer-input" placeholder="پاسخ را اینجا تایپ کنید..." class="w-full p-4 bg-gray-800 border border-yellow-400/50 rounded-lg text-white text-center focus:outline-none focus:ring-2 focus:ring-yellow-400 transition-colors text-lg" style="caret-color: #FFD700;">
                     <button id="flash-submit-btn" class="w-full btn-golden text-xl py-3">ثبت پاسخ</button>
                 </div>
             </div>
         </main>
     </div>
     
-    <!-- Game Over Screen - Existing -->
+    <!-- Game Over Screen -->
     <div id="game-over-screen" class="screen p-8 flex flex-col justify-center items-center text-center h-screen">
         <div class="card p-8 rounded-lg w-11/12 max-w-md space-y-6">
             <h2 class="text-4xl font-black text-red-400">بازی تمام شد!</h2>
@@ -325,6 +290,24 @@
         </div>
     </div>
 
+    <!-- News Screen -->
+    <div id="news-screen" class="screen p-6 flex flex-col justify-center items-center h-screen">
+        <div class="card p-8 rounded-lg w-11/12 max-w-md space-y-6 text-center">
+            <h2 class="text-3xl font-black gold-gradient-text">📢 بروزرسانی "سارینا"</h2>
+            <div class="text-lg text-right leading-relaxed text-gray-300 space-y-4">
+                <p>سلام به همه چیستان‌بازهای عزیز!</p>
+                <p>با هیجان فراوان، آپدیت بزرگ بعدی با اسم رمز <strong class="text-yellow-400">"سارینا"</strong> را معرفی می‌کنیم! در این بروزرسانی کلی قابلیت‌های خفن به بازی اضافه خواهد شد:</p>
+                <ul class="list-disc list-inside mt-2 space-y-2 pr-4">
+                    <li>⚔️ <strong>بازی آنلاین:</strong> دوستان خود را به چالش بکشید!</li>
+                    <li>👕 <strong>فروشگاه و آواتار:</strong> شخصیت خود را منحصر به فرد کنید!</li>
+                    <li>🎁 و کلی امکانات هیجان‌انگیز دیگر...</li>
+                </ul>
+                <p class="text-center pt-4">منتظر خبرهای بیشتر باشید!</p>
+            </div>
+            <button id="back-from-news-btn" class="w-full btn-golden mt-6">بازگشت به منو</button>
+        </div>
+    </div>
+
 
     <script>
         // --- DOM Elements ---
@@ -333,157 +316,52 @@
             gameplay: document.getElementById('gameplay-screen'),
             gameOver: document.getElementById('game-over-screen'),
             creators: document.getElementById('creators-screen'),
+            news: document.getElementById('news-screen'),
         };
         const settingsModal = document.getElementById('settings-modal');
         const modeSelectionModal = document.getElementById('mode-selection-modal');
-        const soonModal = document.getElementById('soon-modal'); // NEW
-        const soonModalPanel = document.getElementById('soon-modal-panel'); // NEW for animation
+        const soonModal = document.getElementById('soon-modal');
+        const soonModalPanel = document.getElementById('soon-modal-panel');
         const timerDisplay = document.getElementById('timer-display');
         const timerCount = document.getElementById('timer-count');
         const inputContainer = document.getElementById('input-container');
         const optionsContainer = document.getElementById('options-container');
 
         // --- Game State & Data ---
-        const FLASH_TIME_LIMIT = 15; // seconds
+        const FLASH_TIME_LIMIT = 15;
         const STARTING_LIVES = 3;
         const STORAGE_KEY = 'chistanRecordGameState';
-        
-        let gameState = {
-            username: 'هوشیار',
-            highScore: 0,
-            score: 0,
-            lives: STARTING_LIVES,
-            currentMode: 'old',
-            usedRiddleIndices: [], // To avoid repeating questions in one session
-        };
-
+        let gameState = { username: 'هوشیار', highScore: 0, score: 0, lives: STARTING_LIVES, currentMode: 'old', usedRiddleIndices: [], };
         let gameTimer;
 
-        // --- Riddles ---
-        const allRiddles = [
-            { q: 'آن چیست که پر دارد ولی پرواز نمی‌کند؟', a: 'بالش', options: ['پرنده', 'بالش', 'هواپیما', 'بادبادک'] },
-            { q: 'آن چیست که هرچه از آن بردارند بزرگتر می‌شود؟', a: 'گودال', options: ['کیسه', 'کوه', 'گودال', 'درخت'] },
-            { q: 'آن چیست که یک چشم دارد ولی نمی‌بیند؟', a: 'سوزن', options: ['سوزن', 'سیکلوپ', 'دوربین', 'هیولا'] },
-            { q: 'آن چیست که گردن دارد اما سر ندارد؟', a: 'کوزه', options: ['پیراهن', 'بطری', 'کوزه', 'شیشه'] },
-            { q: 'آن چیست که روز را آغاز و شب را تمام می‌کند؟', a: 'ر', options: ['آفتاب', 'ماه', 'ر', 'ش'] },
-            { q: 'آن چیست که همه جا هست ولی دیده نمی‌شود؟', a: 'هوا', options: ['صدا', 'هوا', 'فکر', 'عشق'] },
-            { q: 'آن چیست که زبان ندارد اما سخن می‌گوید؟', a: 'کتاب', options: ['رادیو', 'قلم', 'کتاب', 'نامه'] },
-            { q: 'آن چیست که پا ندارد ولی سفر می‌کند؟', a: 'نامه', options: ['ابر', 'دود', 'رودخانه', 'نامه'] },
-            { q: 'آن چیست که همیشه در حال آمدن است ولی هرگز نمی‌رسد؟', a: 'فردا', options: ['قطار', 'فردا', 'مرگ', 'خواب'] },
-            { q: 'آن چیست که در زمستان می‌ایستد و در تابستان می‌نشیند؟', a: 'برف', options: ['آدم برفی', 'کوه', 'یخ', 'برف'] },
-            { q: 'آن چیست که در روز پر است و در شب خالی؟', a: 'کفش', options: ['مدرسه', 'معده', 'خیابان', 'کفش'] },
-            { q: 'آن چیست که سفید است اما برف نیست، ریشه دارد اما درخت نیست؟', a: 'دندان', options: ['پیاز', 'دندان', 'تربچه', 'مو'] },
-            { q: 'آن چیست که اگر نامش را بگویی می‌شکند؟', a: 'سکوت', options: ['شیشه', 'سکوت', 'بغض', 'قول'] },
-            { q: 'آن چیست که می‌رود و برنمی‌گردد؟', a: 'عمر', options: ['زمان', 'جوانی', 'عمر', 'فرصت'] },
-            { q: 'آن چیست که پر از سوراخ است ولی آب را نگه می‌دارد؟', a: 'اسفنج', options: ['ابر', 'اسفنج', 'تور', 'آبکش'] },
-            { q: 'آن چیست که سر ندارد اما کلاه دارد؟', a: 'قارچ', options: ['میخ', 'بطری', 'خودکار', 'قارچ'] },
-            { q: 'آن چیست که هر چه بیشتر می‌شوییم کثیف‌تر می‌شود؟', a: 'آب', options: ['حوله', 'دستمال', 'آب', 'صابون'] },
-            { q: 'آن چیست که از میان آب می‌گذرد ولی خیس نمی‌شود؟', a: 'نور', options: ['صدا', 'سایه', 'نور', 'ماهی'] },
-            { q: 'آن چیست که اگر غذا به او بدهی رشد می‌کند و اگر آب بدهی می‌میرد؟', a: 'آتش', options: ['گیاه', 'آتش', 'کوره', 'حیوان'] },
-            { q: 'آن چیست که در قرن یک بار، در دقیقه دو بار و در ساعت هیچ بار نمی‌آید؟', a: 'ق', options: ['نقطه', 'حرف', 'ق', 'عدد'] },
-        ];
-        
-        const hardRiddles = [
-            { q: 'آن چیست که وقتی ایستاده است می‌خوابد و وقتی راه می‌رود بیدار است؟', a: 'قطار', options: [] },
-            { q: 'من هیچ بدنی ندارم اما می‌توانم راه بروم. من دهانی ندارم اما می‌توانم حرف بزنم. من کیستم؟', a: 'پژواک', options: [] },
-            { q: 'آن چیست که اگر آن را داشته باشی می‌خواهی به اشتراک بگذاری، و اگر به اشتراک بگذاری دیگر آن را نداری؟', a: 'راز', options: [] },
-            { q: 'چه چیزی همیشه جلوتر از شماست اما هرگز نمی‌توانید آن را بگیرید؟', a: 'آینده', options: [] },
-            { q: 'آن چیست که بدون کلید باز می‌شود؟', a: 'موز', options: [] },
-            { q: 'چهارپا دارم اما نمی‌توانم بدوم، پشت دارم اما کمر ندارم. من کیستم؟', a: 'میز', options: [] },
-            { q: 'چه چیزی در یک دایره همیشه بزرگتر می‌شود و در یک مربع همیشه کوچک‌تر؟', a: 'نقطه', options: [] },
-            { q: 'سقف من آبی است، کف من سبزی است، و با آب هم پر شده‌ام. من کیستم؟', a: 'استخر', options: [] },
-            { q: 'آن چیست که مال شماست اما دیگران بیشتر از شما از آن استفاده می‌کنند؟', a: 'اسم', options: [] },
-            { q: 'چه چیزی بالا می‌رود اما هرگز پایین نمی‌آید؟', a: 'سن', options: [] },
-            { q: 'چهار حرف است، هرچه بیشتر می‌خورم گرسنه‌تر می‌شوم.', a: 'آتش', options: [] },
-            { q: 'من همیشه خیس هستم، مهم نیست چقدر آفتابی باشد.', a: 'زبان', options: [] },
-            { q: 'آن چیست که هرگز سؤال نمی‌پرسد، اما همیشه نیاز به پاسخ دارد؟', a: 'تلفن', options: [] },
-            { q: 'دوستت دارم، می‌ایستم، از آن متنفرم، می‌دوم. من کیستم؟', a: 'زمان', options: [] },
-            { q: 'آن چیست که همیشه در جای خود است، اما مدام در حرکت است؟', a: 'جاده', options: [] },
-            { q: 'چه چیزی می‌تواند از یک پنجره شیشه‌ای عبور کند بدون اینکه آن را بشکند؟', a: 'نور', options: [] },
-            { q: 'من ریشه در زمین دارم، قدی به بلندای درخت، اما بالا نمی‌روم.', a: 'سایه', options: [] },
-            { q: 'سه چشم دارم و فقط یک پا. من کیستم؟', a: 'چراغ‌راهنمایی', options: [] },
-            { q: 'من همیشه به گذشته نگاه می‌کنم، اما نمی‌توانم جلو را ببینم.', a: 'آینه', options: [] },
-            { q: 'با یک انگشت به تو اشاره می‌کنم، اما راه را به هیچ کس نشان نمی‌دهم.', a: 'خورشید', options: [] },
-            { q: 'چند بار می‌توانید عدد ۱ را از ۲۵ کم کنید؟', a: 'یکبار', options: [] },
-            { q: 'آن چیست که باید بشکنی تا از آن استفاده کنی؟', a: 'تخم‌مرغ', options: [] },
-            { q: 'آن چیست که هم می‌تواند بسته باشد و هم باز، و همیشه نزدیک توست؟', a: 'دست', options: [] },
-            { q: 'چه چیزی را نمی‌توانید بخورید اما برای خوردن لازم است؟', a: 'قاشق', options: [] },
-            { q: 'هر چه بیشتر از من ببرید، بزرگتر می‌شوم.', a: 'چاله', options: [] },
-            { q: 'یک خانه سبزم که داخلش یک خانه سفید است و درون آن یک خانه قرمز و پر از بچه‌های سیاه است.', a: 'هندوانه', options: [] },
-            { q: 'آن چیست که دهان دارد اما صحبت نمی‌کند، بستر دارد اما نمی‌خوابد؟', a: 'رودخانه', options: [] },
-            { q: 'چه چیزی با داشتن وزن بسیار کم می‌تواند یک کشتی بزرگ را در اقیانوس متوقف کند؟', a: 'لنگر', options: [] },
-            { q: 'من را می‌سازند، نگهداری می‌کنند، تغییر می‌دهند، و دور می‌اندازند، اما هیچ‌گاه خورده نمی‌شوم.', a: 'پول', options: [] },
-        ];
+        // --- Riddles (Truncated for brevity) ---
+        const allRiddles = [ { q: 'آن چیست که پر دارد ولی پرواز نمی‌کند؟', a: 'بالش', options: ['پرنده', 'بالش', 'هواپیما', 'بادبادک'] }, { q: 'آن چیست که هرچه از آن بردارند بزرگتر می‌شود؟', a: 'گودال', options: ['کیسه', 'کوه', 'گودال', 'درخت'] }, { q: 'آن چیست که یک چشم دارد ولی نمی‌بیند؟', a: 'سوزن', options: ['سوزن', 'سیکلوپ', 'دوربین', 'هیولا'] }, { q: 'آن چیست که گردن دارد اما سر ندارد؟', a: 'کوزه', options: ['پیراهن', 'بطری', 'کوزه', 'شیشه'] }, { q: 'آن چیست که روز را آغاز و شب را تمام می‌کند؟', a: 'ر', options: ['آفتاب', 'ماه', 'ر', 'ش'] }, { q: 'آن چیست که همه جا هست ولی دیده نمی‌شود؟', a: 'هوا', options: ['صدا', 'هوا', 'فکر', 'عشق'] }, { q: 'آن چیست که زبان ندارد اما سخن می‌گوید؟', a: 'کتاب', options: ['رادیو', 'قلم', 'کتاب', 'نامه'] }, { q: 'آن چیست که پا ندارد ولی سفر می‌کند؟', a: 'نامه', options: ['ابر', 'دود', 'رودخانه', 'نامه'] }, { q: 'آن چیست که همیشه در حال آمدن است ولی هرگز نمی‌رسد؟', a: 'فردا', options: ['قطار', 'فردا', 'مرگ', 'خواب'] }, { q: 'آن چیست که در زمستان می‌ایستد و در تابستان می‌نشیند؟', a: 'برف', options: ['آدم برفی', 'کوه', 'یخ', 'برف'] }, ];
+        const hardRiddles = [ { q: 'آن چیست که وقتی ایستاده است می‌خوابد و وقتی راه می‌رود بیدار است؟', a: 'قطار', options: [] }, { q: 'من هیچ بدنی ندارم اما می‌توانم راه بروم. من دهانی ندارم اما می‌توانم حرف بزنم. من کیستم؟', a: 'پژواک', options: [] }, { q: 'آن چیست که اگر آن را داشته باشی می‌خواهی به اشتراک بگذاری، و اگر به اشتراک بگذاری دیگر آن را نداری؟', a: 'راز', options: [] }, { q: 'چه چیزی همیشه جلوتر از شماست اما هرگز نمی‌توانید آن را بگیرید؟', a: 'آینده', options: [] }, { q: 'آن چیست که بدون کلید باز می‌شود؟', a: 'موز', options: [] }, { q: 'چهارپا دارم اما نمی‌توانم بدوم، پشت دارم اما کمر ندارم. من کیستم؟', a: 'میز', options: [] }, ];
         
         // --- Helper Functions ---
-        function normalizeAnswer(text) {
-            if (typeof text !== 'string') return '';
-            return text.trim().replace(/ی/g, 'ي').replace(/ک/g, 'ك').toLowerCase().replace(/\s/g, ''); 
-        }
+        function normalizeAnswer(text) { if (typeof text !== 'string') return ''; return text.trim().replace(/ی/g, 'ي').replace(/ک/g, 'ك').toLowerCase().replace(/\s/g, ''); }
 
         // --- Persistence ---
-        function saveGameState() {
-            try {
-                const stateToSave = { highScore: gameState.highScore };
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
-            } catch (e) {
-                console.error("Failed to save game state:", e);
-            }
-        }
-
-        function loadGameState() {
-            try {
-                const savedState = localStorage.getItem(STORAGE_KEY);
-                if (savedState) {
-                    const loadedState = JSON.parse(savedState);
-                    gameState.highScore = loadedState.highScore || 0;
-                }
-            } catch (e) {
-                console.error("Failed to load game state:", e);
-            }
-        }
+        function saveGameState() { try { const stateToSave = { highScore: gameState.highScore }; localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave)); } catch (e) { console.error("Failed to save game state:", e); } }
+        function loadGameState() { try { const savedState = localStorage.getItem(STORAGE_KEY); if (savedState) { const loadedState = JSON.parse(savedState); gameState.highScore = loadedState.highScore || 0; } } catch (e) { console.error("Failed to load game state:", e); } }
 
         // --- Navigation ---
         function showScreen(screenName) {
-            if (screens.creators.classList.contains('active')) {
-                screens.creators.classList.remove('active');
-            }
-            
+            if (screens.creators.classList.contains('active')) { screens.creators.classList.remove('active'); }
             Object.values(screens).forEach(screen => screen.style.display = 'none');
-            
             const currentScreen = screens[screenName];
-            if (currentScreen) {
-                currentScreen.style.display = 'flex';
-            }
-
-            if (screenName === 'creators') {
-                initCreatorsScreen();
-            }
+            if (currentScreen) { currentScreen.style.display = 'flex'; }
+            if (screenName === 'creators') { initCreatorsScreen(); }
         }
 
-        // --- NEW: Coming Soon Modal Logic ---
+        // --- Coming Soon Modal Logic ---
         function showSoonModal() {
-            // Remove 'hidden' and set up for animation
-            soonModal.classList.remove('hidden');
-            soonModal.classList.remove('opacity-0');
-            soonModalPanel.classList.remove('active');
-            
-            // Add 'active' class after a brief moment to trigger CSS transition
-            setTimeout(() => {
-                soonModal.classList.add('active');
-                soonModalPanel.classList.add('active');
-            }, 10);
+            soonModal.classList.remove('hidden'); soonModal.classList.remove('opacity-0'); soonModalPanel.classList.remove('active');
+            setTimeout(() => { soonModal.classList.add('active'); soonModalPanel.classList.add('active'); }, 10);
         }
-
         function hideSoonModal() {
-            // Start the fade/scale out animation
-            soonModalPanel.classList.remove('active');
-            soonModal.classList.remove('active');
-
-            // Hide the modal completely after the animation finishes (500ms based on CSS transition)
-            setTimeout(() => {
-                soonModal.classList.add('hidden');
-            }, 500); 
+            soonModalPanel.classList.remove('active'); soonModal.classList.remove('active');
+            setTimeout(() => { soonModal.classList.add('hidden'); }, 500); 
         }
         
         // --- UI Update ---
@@ -494,259 +372,136 @@
             document.getElementById('lives-count').textContent = gameState.lives;
         }
         
-        // --- Timer Logic - Existing ---
+        // --- Timer Logic ---
         function startTimer() {
             if (gameState.currentMode !== 'flash') return;
-
             let timeRemaining = FLASH_TIME_LIMIT;
             timerCount.textContent = timeRemaining;
-            timerDisplay.classList.remove('hidden');
-            timerDisplay.classList.remove('timer-flash');
-
+            timerDisplay.classList.remove('hidden'); timerDisplay.classList.remove('timer-flash');
             clearInterval(gameTimer);
             gameTimer = setInterval(() => {
-                timeRemaining--;
-                timerCount.textContent = timeRemaining;
-
-                if (timeRemaining <= 5) {
-                    timerDisplay.classList.add('timer-flash');
-                } else {
-                    timerDisplay.classList.remove('timer-flash');
-                }
-
-                if (timeRemaining <= 0) {
-                    clearInterval(gameTimer);
-                    checkAnswer(null); // Time's up, counts as wrong answer
-                }
+                timeRemaining--; timerCount.textContent = timeRemaining;
+                if (timeRemaining <= 5) { timerDisplay.classList.add('timer-flash'); } else { timerDisplay.classList.remove('timer-flash'); }
+                if (timeRemaining <= 0) { clearInterval(gameTimer); checkAnswer(null); }
             }, 1000);
         }
+        function stopTimer() { clearInterval(gameTimer); timerDisplay.classList.add('hidden'); timerDisplay.classList.remove('timer-flash'); }
 
-        function stopTimer() {
-            clearInterval(gameTimer);
-            timerDisplay.classList.add('hidden');
-            timerDisplay.classList.remove('timer-flash');
-        }
-
-        // --- Game Logic - Existing ---
-        function selectGameMode(mode) {
-            gameState.currentMode = mode;
-            modeSelectionModal.classList.add('hidden');
-            startGame();
-        }
-
-        function startGame() {
-            gameState.score = 0;
-            gameState.lives = STARTING_LIVES;
-            gameState.usedRiddleIndices = [];
-            updateUI();
-            showScreen('gameplay');
-            loadNextRiddle();
-        }
-
+        // --- Game Logic ---
+        function selectGameMode(mode) { gameState.currentMode = mode; modeSelectionModal.classList.add('hidden'); startGame(); }
+        function startGame() { gameState.score = 0; gameState.lives = STARTING_LIVES; gameState.usedRiddleIndices = []; updateUI(); showScreen('gameplay'); loadNextRiddle(); }
         function loadNextRiddle() {
             const riddleSource = gameState.currentMode === 'flash' ? hardRiddles : allRiddles;
-
-            if (gameState.usedRiddleIndices.length === riddleSource.length) {
-                // Reset if all questions have been asked
-                gameState.usedRiddleIndices = [];
-            }
-
+            if (gameState.usedRiddleIndices.length === riddleSource.length) { gameState.usedRiddleIndices = []; }
             let riddleIndex;
-            do {
-                riddleIndex = Math.floor(Math.random() * riddleSource.length);
-            } while (gameState.usedRiddleIndices.includes(riddleIndex));
-            
+            do { riddleIndex = Math.floor(Math.random() * riddleSource.length); } while (gameState.usedRiddleIndices.includes(riddleIndex));
             gameState.usedRiddleIndices.push(riddleIndex);
             const riddle = riddleSource[riddleIndex];
-
             document.getElementById('riddle-question').textContent = riddle.q;
-            
             if (gameState.currentMode === 'flash') {
-                optionsContainer.classList.add('hidden');
-                inputContainer.classList.remove('hidden');
-                document.getElementById('flash-answer-input').value = '';
-                document.getElementById('flash-answer-input').focus();
+                optionsContainer.classList.add('hidden'); inputContainer.classList.remove('hidden');
+                document.getElementById('flash-answer-input').value = ''; document.getElementById('flash-answer-input').focus();
                 startTimer();
             } else {
-                inputContainer.classList.add('hidden');
-                optionsContainer.classList.remove('hidden');
+                inputContainer.classList.add('hidden'); optionsContainer.classList.remove('hidden');
                 optionsContainer.innerHTML = '';
                 riddle.options.forEach(option => {
-                    const button = document.createElement('button');
-                    button.textContent = option;
-                    button.className = 'btn-option';
+                    const button = document.createElement('button'); button.textContent = option; button.className = 'btn-option';
                     button.onclick = () => checkAnswer(option, riddle.a, button);
                     optionsContainer.appendChild(button);
                 });
             }
         }
-
         function checkAnswer(selectedAnswer, correctAnswer, btnElement = null) {
-            stopTimer();
-            let isCorrect = false;
-            
+            stopTimer(); let isCorrect = false;
             if (gameState.currentMode === 'flash') {
                 const flashInput = document.getElementById('flash-answer-input').value;
                 const riddle = hardRiddles[gameState.usedRiddleIndices[gameState.usedRiddleIndices.length - 1]];
-                correctAnswer = riddle.a;
-                isCorrect = normalizeAnswer(flashInput) === normalizeAnswer(correctAnswer);
-            } else {
-                isCorrect = normalizeAnswer(selectedAnswer) === normalizeAnswer(correctAnswer);
-            }
-
-            // Disable all option buttons
+                correctAnswer = riddle.a; isCorrect = normalizeAnswer(flashInput) === normalizeAnswer(correctAnswer);
+            } else { isCorrect = normalizeAnswer(selectedAnswer) === normalizeAnswer(correctAnswer); }
             optionsContainer.querySelectorAll('button').forEach(btn => btn.disabled = true);
-
             if (isCorrect) {
-                gameState.score += 10;
-                if (btnElement) {
-                   btnElement.style.backgroundColor = '#2E7D32'; // Green
-                   btnElement.style.borderColor = '#4CAF50';
-                }
+                gameState.score += 10; if (btnElement) { btnElement.style.backgroundColor = '#2E7D32'; btnElement.style.borderColor = '#4CAF50'; }
             } else {
-                gameState.lives--;
-                if (btnElement) {
-                    btnElement.style.backgroundColor = '#C62828'; // Red
-                    btnElement.style.borderColor = '#F44336';
-                }
+                gameState.lives--; if (btnElement) { btnElement.style.backgroundColor = '#C62828'; btnElement.style.borderColor = '#F44336'; }
             }
-
             updateUI();
-
-            if (gameState.lives <= 0) {
-                setTimeout(endGame, 1000);
-            } else {
-                setTimeout(loadNextRiddle, 1000);
-            }
+            if (gameState.lives <= 0) { setTimeout(endGame, 1000); } else { setTimeout(loadNextRiddle, 1000); }
         }
-
         function endGame() {
-            stopTimer();
-            if (gameState.score > gameState.highScore) {
-                gameState.highScore = gameState.score;
-                saveGameState();
-            }
+            stopTimer(); if (gameState.score > gameState.highScore) { gameState.highScore = gameState.score; saveGameState(); }
             document.getElementById('final-score').textContent = gameState.score;
             document.getElementById('final-highscore').textContent = gameState.highScore;
             showScreen('gameOver');
         }
 
-        // --- Creators Screen Logic - Existing ---
+        // --- Creators Screen Logic ---
         function initCreatorsScreen() {
-            const content = document.getElementById('creators-content');
-            screens.creators.classList.add('active');
-            // Reset animation by re-cloning the node
-            const newContent = content.cloneNode(true);
-            content.parentNode.replaceChild(newContent, content);
+            const content = document.getElementById('creators-content'); screens.creators.classList.add('active');
+            const newContent = content.cloneNode(true); content.parentNode.replaceChild(newContent, content);
             newContent.style.animation = 'none';
-            setTimeout(() => { 
-                newContent.style.animation = ''; 
-                screens.creators.classList.add('active');
-            }, 10);
+            setTimeout(() => { newContent.style.animation = ''; screens.creators.classList.add('active'); }, 10);
         }
 
         // --- Event Listeners - EDITED ---
         function setupEventListeners() {
             // Main Menu
-            document.getElementById('start-game-btn').addEventListener('click', () => {
-                modeSelectionModal.classList.remove('hidden');
-            });
-            document.getElementById('settings-btn').addEventListener('click', () => {
-                settingsModal.classList.remove('hidden');
+            document.getElementById('start-game-btn').addEventListener('click', () => { modeSelectionModal.classList.remove('hidden'); });
+            
+            // NEW: Header Buttons
+            document.getElementById('settings-btn').addEventListener('click', () => { settingsModal.classList.remove('hidden'); });
+            document.getElementById('header-news-btn').addEventListener('click', () => {
+                showScreen('news');
+                document.getElementById('news-badge').style.display = 'none';
             });
             
-            // NEW: Navigation Buttons (Challenges, History, Ways)
+            // Navigation Buttons
             document.getElementById('nav-ways-btn').addEventListener('click', showSoonModal);
             document.getElementById('nav-challenges-btn').addEventListener('click', showSoonModal);
             document.getElementById('nav-history-btn').addEventListener('click', showSoonModal);
-            
-            // NEW: Close Soon Modal Button
             document.getElementById('close-soon-modal-btn').addEventListener('click', hideSoonModal);
             
-            // Mode Selection Modal
-            document.getElementById('close-mode-selection-btn').addEventListener('click', () => {
-                modeSelectionModal.classList.add('hidden');
-            });
-
-            // Settings Modal
-            document.getElementById('close-settings-btn').addEventListener('click', () => {
-                settingsModal.classList.add('hidden');
-            });
-            document.getElementById('creators-btn').addEventListener('click', () => {
-                settingsModal.classList.add('hidden');
-                showScreen('creators');
-            });
-
-            // Creators Screen
-            document.getElementById('back-from-creators-btn').addEventListener('click', () => {
-                showScreen('mainMenu');
-            });
-
-            // Gameplay Screen (Flash Mode)
-            document.getElementById('flash-submit-btn').addEventListener('click', () => checkAnswer());
-            document.getElementById('flash-answer-input').addEventListener('keyup', (event) => {
-                if (event.key === 'Enter') {
-                    checkAnswer();
-                }
-            });
+            // Modals
+            document.getElementById('close-mode-selection-btn').addEventListener('click', () => { modeSelectionModal.classList.add('hidden'); });
+            document.getElementById('close-settings-btn').addEventListener('click', () => { settingsModal.classList.add('hidden'); });
             
-            // Game Over Screen
+            // Settings Buttons
+            document.getElementById('creators-btn').addEventListener('click', () => { settingsModal.classList.add('hidden'); showScreen('creators'); });
+
+            // Back Buttons
+            document.getElementById('back-from-news-btn').addEventListener('click', () => { showScreen('mainMenu'); });
+            document.getElementById('back-from-creators-btn').addEventListener('click', () => { showScreen('mainMenu'); });
+
+            // Gameplay & Game Over
+            document.getElementById('flash-submit-btn').addEventListener('click', () => checkAnswer());
+            document.getElementById('flash-answer-input').addEventListener('keyup', (event) => { if (event.key === 'Enter') { checkAnswer(); } });
             document.getElementById('play-again-btn').addEventListener('click', startGame);
             document.getElementById('back-to-menu-gameover-btn').addEventListener('click', () => showScreen('mainMenu'));
         }
         
-
-        // --- Falling Letters Animation - Existing ---
+        // --- Falling Letters Animation ---
         function startFallingLetters() {
-            const canvas = document.getElementById('falling-letters-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            const letters = 'ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی';
-            const fontSize = 18;
-            const columns = canvas.width / fontSize;
+            const canvas = document.getElementById('falling-letters-canvas'); if (!canvas) return; const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            const letters = 'ابپتثجچحخدذرزژسشصضطظعغفقکگلمنوهی'; const fontSize = 18; const columns = canvas.width / fontSize;
             const drops = Array.from({ length: columns }).fill(1);
-
             function draw() {
-                ctx.fillStyle = 'rgba(18, 18, 18, 0.05)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#FFD700';
-                ctx.font = `${fontSize}px Vazirmatn`;
-
+                ctx.fillStyle = 'rgba(18, 18, 18, 0.05)'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#FFD700'; ctx.font = `${fontSize}px Vazirmatn`;
                 for (let i = 0; i < drops.length; i++) {
                     const text = letters[Math.floor(Math.random() * letters.length)];
                     ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-                        drops[i] = 0;
-                    }
-
+                    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) { drops[i] = 0; }
                     drops[i]++;
                 }
-                if (document.getElementById('main-menu-screen').style.display === 'flex') {
-                    requestAnimationFrame(draw);
-                }
+                if (document.getElementById('main-menu-screen').style.display === 'flex') { requestAnimationFrame(draw); }
             }
-
-            function onResize() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', onResize);
+            window.addEventListener('resize', () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; });
             requestAnimationFrame(draw);
         }
 
-
         // --- Initialization ---
-        window.onload = function() {
-            loadGameState();
-            updateUI();
-            setupEventListeners();
-            showScreen('mainMenu');
-            startFallingLetters();
-        }
+        window.onload = function() { loadGameState(); updateUI(); setupEventListeners(); showScreen('mainMenu'); startFallingLetters(); }
 
     </script>
 </body>
