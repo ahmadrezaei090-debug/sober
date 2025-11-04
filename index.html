@@ -272,6 +272,11 @@
                     <button id="flash-submit-btn" class="w-full btn-golden text-xl py-3">ثبت پاسخ</button>
                 </div>
             </div>
+            <!-- *** NEW HINT BUTTONS *** -->
+            <div id="hint-container" class="mt-6 flex justify-center space-x-4 space-x-reverse w-full max-w-lg">
+                <button id="indirect-hint-btn" class="btn-golden text-sm py-2 px-4 w-1/2">💡 راهنمایی</button>
+                <button id="direct-hint-btn" class="btn-golden text-sm py-2 px-4 w-1/2">🔑 پاسخ کامل</button>
+            </div>
         </main>
     </div>
     
@@ -326,17 +331,49 @@
         const timerCount = document.getElementById('timer-count');
         const inputContainer = document.getElementById('input-container');
         const optionsContainer = document.getElementById('options-container');
+        // *** NEW: Hint Buttons ***
+        const indirectHintBtn = document.getElementById('indirect-hint-btn');
+        const directHintBtn = document.getElementById('direct-hint-btn');
+
 
         // --- Game State & Data ---
         const FLASH_TIME_LIMIT = 15;
         const STARTING_LIVES = 3;
         const STORAGE_KEY = 'chistanRecordGameState';
-        let gameState = { username: 'هوشیار', highScore: 0, score: 0, lives: STARTING_LIVES, currentMode: 'old', usedRiddleIndices: [], };
+        // *** NEW: Added hint usage state ***
+        let gameState = { 
+            username: 'هوشیار', 
+            highScore: 0, 
+            score: 0, 
+            lives: STARTING_LIVES, 
+            currentMode: 'old', 
+            usedRiddleIndices: [],
+            indirectHintUsed: false,
+            directHintUsed: false
+        };
         let gameTimer;
 
-        // --- Riddles (Truncated for brevity) ---
-        const allRiddles = [ { q: 'آن چیست که پر دارد ولی پرواز نمی‌کند؟', a: 'بالش', options: ['پرنده', 'بالش', 'هواپیما', 'بادبادک'] }, { q: 'آن چیست که هرچه از آن بردارند بزرگتر می‌شود؟', a: 'گودال', options: ['کیسه', 'کوه', 'گودال', 'درخت'] }, { q: 'آن چیست که یک چشم دارد ولی نمی‌بیند؟', a: 'سوزن', options: ['سوزن', 'سیکلوپ', 'دوربین', 'هیولا'] }, { q: 'آن چیست که گردن دارد اما سر ندارد؟', a: 'کوزه', options: ['پیراهن', 'بطری', 'کوزه', 'شیشه'] }, { q: 'آن چیست که روز را آغاز و شب را تمام می‌کند؟', a: 'ر', options: ['آفتاب', 'ماه', 'ر', 'ش'] }, { q: 'آن چیست که همه جا هست ولی دیده نمی‌شود؟', a: 'هوا', options: ['صدا', 'هوا', 'فکر', 'عشق'] }, { q: 'آن چیست که زبان ندارد اما سخن می‌گوید؟', a: 'کتاب', options: ['رادیو', 'قلم', 'کتاب', 'نامه'] }, { q: 'آن چیست که پا ندارد ولی سفر می‌کند؟', a: 'نامه', options: ['ابر', 'دود', 'رودخانه', 'نامه'] }, { q: 'آن چیست که همیشه در حال آمدن است ولی هرگز نمی‌رسد؟', a: 'فردا', options: ['قطار', 'فردا', 'مرگ', 'خواب'] }, { q: 'آن چیست که در زمستان می‌ایستد و در تابستان می‌نشیند؟', a: 'برف', options: ['آدم برفی', 'کوه', 'یخ', 'برف'] }, ];
-        const hardRiddles = [ { q: 'آن چیست که وقتی ایستاده است می‌خوابد و وقتی راه می‌رود بیدار است؟', a: 'قطار', options: [] }, { q: 'من هیچ بدنی ندارم اما می‌توانم راه بروم. من دهانی ندارم اما می‌توانم حرف بزنم. من کیستم؟', a: 'پژواک', options: [] }, { q: 'آن چیست که اگر آن را داشته باشی می‌خواهی به اشتراک بگذاری، و اگر به اشتراک بگذاری دیگر آن را نداری؟', a: 'راز', options: [] }, { q: 'چه چیزی همیشه جلوتر از شماست اما هرگز نمی‌توانید آن را بگیرید؟', a: 'آینده', options: [] }, { q: 'آن چیست که بدون کلید باز می‌شود؟', a: 'موز', options: [] }, { q: 'چهارپا دارم اما نمی‌توانم بدوم، پشت دارم اما کمر ندارم. من کیستم؟', a: 'میز', options: [] }, ];
+        // --- Riddles with Hints ---
+        const allRiddles = [
+            { q: 'آن چیست که پر دارد ولی پرواز نمی‌کند؟', a: 'بالش', options: ['پرنده', 'بالش', 'هواپیما', 'بادبادک'], indirectHint: 'شب‌ها سرت را روی آن می‌گذاری.', directHint: 'پاسخ کامل: بالش' },
+            { q: 'آن چیست که هرچه از آن بردارند بزرگتر می‌شود؟', a: 'گودال', options: ['کیسه', 'کوه', 'گودال', 'درخت'], indirectHint: 'برای ساختن آن باید خاک را برداشت.', directHint: 'پاسخ کامل: گودال' },
+            { q: 'آن چیست که یک چشم دارد ولی نمی‌بیند؟', a: 'سوزن', options: ['سوزن', 'سیکلوپ', 'دوربین', 'هیولا'], indirectHint: 'برای دوخت و دوز استفاده می‌شود.', directHint: 'پاسخ کامل: سوزن' },
+            { q: 'آن چیست که گردن دارد اما سر ندارد؟', a: 'کوزه', options: ['پیراهن', 'بطری', 'کوزه', 'شیشه'], indirectHint: 'در قدیم برای نگهداری آب از آن استفاده می‌کردند.', directHint: 'پاسخ کامل: کوزه' },
+            { q: 'آن چیست که روز را آغاز و شب را تمام می‌کند؟', a: 'ر', options: ['آفتاب', 'ماه', 'ر', 'ش'], indirectHint: 'یک حرف از الفبا است.', directHint: 'پاسخ کامل: حرف "ر"' },
+            { q: 'آن چیست که همه جا هست ولی دیده نمی‌شود؟', a: 'هوا', options: ['صدا', 'هوا', 'فکر', 'عشق'], indirectHint: 'برای نفس کشیدن به آن نیاز داریم.', directHint: 'پاسخ کامل: هوا' },
+            { q: 'آن چیست که زبان ندارد اما سخن می‌گوید؟', a: 'کتاب', options: ['رادیو', 'قلم', 'کتاب', 'نامه'], indirectHint: 'دوستی است که با تو حرف می‌زند.', directHint: 'پاسخ کامل: کتاب' },
+            { q: 'آن چیست که پا ندارد ولی سفر می‌کند؟', a: 'نامه', options: ['ابر', 'دود', 'رودخانه', 'نامه'], indirectHint: 'در گذشته توسط پستچی حمل می‌شد.', directHint: 'پاسخ کامل: نامه' },
+            { q: 'آن چیست که همیشه در حال آمدن است ولی هرگز نمی‌رسد؟', a: 'فردا', options: ['قطار', 'فردا', 'مرگ', 'خواب'], indirectHint: 'چیزی که همیشه یک روز با ما فاصله دارد.', directHint: 'پاسخ کامل: فردا' },
+            { q: 'آن چیست که در زمستان می‌ایستد و در تابستان می‌نشیند؟', a: 'برف', options: ['آدم برفی', 'کوه', 'یخ', 'برف'], indirectHint: 'سفید است و از آسمان می‌بارد.', directHint: 'پاسخ کامل: برف' },
+        ];
+        const hardRiddles = [
+            { q: 'آن چیست که وقتی ایستاده است می‌خوابد و وقتی راه می‌رود بیدار است؟', a: 'قطار', options: [], indirectHint: 'روی ریل حرکت می‌کند.', directHint: 'پاسخ کامل: قطار' },
+            { q: 'من هیچ بدنی ندارم اما می‌توانم راه بروم. من دهانی ندارم اما می‌توانم حرف بزنم. من کیستم؟', a: 'پژواک', options: [], indirectHint: 'تکرار صدا است.', directHint: 'پاسخ کامل: پژواک' },
+            { q: 'آن چیست که اگر آن را داشته باشی می‌خواهی به اشتراک بگذاری، و اگر به اشتراک بگذاری دیگر آن را نداری؟', a: 'راز', options: [], indirectHint: 'نباید به کسی گفته شود.', directHint: 'پاسخ کامل: راز' },
+            { q: 'چه چیزی همیشه جلوتر از شماست اما هرگز نمی‌توانید آن را بگیرید؟', a: 'آینده', options: [], indirectHint: 'نقطه‌ی مقابل گذشته است.', directHint: 'پاسخ کامل: آینده' },
+            { q: 'آن چیست که بدون کلید باز می‌شود؟', a: 'موز', options: [], indirectHint: 'یک نوع میوه است.', directHint: 'پاسخ کامل: موز' },
+            { q: 'چهارپا دارم اما نمی‌توانم بدوم، پشت دارم اما کمر ندارم. من کیستم؟', a: 'میز', options: [], indirectHint: 'در خانه و اداره پیدا می‌شود و روی آن وسیله می‌گذارند.', directHint: 'پاسخ کامل: میز' },
+        ];
         
         // --- Helper Functions ---
         function normalizeAnswer(text) { if (typeof text !== 'string') return ''; return text.trim().replace(/ی/g, 'ي').replace(/ک/g, 'ك').toLowerCase().replace(/\s/g, ''); }
@@ -371,6 +408,25 @@
             document.getElementById('game-score').textContent = gameState.score;
             document.getElementById('lives-count').textContent = gameState.lives;
         }
+
+        // *** NEW: Update Hint Buttons UI ***
+        function updateHintButtonsUI() {
+            if (gameState.indirectHintUsed) {
+                indirectHintBtn.classList.add('disabled');
+                indirectHintBtn.disabled = true;
+            } else {
+                indirectHintBtn.classList.remove('disabled');
+                indirectHintBtn.disabled = false;
+            }
+
+            if (gameState.directHintUsed) {
+                directHintBtn.classList.add('disabled');
+                directHintBtn.disabled = true;
+            } else {
+                directHintBtn.classList.remove('disabled');
+                directHintBtn.disabled = false;
+            }
+        }
         
         // --- Timer Logic ---
         function startTimer() {
@@ -389,7 +445,18 @@
 
         // --- Game Logic ---
         function selectGameMode(mode) { gameState.currentMode = mode; modeSelectionModal.classList.add('hidden'); startGame(); }
-        function startGame() { gameState.score = 0; gameState.lives = STARTING_LIVES; gameState.usedRiddleIndices = []; updateUI(); showScreen('gameplay'); loadNextRiddle(); }
+        function startGame() { 
+            gameState.score = 0; 
+            gameState.lives = STARTING_LIVES; 
+            gameState.usedRiddleIndices = []; 
+            // *** NEW: Reset hints on new game start ***
+            gameState.indirectHintUsed = false;
+            gameState.directHintUsed = false;
+            updateHintButtonsUI();
+            updateUI(); 
+            showScreen('gameplay'); 
+            loadNextRiddle(); 
+        }
         function loadNextRiddle() {
             const riddleSource = gameState.currentMode === 'flash' ? hardRiddles : allRiddles;
             if (gameState.usedRiddleIndices.length === riddleSource.length) { gameState.usedRiddleIndices = []; }
@@ -435,6 +502,33 @@
             showScreen('gameOver');
         }
 
+        // *** NEW: Hint Logic Functions ***
+        function showIndirectHint() {
+            if (gameState.indirectHintUsed) return; // Do nothing if already used
+
+            const riddleSource = gameState.currentMode === 'flash' ? hardRiddles : allRiddles;
+            const currentRiddleIndex = gameState.usedRiddleIndices[gameState.usedRiddleIndices.length - 1];
+            const currentRiddle = riddleSource[currentRiddleIndex];
+
+            alert(`راهنمایی: ${currentRiddle.indirectHint}`);
+            
+            gameState.indirectHintUsed = true;
+            updateHintButtonsUI();
+        }
+
+        function showDirectHint() {
+            if (gameState.directHintUsed) return; // Do nothing if already used
+
+            const riddleSource = gameState.currentMode === 'flash' ? hardRiddles : allRiddles;
+            const currentRiddleIndex = gameState.usedRiddleIndices[gameState.usedRiddleIndices.length - 1];
+            const currentRiddle = riddleSource[currentRiddleIndex];
+
+            alert(currentRiddle.directHint);
+            
+            gameState.directHintUsed = true;
+            updateHintButtonsUI();
+        }
+
         // --- Creators Screen Logic ---
         function initCreatorsScreen() {
             const content = document.getElementById('creators-content'); screens.creators.classList.add('active');
@@ -448,7 +542,7 @@
             // Main Menu
             document.getElementById('start-game-btn').addEventListener('click', () => { modeSelectionModal.classList.remove('hidden'); });
             
-            // NEW: Header Buttons
+            // Header Buttons
             document.getElementById('settings-btn').addEventListener('click', () => { settingsModal.classList.remove('hidden'); });
             document.getElementById('header-news-btn').addEventListener('click', () => {
                 showScreen('news');
@@ -477,6 +571,10 @@
             document.getElementById('flash-answer-input').addEventListener('keyup', (event) => { if (event.key === 'Enter') { checkAnswer(); } });
             document.getElementById('play-again-btn').addEventListener('click', startGame);
             document.getElementById('back-to-menu-gameover-btn').addEventListener('click', () => showScreen('mainMenu'));
+
+            // *** NEW: Hint Event Listeners ***
+            indirectHintBtn.addEventListener('click', showIndirectHint);
+            directHintBtn.addEventListener('click', showDirectHint);
         }
         
         // --- Falling Letters Animation ---
