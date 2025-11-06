@@ -153,6 +153,20 @@
     </style>
 </head>
 <body class="overflow-hidden">
+
+    <!-- =========== NEW: Shutdown Notice Modal =========== -->
+    <div id="shutdown-modal" class="fixed inset-0 bg-black bg-opacity-90 flex justify-center items-center z-[9999] p-6 text-center">
+        <div class="card p-8 rounded-2xl w-11/12 max-w-md space-y-6 border-red-500/50">
+            <h2 class="text-4xl font-black text-red-400">توجه مهم</h2>
+            <p class="text-xl text-gray-200 leading-relaxed">
+                بازی هوشیار برای همیشه از دسترس خارج شده است.
+            </p>
+            <p class="text-base text-gray-400">
+                از همراهی شما سپاسگزاریم.
+            </p>
+        </div>
+    </div>
+    <!-- =================================================== -->
     
     <!-- Main Menu Screen -->
     <div id="main-menu-screen" class="screen p-6 flex flex-col h-screen">
@@ -179,7 +193,9 @@
         </header>
 
         <main class="flex-grow flex flex-col justify-center items-center space-y-4">
-            <button id="start-game-btn" class="w-full max-w-[280px] btn-golden text-xl py-3">شروع بازی</button>
+            <!-- =========== EDITED: Disabled Button =========== -->
+            <button id="start-game-btn" class="w-full max-w-[280px] btn-golden disabled text-xl py-3" disabled>شروع بازی</button>
+            <!-- ============================================= -->
             <button class="w-full max-w-[280px] btn-golden disabled text-xl py-3">
                 بازی آنلاین <span class="text-xs">(به زودی)</span>
             </button>
