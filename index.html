@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>هوشیار - بازی فکری</title>
+    <title>فروشگاه تلفن همراه - دمو</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         * {
             margin: 0;
@@ -14,1736 +15,991 @@
         }
 
         :root {
-            --primary-black: #0a0a0a;
-            --secondary-black: #1a1a1a;
-            --primary-gold: #d4af37;
-            --secondary-gold: #f7ef8a;
-            --accent-gold: #ffd700;
-            --text-color: #f5f5f5;
-            --shadow: rgba(212, 175, 55, 0.3);
-            --glass-bg: rgba(10, 10, 10, 0.85);
-            --glass-border: rgba(212, 175, 55, 0.2);
+            --primary-color: #2d5be3;
+            --secondary-color: #ff6b35;
+            --accent-color: #00c9b7;
+            --dark-color: #1a1a2e;
+            --light-color: #f8f9fa;
+            --text-color: #333;
+            --text-light: #666;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
         }
 
         body {
-            background-color: var(--primary-black);
+            background-color: #f5f7ff;
             color: var(--text-color);
-            overflow-x: hidden;
             line-height: 1.6;
-        }
-
-        /* حذف هایلایت آبی هنگام کلیک */
-        *:focus {
-            outline: none !important;
-        }
-
-        button, input, .nav-item, .option-btn, .mode-btn, .modal-btn {
-            -webkit-tap-highlight-color: transparent !important;
-            outline: none !important;
+            overflow-x: hidden;
         }
 
         .container {
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-            overflow: hidden;
-        }
-
-        /* صفحه اسپلش - بهبود یافته با انیمیشن جدید */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: var(--primary-black);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            transition: transform 1s ease, opacity 1s ease;
-        }
-
-        .splash-content {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .splash-screen img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            animation: fadeIn 2s ease;
-        }
-
-        .splash-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            padding-bottom: 80px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        /* انیمیشن اسلاید آپ برای خروج صفحه */
-        @keyframes slideUpOut {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(-100%); opacity: 0; }
-        }
-
-        @keyframes slideUpIn {
-            0% { transform: translateY(100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        @keyframes slideDownOut {
-            0% { transform: translateY(0); opacity: 1; }
-            100% { transform: translateY(100%); opacity: 0; }
-        }
-
-        @keyframes slideDownIn {
-            0% { transform: translateY(-100%); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        /* نوار پیشرفت */
-        .progress-container {
-            width: 80%;
-            height: 20px;
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            margin-top: 30px;
-        }
-
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--primary-black), var(--primary-gold), var(--accent-gold));
-            border-radius: 10px;
-            width: 0%;
-            transition: width 0.1s linear;
-            position: relative;
-            box-shadow: 0 0 15px var(--shadow);
-        }
-
-        .progress-bar::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            animation: shimmer 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .progress-text {
-            color: var(--primary-gold);
-            font-size: 1.3rem;
-            text-shadow: 0 0 10px var(--shadow);
-            margin-bottom: 15px;
-        }
-
-        .splash-screen.fade-out {
-            animation: slideUpOut 1s ease forwards;
-        }
-
-        /* صفحه منو با پس‌زمینه جدید */
-        .menu-screen {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-            background: 
-                linear-gradient(135deg, var(--primary-black) 0%, #1a1a1a 100%),
-                /* درختان و کوه‌ها با شفافیت کم */
-                url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=5') center/cover no-repeat;
-            overflow: hidden;
-            animation: slideUpIn 1s ease;
-        }
-
-        /* لایه مشکی روی پس‌زمینه برای حفظ تاریکی */
-        .menu-screen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.85);
-            z-index: 0;
-        }
-
-        /* دایره هوشیار جدید - نصف طلایی نصف مشکی */
-        .logo-container {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 100;
-        }
-
-        .logo-circle {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 20px var(--shadow);
-            border: 3px solid var(--primary-gold);
-        }
-
-        .logo-circle-half {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .logo-half-black {
-            background-color: var(--primary-black);
-            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
-        }
-
-        .logo-half-gold {
-            background-color: var(--primary-gold);
-            clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
-            right: 0;
-        }
-
-        .logo-text {
-            color: var(--primary-gold);
-            font-weight: bold;
-            font-size: 2rem;
-            text-shadow: 0 0 10px var(--shadow);
-            animation: pulse 2s infinite alternate;
-        }
-
-        @keyframes pulse {
-            0% { text-shadow: 0 0 10px var(--shadow); }
-            100% { text-shadow: 0 0 20px var(--primary-gold), 0 0 30px var(--primary-gold); }
-        }
-
-        /* تنظیمات */
-        .settings-btn {
-            position: absolute;
-            top: 30px;
-            left: 20px;
-            background-color: transparent;
-            border: 2px solid var(--primary-gold);
-            color: var(--primary-gold);
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        .settings-btn:hover {
-            background-color: var(--primary-gold);
-            color: var(--primary-black);
-            transform: scale(1.05);
-        }
-
-        /* دکمه‌های اصلی */
-        .main-buttons {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            width: 300px;
-            z-index: 10;
-        }
-
-        .main-btn {
-            background: linear-gradient(to bottom, var(--primary-gold), #b8941f);
-            border: none;
-            border-radius: 50px;
-            padding: 20px 40px;
-            color: var(--primary-black);
-            font-size: 1.8rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-        }
-
-        .main-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, #f7ef8a, var(--primary-gold));
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .main-btn:hover::before {
-            opacity: 1;
-        }
-
-        .main-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
-        }
-
-        .main-btn:active {
-            transform: translateY(0);
-        }
-
-        .main-btn.disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-        }
-
-        .main-btn.disabled:hover {
-            transform: none;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        /* نوار پایین جدید و جذاب */
-        .bottom-nav {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
             width: 90%;
-            max-width: 800px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 10px;
-            z-index: 200;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px var(--shadow);
-            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
         }
 
-        .bottom-nav::before {
-            content: '';
-            position: absolute;
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--dark-color), var(--primary-color));
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
             top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
-            z-index: -1;
-        }
-
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: var(--text-color);
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            padding: 10px 20px;
-            border-radius: 15px;
-            position: relative;
-            flex: 1;
-            max-width: 120px;
-        }
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
-            border-radius: 15px;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .nav-item:hover::before {
-            opacity: 1;
-        }
-
-        .nav-item:hover {
-            color: var(--primary-gold);
-            transform: translateY(-5px);
-        }
-
-        .nav-item i {
-            font-size: 1.8rem;
-            margin-bottom: 8px;
-            color: var(--primary-gold);
-            transition: all 0.3s ease;
-        }
-
-        .nav-item:hover i {
-            color: var(--accent-gold);
-            transform: scale(1.1);
-        }
-
-        /* پنل انتخاب نوع بازی (Modal) */
-        .game-mode-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.85);
             z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 0.3s ease;
+            box-shadow: var(--shadow);
         }
 
-        .modal-content {
-            background: linear-gradient(135deg, var(--secondary-black) 0%, var(--primary-black) 100%);
-            border: 2px solid var(--primary-gold);
-            border-radius: 25px;
-            width: 90%;
-            max-width: 800px;
-            padding: 40px 30px;
-            text-align: center;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px var(--shadow);
-            position: relative;
-            animation: slideUp 0.5s ease;
-        }
-
-        @keyframes slideUp {
-            0% { transform: translateY(50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
-
-        .modal-title {
-            font-size: 2.8rem;
-            color: var(--primary-gold);
-            margin-bottom: 40px;
-            text-shadow: 0 0 20px var(--shadow);
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 40px;
-            flex-wrap: wrap;
-            margin-bottom: 30px;
-        }
-
-        .modal-btn {
-            background-color: rgba(26, 26, 26, 0.9);
-            border: 3px solid var(--primary-gold);
-            border-radius: 20px;
-            padding: 25px;
-            width: 300px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .modal-btn:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.3);
-            background-color: rgba(212, 175, 55, 0.1);
-            border-color: var(--accent-gold);
-        }
-
-        .modal-icon {
-            font-size: 3.5rem;
-            color: var(--primary-gold);
-            margin-bottom: 20px;
-        }
-
-        .modal-name {
-            font-size: 1.8rem;
-            color: var(--primary-gold);
-            margin-bottom: 15px;
-        }
-
-        .modal-desc {
-            font-size: 1rem;
-            color: #ccc;
-            line-height: 1.5;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: transparent;
-            border: 2px solid var(--primary-gold);
-            color: var(--primary-gold);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .close-modal:hover {
-            background-color: var(--primary-gold);
-            color: var(--primary-black);
-            transform: rotate(90deg);
-        }
-
-        /* صفحه بازی */
-        .game-screen {
-            display: none;
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-            background: 
-                linear-gradient(135deg, var(--primary-black) 0%, #1a1a1a 100%),
-                url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=5') center/cover no-repeat;
-            padding: 20px;
-            overflow: hidden;
-        }
-
-        .game-screen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.9);
-            z-index: 0;
-        }
-
-        .game-screen > *:not(.bg-effects) {
-            position: relative;
-            z-index: 1;
-        }
-
-        .game-header {
+        .header-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--primary-gold);
         }
 
-        .game-title {
-            font-size: 2rem;
-            color: var(--primary-gold);
-            text-shadow: 0 0 10px var(--shadow);
-        }
-
-        .game-stats {
-            display: flex;
-            gap: 20px;
-        }
-
-        .stat-box {
-            background-color: rgba(26, 26, 26, 0.8);
-            border: 1px solid var(--primary-gold);
-            border-radius: 10px;
-            padding: 10px 15px;
-            text-align: center;
-            min-width: 100px;
-        }
-
-        .stat-value {
+        .logo {
             font-size: 1.8rem;
-            font-weight: bold;
-            color: var(--accent-gold);
-        }
-
-        .stat-label {
-            font-size: 0.9rem;
-            color: #ccc;
-        }
-
-        /* دکمه برگشت در صفحه بازی */
-        .back-to-menu-btn {
-            position: absolute;
-            top: 25px;
-            right: 120px;
-            background-color: transparent;
-            border: 2px solid var(--primary-gold);
-            color: var(--primary-gold);
-            padding: 8px 20px;
-            border-radius: 30px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 100;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
         }
 
-        .back-to-menu-btn:hover {
-            background-color: var(--primary-gold);
-            color: var(--primary-black);
-            transform: scale(1.05);
+        .logo i {
+            color: var(--accent-color);
+            margin-left: 10px;
         }
 
-        /* سوال */
-        .question-container {
-            background-color: rgba(26, 26, 26, 0.8);
-            border: 2px solid var(--primary-gold);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 30px;
-            box-shadow: 0 0 30px var(--shadow);
-            animation: fadeInUp 0.5s ease;
+        .logo span {
+            color: var(--accent-color);
         }
 
-        @keyframes fadeInUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        .question-text {
-            font-size: 1.8rem;
-            text-align: center;
-            color: var(--primary-gold);
-            margin-bottom: 20px;
-            line-height: 1.4;
-        }
-
-        /* گزینه‌ها */
-        .options-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .option-btn {
-            background-color: rgba(26, 26, 26, 0.9);
-            border: 2px solid var(--primary-gold);
-            border-radius: 10px;
-            padding: 20px;
-            color: var(--text-color);
-            font-size: 1.3rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .option-btn:hover {
-            background-color: rgba(212, 175, 55, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .option-btn.correct {
-            background-color: rgba(0, 200, 0, 0.3);
-            border-color: #00cc00;
-        }
-
-        .option-btn.wrong {
-            background-color: rgba(255, 0, 0, 0.3);
-            border-color: #ff3333;
-        }
-
-        /* ورود جواب */
-        .answer-input-container {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .answer-input {
-            width: 80%;
-            max-width: 500px;
-            padding: 20px;
-            font-size: 1.5rem;
-            background-color: rgba(26, 26, 26, 0.9);
-            border: 2px solid var(--primary-gold);
-            border-radius: 10px;
-            color: var(--text-color);
-            text-align: center;
-            outline: none;
-            transition: all 0.3s ease;
-        }
-
-        .answer-input:focus {
-            box-shadow: 0 0 20px var(--shadow);
-        }
-
-        /* دکمه ادامه */
-        .next-btn {
-            display: block;
-            margin: 0 auto;
-            background: linear-gradient(to bottom, var(--primary-gold), #b8941f);
-            border: none;
-            border-radius: 50px;
-            padding: 15px 50px;
-            color: var(--primary-black);
-            font-size: 1.5rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .next-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.4);
-        }
-
-        /* تایمر */
-        .timer-container {
-            width: 100%;
-            height: 10px;
-            background-color: rgba(26, 26, 26, 0.8);
-            border-radius: 5px;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-
-        .timer-bar {
-            height: 100%;
-            background: linear-gradient(to right, var(--primary-gold), var(--accent-gold));
-            width: 100%;
-            transition: width 1s linear;
-        }
-
-        /* جان‌ها */
-        .lives-container {
+        nav ul {
             display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
+            list-style: none;
         }
 
-        .life {
-            font-size: 2rem;
-            color: #ff3333;
+        nav ul li {
+            margin-right: 1.5rem;
         }
 
-        .life.lost {
-            color: #555;
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 0.8rem;
+            border-radius: 4px;
+            transition: var(--transition);
         }
 
-        /* افکت‌های پس‌زمینه - حذف انیمیشن حروف */
-        .bg-effects {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: 0;
-            pointer-events: none;
+        nav ul li a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
         }
 
-        /* صفحه نتیجه */
-        .result-screen {
+        .mobile-menu-btn {
             display: none;
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-            background: 
-                linear-gradient(135deg, var(--primary-black) 0%, #1a1a1a 100%),
-                url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=5') center/cover no-repeat;
-            padding: 40px;
-            overflow: hidden;
-            text-align: center;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
-        .result-screen::before {
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 26, 46, 0.85), rgba(45, 91, 227, 0.8)), url('https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1480&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.9rem 2.2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            background-color: #ff5500;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--dark-color);
+            margin-bottom: 1rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title h2::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.9);
-            z-index: 0;
+            width: 70px;
+            height: 4px;
+            background-color: var(--accent-color);
+            bottom: -10px;
+            right: 50%;
+            transform: translateX(50%);
+            border-radius: 2px;
         }
 
-        .result-screen > *:not(.bg-effects) {
-            position: relative;
-            z-index: 1;
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
         }
 
-        .result-title {
+        .feature-card {
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card i {
             font-size: 3rem;
-            color: var(--primary-gold);
-            margin-bottom: 30px;
-            text-shadow: 0 0 20px var(--shadow);
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
         }
 
-        .score-display {
-            font-size: 5rem;
-            color: var(--accent-gold);
-            margin: 30px 0;
-            text-shadow: 0 0 30px var(--shadow);
-            animation: pulse 1.5s infinite alternate;
-        }
-
-        .result-message {
+        .feature-card h3 {
             font-size: 1.5rem;
-            color: #ccc;
-            margin-bottom: 40px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-bottom: 1rem;
+            color: var(--dark-color);
         }
 
-        /* تنظیمات ریسپانسیو */
+        /* Products Section */
+        .products {
+            padding: 5rem 0;
+            background-color: #f5f7ff;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 0.8rem 2rem;
+            margin: 0 0.5rem 1rem;
+            background-color: white;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .tab-btn.active, .tab-btn:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            display: none;
+        }
+
+        .products-grid.active {
+            display: grid;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .product-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .product-card .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-color);
+        }
+
+        .product-card .price {
+            color: var(--secondary-color);
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+
+        .product-card .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 0;
+            background-color: white;
+        }
+
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3rem;
+        }
+
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-info p {
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .contact-info i {
+            color: var(--primary-color);
+            margin-left: 10px;
+            font-size: 1.2rem;
+            width: 25px;
+        }
+
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+
+        .footer-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+        }
+
+        .footer-logo {
+            flex: 1;
+            min-width: 300px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links {
+            flex: 1;
+            min-width: 200px;
+            margin-bottom: 2rem;
+        }
+
+        .footer-links h4 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links ul li a:hover {
+            color: var(--accent-color);
+            padding-right: 5px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-5px);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .floating-element {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
         @media (max-width: 768px) {
-            .progress-container {
-                width: 90%;
-                height: 15px;
-            }
-            
-            .progress-text {
-                font-size: 1.1rem;
-            }
-            
-            .logo-container {
-                top: 10px;
-                right: 10px;
-            }
-            
-            .logo-circle {
-                width: 60px;
-                height: 60px;
-            }
-            
-            .logo-text {
-                font-size: 1.5rem;
-            }
-
-            .settings-btn, .back-to-menu-btn {
-                padding: 8px 15px;
-                font-size: 1rem;
-                top: 15px;
-            }
-            
-            .back-to-menu-btn {
-                right: 100px;
-            }
-
-            .main-buttons {
-                width: 90%;
-            }
-
-            .main-btn {
-                font-size: 1.5rem;
-                padding: 15px 30px;
-            }
-            
-            .bottom-nav {
-                width: 95%;
-                padding: 10px 5px;
-                bottom: 10px;
-            }
-            
-            .nav-item {
-                padding: 8px 10px;
-                font-size: 0.8rem;
-            }
-            
-            .nav-item i {
-                font-size: 1.5rem;
-            }
-            
-            .modal-content {
-                padding: 30px 20px;
-            }
-            
-            .modal-title {
-                font-size: 2.2rem;
-            }
-            
-            .modal-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 20px;
-            }
-            
-            .modal-btn {
+            nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
                 width: 100%;
-                max-width: 300px;
-                padding: 20px;
+                background-color: var(--dark-color);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
             }
             
-            .modal-icon {
-                font-size: 3rem;
+            nav ul.active {
+                display: flex;
             }
             
-            .modal-name {
-                font-size: 1.6rem;
+            nav ul li {
+                margin: 0;
+                text-align: center;
             }
             
-            .options-container {
-                grid-template-columns: 1fr;
+            nav ul li a {
+                display: block;
+                padding: 1rem;
             }
-
-            .question-text {
-                font-size: 1.5rem;
+            
+            .mobile-menu-btn {
+                display: block;
             }
-
-            .game-title {
-                font-size: 1.5rem;
+            
+            .hero h1 {
+                font-size: 2rem;
             }
-
-            .stat-box {
-                padding: 8px 12px;
-                min-width: 80px;
+            
+            .hero p {
+                font-size: 1rem;
             }
+        }
 
-            .stat-value {
-                font-size: 1.5rem;
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.7rem;
+            }
+            
+            .tab-btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Motion Graphics Effects */
+        .phone-animation {
+            position: absolute;
+            width: 300px;
+            height: 500px;
+            background: linear-gradient(145deg, #e6e6e6, #ffffff);
+            border-radius: 30px;
+            bottom: -100px;
+            left: 5%;
+            box-shadow: 
+                20px 20px 60px rgba(0, 0, 0, 0.2),
+                -20px -20px 60px rgba(255, 255, 255, 0.8);
+            z-index: 1;
+            overflow: hidden;
+            display: none;
+        }
+
+        .phone-animation::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 5px;
+            background-color: #ccc;
+            border-radius: 3px;
+        }
+
+        .phone-animation::after {
+            content: '';
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (min-width: 1200px) {
+            .phone-animation {
+                display: block;
             }
         }
     </style>
 </head>
 <body>
-    <!-- صفحه اسپلش ساده‌تر شده -->
-    <div class="container">
-        <div class="splash-screen" id="splashScreen">
-            <div class="splash-content">
-                <img src="https://raw.githubusercontent.com/ahmadrezaei090-debug/soberWeb/main/negin-art-1764247215354.png" alt="صفحه آغازین">
-                <div class="splash-overlay">
-                    <div class="progress-text" id="progressText">در حال بارگذاری...</div>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-mobile-alt"></i>
+                <span>فون</span>شاپ
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav>
+                <ul id="navMenu">
+                    <li><a href="#home">خانه</a></li>
+                    <li><a href="#products">محصولات</a></li>
+                    <li><a href="#about">درباره ما</a></li>
+                    <li><a href="#contact">تماس با ما</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="phone-animation floating-element"></div>
+        <div class="container">
+            <h1 class="animate__animated animate__fadeInDown">فروشگاه تخصصی تلفن همراه</h1>
+            <p class="animate__animated animate__fadeInUp animate__delay-1s">جدیدترین گوشی‌های موبایل، قاب و لوازم جانبی با بهترین قیمت و کیفیت. خدمات پس از فروش معتبر و ارسال فوری به سراسر شهر.</p>
+            <a href="#products" class="cta-button animate__animated animate__pulse animate__delay-2s">مشاهده محصولات</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>چرا فروشگاه ما؟</h2>
+                <p>با اطمینان از ما خرید کنید</p>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card animate__animated" data-animation="fadeInUp">
+                    <i class="fas fa-shipping-fast"></i>
+                    <h3>ارسال فوری پیک</h3>
+                    <p>ارسال سریع محصولات در کوتاه‌ترین زمان ممکن با پیک اختصاصی فروشگاه</p>
+                </div>
+                
+                <div class="feature-card animate__animated" data-animation="fadeInUp" data-delay="0.2s">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>ضمانت اصالت کالا</h3>
+                    <p>تمامی محصولات با گارانتی اصالت و سلامت فنی ارائه می‌شوند</p>
+                </div>
+                
+                <div class="feature-card animate__animated" data-animation="fadeInUp" data-delay="0.4s">
+                    <i class="fas fa-headset"></i>
+                    <h3>پشتیبانی ۲۴ ساعته</h3>
+                    <p>پشتیبانی تلفنی و آنلاین در تمامی ساعات شبانه‌روز</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <div class="section-title">
+                <h2>محصولات ما</h2>
+                <p>جدیدترین محصولات با بهترین قیمت</p>
+            </div>
+            
+            <div class="category-tabs">
+                <button class="tab-btn active" data-category="new-phones">گوشی‌های نو</button>
+                <button class="tab-btn" data-category="used-phones">گوشی‌های دست دوم</button>
+                <button class="tab-btn" data-category="covers">قاب گوشی</button>
+                <button class="tab-btn" data-category="earbuds">ایرپاد و هندزفری</button>
+            </div>
+            
+            <!-- New Phones -->
+            <div class="products-grid active" id="new-phones">
+                <div class="product-card animate__animated" data-animation="fadeIn">
+                    <div class="badge">نو</div>
+                    <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="گوشی نو">
+                    <div class="product-info">
+                        <h3>آیفون ۱۴ پرو</h3>
+                        <p>ظرفیت ۲۵۶ گیگابایت، رنگ بنفش</p>
+                        <div class="price">۴۹,۹۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card animate__animated" data-animation="fadeIn" data-delay="0.1s">
+                    <div class="badge">نو</div>
+                    <img src="https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="گوشی نو">
+                    <div class="product-info">
+                        <h3>سامسونگ S23 اولترا</h3>
+                        <p>ظرفیت ۵۱۲ گیگابایت، رنگ مشکی</p>
+                        <div class="price">۴۲,۵۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card animate__animated" data-animation="fadeIn" data-delay="0.2s">
+                    <div class="badge">نو</div>
+                    <img src="https://images.unsplash.com/photo-1592910147752-1b4e63d85c6d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="گوشی نو">
+                    <div class="product-info">
+                        <h3>شیائومی ۱۳ پرو</h3>
+                        <p>ظرفیت ۲۵۶ گیگابایت، رنگ آبی</p>
+                        <div class="price">۱۸,۹۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Used Phones -->
+            <div class="products-grid" id="used-phones">
+                <div class="product-card">
+                    <div class="badge">دست دوم</div>
+                    <img src="https://images.unsplash.com/photo-1580910051074-3eb694886505?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="گوشی دست دوم">
+                    <div class="product-info">
+                        <h3>آیفون ۱۲</h3>
+                        <p>ظرفیت ۱۲۸ گیگابایت، سلامت ۹۵٪</p>
+                        <div class="price">۲۲,۵۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="badge">دست دوم</div>
+                    <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="گوشی دست دوم">
+                    <div class="product-info">
+                        <h3>سامسونگ S21 FE</h3>
+                        <p>ظرفیت ۲۵۶ گیگابایت، سلامت ۹۰٪</p>
+                        <div class="price">۱۵,۷۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="badge">دست دوم</div>
+                    <img src="https://images.unsplash.com/photo-1598327105854-c8674faddf74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="گوشی دست دوم">
+                    <div class="product-info">
+                        <h3>هواوی P30 پرو</h3>
+                        <p>ظرفیت ۱۲۸ گیگابایت، سلامت ۸۵٪</p>
+                        <div class="price">۱۱,۲۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Covers -->
+            <div class="products-grid" id="covers">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="قاب گوشی">
+                    <div class="product-info">
+                        <h3>قاب سیلیکونی آیفون ۱۴</h3>
+                        <p>ضد ضربه، تنوع رنگ بالا</p>
+                        <div class="price">۱۸۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1611186871348-b1ce696e52c9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="قاب گوشی">
+                    <div class="product-info">
+                        <h3>قاب چرمی گلکسی S23</h3>
+                        <p>چرم اصل، دوام بالا</p>
+                        <div class="price">۲۵۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1605408499391-6368c628ef42?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="قاب گوشی">
+                    <div class="product-info">
+                        <h3>قاب شفاف شیائومی</h3>
+                        <p>ضد خش، نازک و سبک</p>
+                        <div class="price">۱۲۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Earbuds -->
+            <div class="products-grid" id="earbuds">
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1590658165737-15a047b9e4a8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="ایرپاد">
+                    <div class="product-info">
+                        <h3>ایرپاد پرو اپل</h3>
+                        <p>نسخه ۲، نویز کنسلینگ فعال</p>
+                        <div class="price">۱۴,۵۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="هندزفری">
+                    <div class="product-info">
+                        <h3>هندزفری سامسونگ</h3>
+                        <p>باتری ۲۴ ساعته، کیفیت صدای عالی</p>
+                        <div class="price">۳,۸۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <img src="https://images.unsplash.com/photo-1589003077984-894e133dabab?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="هندزفری">
+                    <div class="product-info">
+                        <h3>هندزفری سونی</h3>
+                        <p>نسخه ۴، ضد آب و عرق</p>
+                        <div class="price">۵,۲۰۰,۰۰۰ تومان</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>تماس با ما</h2>
+                <p>برای ارتباط با ما از راه‌های زیر استفاده کنید</p>
+            </div>
+            
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>اطلاعات تماس</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> آدرس: __________</p>
+                    <p><i class="fas fa-phone"></i> شماره تماس: __________</p>
+                    <p><i class="fas fa-envelope"></i> ایمیل: __________</p>
+                    <p><i class="fas fa-clock"></i> ساعت کاری: ۹ صبح تا ۱۰ شب</p>
                     
-                    <div class="progress-container">
-                        <div class="progress-bar" id="progressBar"></div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>ارسال پیام</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">نام و نام خانوادگی</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">شماره تماس</label>
+                            <input type="tel" id="phone" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">پیام شما</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="cta-button">ارسال پیام</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </section>
 
-        <!-- صفحه منو -->
-        <div class="menu-screen" id="menuScreen">
-            <div class="logo-container">
-                <div class="logo-circle">
-                    <div class="logo-circle-half logo-half-black"></div>
-                    <div class="logo-circle-half logo-half-gold"></div>
-                </div>
-                <div class="logo-text">هوشیار</div>
-            </div>
-            
-            <button class="settings-btn" id="settingsBtn">
-                <i class="fas fa-cog"></i> تنظیمات
-            </button>
-            
-            <div class="main-buttons">
-                <button class="main-btn" id="startGameBtn">شروع بازی</button>
-                <button class="main-btn disabled" id="onlineGameBtn">بازی آنلاین (به زودی)</button>
-            </div>
-            
-            <div class="bottom-nav">
-                <div class="nav-item">
-                    <i class="fas fa-trophy"></i>
-                    <span>چالش‌ها</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-map-marked-alt"></i>
-                    <span>مسیرها</span>
-                </div>
-                <div class="nav-item">
-                    <i class="fas fa-ticket-alt"></i>
-                    <span>بلیط</span>
-                </div>
-            </div>
-            
-            <!-- پس‌زمینه ساده بدون انیمیشن -->
-            <div class="bg-effects" id="bgEffects"></div>
-        </div>
-
-        <!-- پنل انتخاب نوع بازی (Modal) -->
-        <div class="game-mode-modal" id="gameModeModal">
-            <div class="modal-content">
-                <button class="close-modal" id="closeModalBtn">
-                    <i class="fas fa-times"></i>
-                </button>
-                
-                <h1 class="modal-title">انتخاب نوع بازی</h1>
-                
-                <div class="modal-buttons">
-                    <div class="modal-btn" id="modalDualFlashBtn">
-                        <div class="modal-icon"><i class="fas fa-keyboard"></i></div>
-                        <h2 class="modal-name">دونیم فلش</h2>
-                        <p class="modal-desc">چیستان با پاسخ تایپی - ۱۷ ثانیه وقت برای هر سوال - ۳ جان</p>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-logo">
+                    <div class="logo">
+                        <i class="fas fa-mobile-alt"></i>
+                        <span>فون</span>شاپ
                     </div>
-                    
-                    <div class="modal-btn" id="modalDualOldBtn">
-                        <div class="modal-icon"><i class="fas fa-list-ol"></i></div>
-                        <h2 class="modal-name">دو اولد</h2>
-                        <p class="modal-desc">چیستان با چهار گزینه - بدون محدودیت زمان - بدون از دست دادن جان</p>
+                    <p>فروشگاه تخصصی گوشی موبایل و لوازم جانبی با سال‌ها تجربه و هزاران مشتری راضی</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
                 
-                <p style="color: #aaa; font-size: 0.9rem; margin-top: 20px;">برای شروع بازی، یکی از حالت‌ها را انتخاب کنید</p>
+                <div class="footer-links">
+                    <h4>دسترسی سریع</h4>
+                    <ul>
+                        <li><a href="#home">خانه</a></li>
+                        <li><a href="#products">محصولات</a></li>
+                        <li><a href="#about">درباره ما</a></li>
+                        <li><a href="#contact">تماس با ما</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>خدمات ما</h4>
+                    <ul>
+                        <li><a href="#">فروش گوشی نو</a></li>
+                        <li><a href="#">فروش گوشی دست دوم</a></li>
+                        <li><a href="#">لوازم جانبی موبایل</a></li>
+                        <li><a href="#">تعمیرات تخصصی</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>تمامی حقوق مادی و معنوی این وب‌سایت محفوظ می‌باشد. © ۱۴۰۲</p>
             </div>
         </div>
-
-        <!-- صفحه بازی دونیم فلش -->
-        <div class="game-screen" id="dualFlashGameScreen">
-            <button class="back-to-menu-btn" id="backFromFlashBtn">
-                <i class="fas fa-arrow-right"></i> بازگشت
-            </button>
-            
-            <div class="game-header">
-                <h1 class="game-title">دونیم فلش</h1>
-                <div class="game-stats">
-                    <div class="stat-box">
-                        <div class="stat-value" id="flashScore">۰</div>
-                        <div class="stat-label">امتیاز</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="flashQuestionNum">۱/۷۰</div>
-                        <div class="stat-label">سوال</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="timer-container">
-                <div class="timer-bar" id="flashTimerBar"></div>
-            </div>
-            
-            <div class="lives-container" id="flashLivesContainer">
-                <div class="life"><i class="fas fa-heart"></i></div>
-                <div class="life"><i class="fas fa-heart"></i></div>
-                <div class="life"><i class="fas fa-heart"></i></div>
-            </div>
-            
-            <div class="question-container">
-                <div class="question-text" id="flashQuestionText">سوال اینجا نمایش داده می‌شود</div>
-                
-                <div class="answer-input-container">
-                    <input type="text" class="answer-input" id="flashAnswerInput" placeholder="پاسخ خود را اینجا تایپ کنید...">
-                </div>
-                
-                <button class="next-btn" id="flashNextBtn">تایید و ادامه</button>
-            </div>
-            
-            <div class="bg-effects" id="flashBgEffects"></div>
-        </div>
-
-        <!-- صفحه بازی دو اولد -->
-        <div class="game-screen" id="dualOldGameScreen">
-            <button class="back-to-menu-btn" id="backFromOldBtn">
-                <i class="fas fa-arrow-right"></i> بازگشت
-            </button>
-            
-            <div class="game-header">
-                <h1 class="game-title">دو اولد</h1>
-                <div class="game-stats">
-                    <div class="stat-box">
-                        <div class="stat-value" id="oldScore">۰</div>
-                        <div class="stat-label">امتیاز</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="oldQuestionNum">۱/۷۰</div>
-                        <div class="stat-label">سوال</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="question-container">
-                <div class="question-text" id="oldQuestionText">سوال اینجا نمایش داده می‌شود</div>
-                
-                <div class="options-container" id="oldOptionsContainer">
-                    <!-- گزینه‌ها اینجا ساخته می‌شوند -->
-                </div>
-                
-                <button class="next-btn" id="oldNextBtn" style="display: none;">سوال بعدی</button>
-            </div>
-            
-            <div class="bg-effects" id="oldBgEffects"></div>
-        </div>
-
-        <!-- صفحه نتیجه -->
-        <div class="result-screen" id="resultScreen">
-            <button class="back-to-menu-btn" id="backToMenuFromResultBtn">
-                <i class="fas fa-arrow-right"></i> بازگشت به منو
-            </button>
-            
-            <h1 class="result-title">پایان بازی!</h1>
-            
-            <div class="score-display" id="finalScore">۰</div>
-            
-            <div class="result-message" id="resultMessage">
-                پیام نتیجه اینجا نمایش داده می‌شود
-            </div>
-            
-            <button class="main-btn" id="playAgainBtn">بازی مجدد</button>
-            
-            <div class="bg-effects" id="resultBgEffects"></div>
-        </div>
-    </div>
+    </footer>
 
     <script>
-        // داده‌های بازی
-        const gameData = {
-            currentScreen: "splash",
-            currentGameMode: "",
-            dualFlash: {
-                score: 0,
-                currentQuestion: 0,
-                lives: 3,
-                timer: 17,
-                timerInterval: null
-            },
-            dualOld: {
-                score: 0,
-                currentQuestion: 0
-            },
-            questions: {
-                dualFlash: [],
-                dualOld: []
-            }
-        };
-
-        // تولید ۷۰ سوال برای دونیم فلش
-        function generateDualFlashQuestions() {
-            const questions = [];
-            const topics = [
-                "ادبیات فارسی", "تاریخ ایران", "جغرافیا", "علوم", "ریاضیات",
-                "سینما", "موسیقی", "ورزش", "فناوری", "هنر"
-            ];
-            
-            for (let i = 1; i <= 70; i++) {
-                const topic = topics[Math.floor(Math.random() * topics.length)];
-                questions.push({
-                    id: i,
-                    text: `سوال ${i} (${topic}): ${generateQuestionText("dualFlash")}`,
-                    answer: generateAnswer()
-                });
-            }
-            return questions;
-        }
-
-        // تولید ۷۰ سوال برای دو اولد
-        function generateDualOldQuestions() {
-            const questions = [];
-            const topics = [
-                "ادبیات فارسی", "تاریخ ایران", "جغرافیا", "علوم", "ریاضیات",
-                "سینما", "موسیقی", "ورزش", "فناوری", "هنر"
-            ];
-            
-            for (let i = 1; i <= 70; i++) {
-                const topic = topics[Math.floor(Math.random() * topics.length)];
-                const correctAnswer = generateAnswer();
-                const options = [
-                    correctAnswer,
-                    generateAnswer(),
-                    generateAnswer(),
-                    generateAnswer()
-                ];
-                
-                // مخلوط کردن گزینه‌ها
-                shuffleArray(options);
-                
-                questions.push({
-                    id: i,
-                    text: `سوال ${i} (${topic}): ${generateQuestionText("dualOld")}`,
-                    options: options,
-                    correctAnswer: correctAnswer
-                });
-            }
-            return questions;
-        }
-
-        // تولید متن سوال
-        function generateQuestionText(type) {
-            const dualFlashQuestions = [
-                "پایتخت ایران چه شهری است؟",
-                "بلندترین کوه جهان چه نام دارد؟",
-                "نویسنده کتاب 'بوف کور' کیست؟",
-                "عنصر شیمیایی با نماد 'Au' چیست؟",
-                "حاصل جمع ۱۵ و ۲۷ چیست؟",
-                "دریاچه خزر در کدام قاره قرار دارد؟",
-                "کدام سیاره به 'سیاره سرخ' معروف است؟",
-                "سالروز پیروزی انقلاب اسلامی ایران در چه ماهی است؟",
-                "زبان رسمی کشور برزیل چیست؟",
-                "مخترع تلفن کیست؟"
-            ];
-            
-            const dualOldQuestions = [
-                "کدام یک از این شهرها پایتخت ایران نیست؟",
-                "کدام سیاره به خاطر حلقه‌هایش معروف است؟",
-                "کدام یک از این نویسندگان ایرانی نیست؟",
-                "کدام عنصر شیمیایی برای زندگی انسان ضروری نیست؟",
-                "کدام یک از این اعداد اول است؟",
-                "کدام دریاچه در ایران قرار ندارد؟",
-                "کدام یک از این حیوانات پستاندار نیست؟",
-                "کدام یک از این کشورها در خاورمیانه نیست؟",
-                "کدام یک از این زبان‌ها در ایران صحبت نمی‌شود؟",
-                "کدام یک از این اختراعات مربوط به قرن ۲۰ نیست؟"
-            ];
-            
-            if (type === "dualFlash") {
-                return dualFlashQuestions[Math.floor(Math.random() * dualFlashQuestions.length)];
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navMenu = document.getElementById('navMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (navMenu.classList.contains('active')) {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-times');
             } else {
-                return dualOldQuestions[Math.floor(Math.random() * dualOldQuestions.length)];
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
             }
-        }
-
-        // تولید جواب
-        function generateAnswer() {
-            const answers = [
-                "تهران", "اورست", "صادق هدایت", "طلا", "۴۲", "آسیا", "مریخ", 
-                "بهمن", "پرتغالی", "الکساندر گراهام بل", "فرانسه", "مشتری",
-                "حافظ", "آهن", "۲۹", "ارومیه", "ماه", "ژاپن", "کردی", "برق"
-            ];
-            return answers[Math.floor(Math.random() * answers.length)];
-        }
-
-        // مخلوط کردن آرایه
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
-        }
-
-        // المنت‌های DOM
-        const splashScreen = document.getElementById('splashScreen');
-        const menuScreen = document.getElementById('menuScreen');
-        const gameModeModal = document.getElementById('gameModeModal');
-        const dualFlashGameScreen = document.getElementById('dualFlashGameScreen');
-        const dualOldGameScreen = document.getElementById('dualOldGameScreen');
-        const resultScreen = document.getElementById('resultScreen');
-        const progressBar = document.getElementById('progressBar');
-        const progressText = document.getElementById('progressText');
-
-        // تغییر صفحه با انیمیشن جدید
-        function changeScreen(toScreen) {
-            const previousScreen = gameData.currentScreen;
-            
-            // پنهان کردن همه صفحات
-            menuScreen.style.display = 'none';
-            gameModeModal.style.display = 'none';
-            dualFlashGameScreen.style.display = 'none';
-            dualOldGameScreen.style.display = 'none';
-            resultScreen.style.display = 'none';
-            
-            // اعمال انیمیشن‌های خروج
-            if (previousScreen === 'menu' && menuScreen.style.display === 'block') {
-                menuScreen.style.animation = 'slideDownOut 0.8s ease forwards';
-            }
-            
-            // نمایش صفحه جدید با تاخیر
-            setTimeout(() => {
-                // حذف انیمیشن‌های قبلی
-                menuScreen.style.animation = '';
-                dualFlashGameScreen.style.animation = '';
-                dualOldGameScreen.style.animation = '';
-                resultScreen.style.animation = '';
+        });
+        
+        // Tab Switching for Products
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const productGrids = document.querySelectorAll('.products-grid');
+        
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class from all tabs and grids
+                tabBtns.forEach(b => b.classList.remove('active'));
+                productGrids.forEach(grid => grid.classList.remove('active'));
                 
-                // نمایش صفحه جدید
-                switch(toScreen) {
-                    case 'menu':
-                        menuScreen.style.display = 'block';
-                        menuScreen.style.animation = 'slideUpIn 0.8s ease forwards';
-                        break;
-                    case 'gameMode':
-                        menuScreen.style.display = 'block';
-                        gameModeModal.style.display = 'flex';
-                        break;
-                    case 'dualFlash':
-                        dualFlashGameScreen.style.display = 'block';
-                        dualFlashGameScreen.style.animation = 'slideUpIn 0.8s ease forwards';
-                        startDualFlashGame();
-                        break;
-                    case 'dualOld':
-                        dualOldGameScreen.style.display = 'block';
-                        dualOldGameScreen.style.animation = 'slideUpIn 0.8s ease forwards';
-                        startDualOldGame();
-                        break;
-                    case 'result':
-                        resultScreen.style.display = 'block';
-                        resultScreen.style.animation = 'slideUpIn 0.8s ease forwards';
-                        showResult();
-                        break;
-                }
+                // Add active class to clicked tab
+                btn.classList.add('active');
                 
-                gameData.currentScreen = toScreen;
+                // Show corresponding grid
+                const category = btn.getAttribute('data-category');
+                const targetGrid = document.getElementById(category);
+                targetGrid.classList.add('active');
                 
-                // توقف تایمرها در صورت برگشت از بازی
-                if (previousScreen === 'dualFlash' && toScreen !== 'dualFlash') {
-                    if (gameData.dualFlash.timerInterval) {
-                        clearInterval(gameData.dualFlash.timerInterval);
-                        gameData.dualFlash.timerInterval = null;
+                // Add animation to product cards in the active grid
+                const productCards = targetGrid.querySelectorAll('.product-card');
+                productCards.forEach((card, index) => {
+                    card.classList.remove('animate__fadeIn');
+                    void card.offsetWidth; // Trigger reflow
+                    card.classList.add('animate__fadeIn');
+                    card.style.animationDelay = `${index * 0.1}s`;
+                });
+            });
+        });
+        
+        // Contact Form Submission
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('پیام شما با موفقیت ارسال شد! به زودی با شما تماس خواهیم گرفت.');
+            contactForm.reset();
+        });
+        
+        // Scroll Animations
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.animate__animated');
+            
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    const animation = element.getAttribute('data-animation');
+                    const delay = element.getAttribute('data-delay');
+                    
+                    if (animation) {
+                        element.classList.add(animation);
+                    }
+                    
+                    if (delay) {
+                        element.style.animationDelay = delay;
                     }
                 }
-            }, 300);
-        }
-
-        // بستن پنل مدال
-        function closeModal() {
-            gameModeModal.style.display = 'none';
-        }
-
-        // شروع بازی دونیم فلش
-        function startDualFlashGame() {
-            // تنظیم مقادیر اولیه
-            gameData.dualFlash.score = 0;
-            gameData.dualFlash.currentQuestion = 0;
-            gameData.dualFlash.lives = 3;
-            gameData.dualFlash.timer = 17;
-            
-            // به روزرسانی نمایش
-            updateFlashDisplay();
-            
-            // بارگذاری سوالات
-            if (gameData.questions.dualFlash.length === 0) {
-                gameData.questions.dualFlash = generateDualFlashQuestions();
-            }
-            
-            // نمایش سوال اول
-            showNextFlashQuestion();
-            
-            // شروع تایمر
-            startFlashTimer();
-        }
-
-        // به روزرسانی نمایش دونیم فلش
-        function updateFlashDisplay() {
-            document.getElementById('flashScore').textContent = gameData.dualFlash.score;
-            document.getElementById('flashQuestionNum').textContent = `${gameData.dualFlash.currentQuestion + 1}/۷۰`;
-            
-            // به روزرسانی جان‌ها
-            const livesContainer = document.getElementById('flashLivesContainer');
-            livesContainer.innerHTML = '';
-            
-            for (let i = 0; i < 3; i++) {
-                const life = document.createElement('div');
-                life.classList.add('life');
-                if (i >= gameData.dualFlash.lives) {
-                    life.classList.add('lost');
-                }
-                life.innerHTML = '<i class="fas fa-heart"></i>';
-                livesContainer.appendChild(life);
-            }
-        }
-
-        // نمایش سوال بعدی در دونیم فلش
-        function showNextFlashQuestion() {
-            if (gameData.dualFlash.currentQuestion >= 70) {
-                // پایان بازی
-                gameData.currentGameMode = 'dualFlash';
-                changeScreen('result');
-                return;
-            }
-            
-            const question = gameData.questions.dualFlash[gameData.dualFlash.currentQuestion];
-            document.getElementById('flashQuestionText').textContent = question.text;
-            document.getElementById('flashAnswerInput').value = '';
-            document.getElementById('flashAnswerInput').focus();
-            
-            // به روزرسانی شماره سوال
-            updateFlashDisplay();
-        }
-
-        // شروع تایمر دونیم فلش
-        function startFlashTimer() {
-            // پاک کردن تایمر قبلی
-            if (gameData.dualFlash.timerInterval) {
-                clearInterval(gameData.dualFlash.timerInterval);
-            }
-            
-            // تنظیم تایمر اولیه
-            gameData.dualFlash.timer = 17;
-            updateTimerBar();
-            
-            // شروع تایمر
-            gameData.dualFlash.timerInterval = setInterval(() => {
-                gameData.dualFlash.timer--;
-                updateTimerBar();
-                
-                if (gameData.dualFlash.timer <= 0) {
-                    // زمان تمام شد
-                    clearInterval(gameData.dualFlash.timerInterval);
-                    handleFlashTimeUp();
-                }
-            }, 1000);
-        }
-
-        // به روزرسانی نوار تایمر
-        function updateTimerBar() {
-            const timerBar = document.getElementById('flashTimerBar');
-            const percentage = (gameData.dualFlash.timer / 17) * 100;
-            timerBar.style.width = `${percentage}%`;
-            
-            // تغییر رنگ بر اساس زمان باقیمانده
-            if (percentage < 30) {
-                timerBar.style.background = 'linear-gradient(to right, #ff3333, #ff6666)';
-            } else if (percentage < 60) {
-                timerBar.style.background = 'linear-gradient(to right, #ffcc00, #ffdd44)';
-            } else {
-                timerBar.style.background = 'linear-gradient(to right, var(--primary-gold), var(--accent-gold))';
-            }
-        }
-
-        // زمانی که وقت تمام می‌شود
-        function handleFlashTimeUp() {
-            // از دست دادن یک جان
-            gameData.dualFlash.lives--;
-            updateFlashDisplay();
-            
-            // بررسی پایان جان‌ها
-            if (gameData.dualFlash.lives <= 0) {
-                // پایان بازی
-                gameData.currentGameMode = 'dualFlash';
-                changeScreen('result');
-                return;
-            }
-            
-            // رفتن به سوال بعدی
-            gameData.dualFlash.currentQuestion++;
-            showNextFlashQuestion();
-            startFlashTimer();
-        }
-
-        // بررسی پاسخ در دونیم فلش
-        function checkFlashAnswer() {
-            const userAnswer = document.getElementById('flashAnswerInput').value.trim();
-            const currentQuestion = gameData.questions.dualFlash[gameData.dualFlash.currentQuestion];
-            
-            // پاک کردن تایمر
-            clearInterval(gameData.dualFlash.timerInterval);
-            
-            // بررسی پاسخ
-            if (userAnswer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
-                // پاسخ صحیح
-                gameData.dualFlash.score += 10;
-                
-                // افکت موفقیت
-                document.getElementById('flashQuestionText').style.color = '#00cc00';
-                setTimeout(() => {
-                    document.getElementById('flashQuestionText').style.color = 'var(--primary-gold)';
-                }, 500);
-            } else {
-                // پاسخ غلط
-                gameData.dualFlash.lives--;
-                
-                // افکت خطا
-                document.getElementById('flashQuestionText').style.color = '#ff3333';
-                setTimeout(() => {
-                    document.getElementById('flashQuestionText').style.color = 'var(--primary-gold)';
-                }, 500);
-                
-                // بررسی پایان جان‌ها
-                if (gameData.dualFlash.lives <= 0) {
-                    // پایان بازی
-                    gameData.currentGameMode = 'dualFlash';
-                    changeScreen('result');
-                    return;
-                }
-            }
-            
-            // رفتن به سوال بعدی
-            gameData.dualFlash.currentQuestion++;
-            
-            // نمایش سوال بعدی پس از تاخیر
-            setTimeout(() => {
-                showNextFlashQuestion();
-                startFlashTimer();
-            }, 1000);
-        }
-
-        // شروع بازی دو اولد
-        function startDualOldGame() {
-            // تنظیم مقادیر اولیه
-            gameData.dualOld.score = 0;
-            gameData.dualOld.currentQuestion = 0;
-            
-            // به روزرسانی نمایش
-            updateOldDisplay();
-            
-            // بارگذاری سوالات
-            if (gameData.questions.dualOld.length === 0) {
-                gameData.questions.dualOld = generateDualOldQuestions();
-            }
-            
-            // نمایش سوال اول
-            showNextOldQuestion();
-        }
-
-        // به روزرسانی نمایش دو اولد
-        function updateOldDisplay() {
-            document.getElementById('oldScore').textContent = gameData.dualOld.score;
-            document.getElementById('oldQuestionNum').textContent = `${gameData.dualOld.currentQuestion + 1}/۷۰`;
-        }
-
-        // نمایش سوال بعدی در دو اولد
-        function showNextOldQuestion() {
-            if (gameData.dualOld.currentQuestion >= 70) {
-                // پایان بازی
-                gameData.currentGameMode = 'dualOld';
-                changeScreen('result');
-                return;
-            }
-            
-            const question = gameData.questions.dualOld[gameData.dualOld.currentQuestion];
-            document.getElementById('oldQuestionText').textContent = question.text;
-            
-            // ایجاد گزینه‌ها
-            const optionsContainer = document.getElementById('oldOptionsContainer');
-            optionsContainer.innerHTML = '';
-            
-            question.options.forEach((option, index) => {
-                const optionBtn = document.createElement('button');
-                optionBtn.classList.add('option-btn');
-                optionBtn.textContent = `${String.fromCharCode(0x06F1 + index)}. ${option}`;
-                optionBtn.dataset.answer = option;
-                
-                optionBtn.addEventListener('click', () => {
-                    selectOldOption(optionBtn, option, question.correctAnswer);
-                });
-                
-                optionsContainer.appendChild(optionBtn);
             });
-            
-            // مخفی کردن دکمه سوال بعدی
-            document.getElementById('oldNextBtn').style.display = 'none';
-            
-            // به روزرسانی شماره سوال
-            updateOldDisplay();
-        }
-
-        // انتخاب گزینه در دو اولد
-        function selectOldOption(button, selectedAnswer, correctAnswer) {
-            // غیرفعال کردن تمام گزینه‌ها
-            document.querySelectorAll('.option-btn').forEach(btn => {
-                btn.disabled = true;
-                btn.style.cursor = 'default';
-            });
-            
-            // نشان دادن پاسخ صحیح و غلط
-            document.querySelectorAll('.option-btn').forEach(btn => {
-                if (btn.dataset.answer === correctAnswer) {
-                    btn.classList.add('correct');
-                } else if (btn === button && selectedAnswer !== correctAnswer) {
-                    btn.classList.add('wrong');
-                }
-            });
-            
-            // بررسی پاسخ
-            if (selectedAnswer === correctAnswer) {
-                // پاسخ صحیح
-                gameData.dualOld.score += 10;
-                updateOldDisplay();
+        };
+        
+        // Run on initial load and scroll
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
                 
-                // افکت موفقیت
-                button.style.animation = 'pulse 0.5s';
-                setTimeout(() => {
-                    button.style.animation = '';
-                }, 500);
-            }
-            
-            // نمایش دکمه سوال بعدی
-            document.getElementById('oldNextBtn').style.display = 'block';
-        }
-
-        // رفتن به سوال بعدی در دو اولد
-        function goToNextOldQuestion() {
-            gameData.dualOld.currentQuestion++;
-            showNextOldQuestion();
-        }
-
-        // نمایش نتیجه
-        function showResult() {
-            let score, maxScore, message;
-            
-            if (gameData.currentGameMode === 'dualFlash') {
-                score = gameData.dualFlash.score;
-                maxScore = 700;
-                message = `شما در بازی دونیم فلش ${score} امتیاز از ${maxScore} امتیاز ممکن کسب کردید.`;
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
                 
-                if (score === maxScore) {
-                    message += " آفرین! عملکرد فوق‌العاده‌ای داشتید!";
-                } else if (score >= maxScore * 0.7) {
-                    message += " خوب بازی کردید!";
-                } else if (score >= maxScore * 0.5) {
-                    message += " قابل قبول است، می‌توانید بهتر هم بازی کنید.";
-                } else {
-                    message += " نیاز به تمرین بیشتر دارید.";
-                }
-            } else {
-                score = gameData.dualOld.score;
-                maxScore = 700;
-                message = `شما در بازی دو اولد ${score} امتیاز از ${maxScore} امتیاز ممکن کسب کردید.`;
-                
-                if (score === maxScore) {
-                    message += " عالی! تمام سوالات را درست پاسخ دادید!";
-                } else if (score >= maxScore * 0.8) {
-                    message += " بسیار خوب! دانش بالایی دارید.";
-                } else if (score >= maxScore * 0.6) {
-                    message += " خوب است، اما جا برای پیشرفت دارید.";
-                } else {
-                    message += " بهتر است بیشتر مطالعه کنید.";
-                }
-            }
-            
-            document.getElementById('finalScore').textContent = score;
-            document.getElementById('resultMessage').textContent = message;
-        }
-
-        // بازی مجدد
-        function playAgain() {
-            if (gameData.currentGameMode === 'dualFlash') {
-                changeScreen('dualFlash');
-            } else {
-                changeScreen('dualOld');
-            }
-        }
-
-        // به روزرسانی نوار پیشرفت
-        function updateProgressBar(percentage) {
-            progressBar.style.width = `${percentage}%`;
-            
-            // تغییر متن بر اساس درصد
-            if (percentage < 25) {
-                progressText.textContent = "در حال بارگذاری...";
-            } else if (percentage < 50) {
-                progressText.textContent = "آماده‌سازی بازی...";
-            } else if (percentage < 75) {
-                progressText.textContent = "بارگذاری سوالات...";
-            } else {
-                progressText.textContent = "تقریباً آماده است...";
-            }
-        }
-
-        // رویدادهای کلیک
-        document.addEventListener('DOMContentLoaded', function() {
-            // تنظیمات نوار پیشرفت
-            let progress = 0;
-            const totalTime = 7000; // 7 ثانیه
-            const intervalTime = 70; // هر 70 میلی‌ثانیه
-            const increments = 100 / (totalTime / intervalTime);
-            
-            // شروع نوار پیشرفت
-            const progressInterval = setInterval(() => {
-                progress += increments;
-                updateProgressBar(progress);
-                
-                if (progress >= 100) {
-                    clearInterval(progressInterval);
-                    progressText.textContent = "آماده!";
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
                     
-                    // پس از پر شدن کامل نوار، انیمیشن خروج اسپلش و ورود منو
-                    setTimeout(() => {
-                        splashScreen.classList.add('fade-out');
-                        setTimeout(() => {
-                            changeScreen('menu');
-                        }, 800);
-                    }, 500);
-                }
-            }, intervalTime);
-            
-            // دکمه شروع بازی
-            document.getElementById('startGameBtn').addEventListener('click', () => {
-                changeScreen('gameMode');
-            });
-            
-            // دکمه بستن پنل
-            document.getElementById('closeModalBtn').addEventListener('click', () => {
-                closeModal();
-            });
-            
-            // بستن پنل با کلیک خارج از آن
-            gameModeModal.addEventListener('click', function(e) {
-                if (e.target === gameModeModal) {
-                    closeModal();
+                    // Close mobile menu if open
+                    if (navMenu.classList.contains('active')) {
+                        navMenu.classList.remove('active');
+                        const icon = mobileMenuBtn.querySelector('i');
+                        icon.classList.remove('fa-times');
+                        icon.classList.add('fa-bars');
+                    }
                 }
             });
+        });
+        
+        // Add floating animation to some elements
+        const floatingElements = document.querySelectorAll('.floating-element');
+        floatingElements.forEach(element => {
+            // Randomize animation duration and delay
+            const duration = 5 + Math.random() * 3;
+            const delay = Math.random() * 2;
             
-            // دکمه بازگشت از صفحه نتیجه
-            document.getElementById('backToMenuFromResultBtn').addEventListener('click', () => {
-                changeScreen('menu');
-            });
-            
-            // دکمه دونیم فلش در پنل
-            document.getElementById('modalDualFlashBtn').addEventListener('click', () => {
-                changeScreen('dualFlash');
-            });
-            
-            // دکمه دو اولد در پنل
-            document.getElementById('modalDualOldBtn').addEventListener('click', () => {
-                changeScreen('dualOld');
-            });
-            
-            // دکمه برگشت از صفحه بازی دونیم فلش
-            document.getElementById('backFromFlashBtn').addEventListener('click', () => {
-                changeScreen('menu');
-            });
-            
-            // دکمه برگشت از صفحه بازی دو اولد
-            document.getElementById('backFromOldBtn').addEventListener('click', () => {
-                changeScreen('menu');
-            });
-            
-            // دکمه تایید پاسخ در دونیم فلش
-            document.getElementById('flashNextBtn').addEventListener('click', checkFlashAnswer);
-            
-            // امکان فشار دادن اینتر برای تایید پاسخ
-            document.getElementById('flashAnswerInput').addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    checkFlashAnswer();
-                }
-            });
-            
-            // دکمه سوال بعدی در دو اولد
-            document.getElementById('oldNextBtn').addEventListener('click', goToNextOldQuestion);
-            
-            // دکمه بازی مجدد
-            document.getElementById('playAgainBtn').addEventListener('click', playAgain);
-            
-            // دکمه تنظیمات
-            document.getElementById('settingsBtn').addEventListener('click', () => {
-                alert('تنظیمات بازی:\n\n- تم: مشکی طلایی\n- تعداد سوالات: ۷۰\n- حالت‌های بازی: دونیم فلش و دو اولد\n\nسایر تنظیمات به زودی اضافه خواهند شد.');
-            });
-            
-            // آیتم‌های نوار پایین
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const text = this.querySelector('span').textContent;
-                    alert(`قسمت "${text}" به زودی فعال خواهد شد.`);
-                });
-            });
-            
-            // دکمه بازی آنلاین
-            document.getElementById('onlineGameBtn').addEventListener('click', () => {
-                alert('بازی آنلاین به زودی فعال خواهد شد. در حال حاضر می‌توانید از بازی‌های تک‌نفره لذت ببرید.');
-            });
+            element.style.animationDuration = `${duration}s`;
+            element.style.animationDelay = `${delay}s`;
         });
     </script>
 </body>
