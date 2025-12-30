@@ -14,7 +14,7 @@
             --gray: #222222;
             --light-gray: #333333;
             --white: #FFFFFF;
-            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+            --panel-bg: rgba(0, 0, 0, 0.95);
         }
 
         * {
@@ -32,7 +32,150 @@
             width: 100vw;
         }
 
-        /* صفحه لودینگ اولیه */
+        /* صفحه اسپلش اولیه با افکت نور */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1.5s ease;
+        }
+
+        .splash-logo-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+        }
+
+        .splash-logo {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            z-index: 3;
+            border: 3px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 0 50px rgba(212, 175, 55, 0.7);
+            animation: logoPulse 3s infinite alternate;
+        }
+
+        @keyframes logoPulse {
+            0% { 
+                transform: scale(1);
+                box-shadow: 0 0 50px rgba(212, 175, 55, 0.7);
+            }
+            100% { 
+                transform: scale(1.05);
+                box-shadow: 0 0 80px rgba(212, 175, 55, 0.9), 
+                            0 0 120px rgba(212, 175, 55, 0.5);
+            }
+        }
+
+        .splash-glow {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, 
+                rgba(212, 175, 55, 0.8) 0%,
+                rgba(212, 175, 55, 0.4) 30%,
+                rgba(212, 175, 55, 0.1) 60%,
+                transparent 80%);
+            z-index: 2;
+            animation: glowRotate 20s infinite linear;
+            filter: blur(10px);
+        }
+
+        @keyframes glowRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .splash-light-rays {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .splash-ray {
+            position: absolute;
+            width: 2px;
+            height: 150%;
+            background: linear-gradient(to bottom, 
+                transparent 0%, 
+                rgba(212, 175, 55, 0.8) 50%, 
+                transparent 100%);
+            top: -25%;
+            left: 50%;
+            transform-origin: center;
+            animation: rayRotate 10s infinite linear;
+        }
+
+        .splash-ray:nth-child(1) { transform: rotate(0deg); }
+        .splash-ray:nth-child(2) { transform: rotate(45deg); }
+        .splash-ray:nth-child(3) { transform: rotate(90deg); }
+        .splash-ray:nth-child(4) { transform: rotate(135deg); }
+        .splash-ray:nth-child(5) { transform: rotate(180deg); }
+        .splash-ray:nth-child(6) { transform: rotate(225deg); }
+        .splash-ray:nth-child(7) { transform: rotate(270deg); }
+        .splash-ray:nth-child(8) { transform: rotate(315deg); }
+
+        @keyframes rayRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .splash-text {
+            color: var(--gold);
+            font-size: 2.2rem;
+            text-align: center;
+            z-index: 4;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            animation: textGlow 2s infinite alternate;
+            margin-top: 20px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        @keyframes textGlow {
+            0% { 
+                text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 0 0 25px rgba(212, 175, 55, 1), 
+                             0 0 35px rgba(212, 175, 55, 0.6);
+                transform: scale(1.02);
+            }
+        }
+
+        .splash-subtext {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2rem;
+            text-align: center;
+            z-index: 4;
+            margin-top: 15px;
+            animation: fadeInOut 3s infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* صفحه لودینگ */
         .loading-screen {
             position: fixed;
             top: 0;
@@ -41,7 +184,7 @@
             height: 100%;
             background: var(--black);
             z-index: 1000;
-            display: flex;
+            display: none;
             flex-direction: column;
             justify-content: center;
             align-items: center;
@@ -57,27 +200,25 @@
             position: absolute;
             top: 0;
             left: 0;
-            filter: brightness(0.8);
         }
 
         .loading-bar-container {
             position: absolute;
             bottom: 80px;
             width: 80%;
-            height: 8px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border-radius: 4px;
+            height: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
             overflow: hidden;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+            border: 1px solid var(--gold);
         }
 
         .loading-bar {
             height: 100%;
             width: 0%;
-            background: linear-gradient(90deg, var(--gold), var(--dark-gold));
-            border-radius: 4px;
+            background: linear-gradient(90deg, var(--black), var(--gold));
+            border-radius: 5px;
             transition: width 0.3s ease;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         .loading-text {
@@ -86,8 +227,6 @@
             color: var(--gold);
             font-size: 1.2rem;
             text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
-            font-weight: 300;
-            letter-spacing: 1px;
         }
 
         /* صفحه منو اصلی */
@@ -106,28 +245,16 @@
             align-items: center;
             opacity: 0;
             transition: opacity 1s ease;
-            overflow: hidden;
-        }
-
-        .menu-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 100%);
-            z-index: 1;
         }
 
         /* هدر منو */
         .menu-header {
             position: absolute;
-            top: 30px;
-            right: 30px;
+            top: 20px;
+            right: 20px;
             display: flex;
             align-items: center;
             gap: 15px;
-            z-index: 2;
         }
 
         .logo-circle {
@@ -136,9 +263,8 @@
             border-radius: 50%;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 25px rgba(212, 175, 55, 0.7);
-            animation: rotateLogo 15s infinite linear;
-            border: 2px solid var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+            animation: rotateLogo 10s infinite linear;
         }
 
         @keyframes rotateLogo {
@@ -165,11 +291,9 @@
 
         .logo-text {
             color: var(--gold);
-            font-size: 2rem;
+            font-size: 1.8rem;
             font-weight: bold;
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
-            font-family: 'Arial', sans-serif;
-            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
         }
 
         /* دکمه‌های منو */
@@ -177,82 +301,60 @@
             display: flex;
             flex-direction: column;
             gap: 25px;
+            margin-top: 50px;
             align-items: center;
-            z-index: 2;
-            margin-top: 40px;
         }
 
         .menu-btn {
-            width: 300px;
-            padding: 20px 40px;
-            font-size: 1.5rem;
+            width: 280px;
+            padding: 18px 30px;
+            font-size: 1.4rem;
             border: none;
-            border-radius: 12px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             font-weight: bold;
             position: relative;
             overflow: hidden;
             z-index: 1;
-            text-align: center;
         }
 
         .start-btn {
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.9), rgba(184, 134, 11, 0.9));
+            background: linear-gradient(45deg, var(--gold), var(--dark-gold));
             color: var(--black);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         .online-btn {
-            background: linear-gradient(135deg, rgba(51, 51, 51, 0.9), rgba(34, 34, 34, 0.9));
-            color: var(--gold);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .menu-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
-            z-index: -1;
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .menu-btn:hover::before {
-            transform: translateX(0);
+            background: linear-gradient(45deg, var(--gray), var(--light-gray));
+            color: var(--white);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
         }
 
         .menu-btn:hover {
-            transform: translateY(-8px) scale(1.05);
-            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.7);
         }
 
-        /* نوار پایین منو - طراحی جدید */
+        .menu-btn:active {
+            transform: translateY(0);
+        }
+
+        /* نوار پایین منو - ساده و مدرن */
         .bottom-nav {
             position: absolute;
-            bottom: 0;
-            width: 100%;
-            padding: 20px 0;
+            bottom: 20px;
+            width: 90%;
+            max-width: 800px;
+            background: rgba(20, 20, 20, 0.95);
+            padding: 15px 30px;
             display: flex;
             justify-content: space-around;
-            z-index: 2;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
-        }
-
-        .nav-line {
-            position: absolute;
-            top: 0;
-            left: 5%;
-            width: 90%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--gold), transparent);
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            z-index: 100;
         }
 
         .nav-item {
@@ -261,361 +363,691 @@
             align-items: center;
             color: var(--white);
             cursor: pointer;
-            transition: var(--transition);
-            padding: 10px 20px;
-            border-radius: 15px;
+            transition: all 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 10px;
             position: relative;
-        }
-
-        .nav-item::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            width: 0;
-            height: 3px;
-            background: var(--gold);
-            transition: width 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .nav-item:hover::after {
-            width: 80%;
+            min-width: 80px;
         }
 
         .nav-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+
+        .nav-item.active {
+            background: rgba(212, 175, 55, 0.15);
             color: var(--gold);
-            transform: translateY(-5px);
         }
 
         .nav-icon {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 8px;
-            filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.5));
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover .nav-icon {
+            transform: scale(1.1);
         }
 
         .nav-text {
-            font-size: 1.1rem;
-            font-weight: 300;
-            letter-spacing: 1px;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .nav-item:hover .nav-text {
+            color: #ddd;
+        }
+
+        .nav-notification {
+            position: absolute;
+            top: 5px;
+            left: 10px;
+            background: #ff4757;
+            color: white;
+            font-size: 0.7rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 1.5s infinite;
         }
 
         /* دکمه تنظیمات */
         .settings-btn {
             position: absolute;
-            top: 30px;
-            left: 30px;
-            background: rgba(0, 0, 0, 0.5);
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.7);
             color: var(--gold);
             border: 2px solid var(--gold);
             border-radius: 50%;
-            width: 65px;
-            height: 65px;
-            font-size: 1.8rem;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5rem;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: var(--transition);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-            z-index: 2;
-            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
         }
 
         .settings-btn:hover {
-            transform: rotate(180deg) scale(1.1);
+            transform: rotate(90deg);
             background: rgba(212, 175, 55, 0.1);
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.7);
         }
 
-        /* پنل انتخاب بازی - طراحی جدید */
-        .game-select-panel {
+        /* پنل‌های مودال - یکپارچه */
+        .modal-panel {
             position: fixed;
-            bottom: -100%;
-            left: 0;
-            width: 100%;
-            height: 70%;
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.98));
-            z-index: 1500;
-            border-top-left-radius: 30px;
-            border-top-right-radius: 30px;
-            display: flex;
-            flex-direction: column;
-            padding: 25px;
-            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.7);
-            transition: bottom 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-top: 3px solid var(--gold);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            background: var(--panel-bg);
+            border-radius: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            z-index: 3000;
+            overflow: hidden;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
-        .game-select-panel.active {
-            bottom: 0;
+        .modal-panel.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, -50%) scale(1);
         }
 
-        .panel-header {
+        .modal-header {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 20px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid rgba(212, 175, 55, 0.3);
         }
 
-        .panel-title {
-            font-size: 2rem;
+        .modal-title {
+            font-size: 1.8rem;
             color: var(--gold);
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            font-weight: bold;
         }
 
-        .close-panel {
-            background: none;
-            border: none;
+        .close-modal {
+            background: rgba(0, 0, 0, 0.5);
             color: var(--gold);
-            font-size: 2rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            border: 1px solid var(--gold);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-        }
-
-        .close-panel:hover {
-            transform: scale(1.2);
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .game-options-panel {
+            font-size: 1.2rem;
+            cursor: pointer;
             display: flex;
-            flex-direction: column;
-            gap: 20px;
-            height: 100%;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .close-modal:hover {
+            transform: rotate(90deg);
+            background: rgba(212, 175, 55, 0.2);
+        }
+
+        .modal-body {
+            padding: 25px;
             overflow-y: auto;
-            padding: 10px;
+            max-height: calc(85vh - 80px);
+        }
+
+        /* پنل سازندگان */
+        .creators-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .creator-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .creator-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .creator-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 2px solid var(--gold);
+            padding: 3px;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        .creator-avatar img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .creator-name {
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .creator-role {
+            color: #aaa;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .creator-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        /* پنل انتخاب بازی */
+        .game-options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
         }
 
         .game-option-card {
-            background: linear-gradient(135deg, rgba(51, 51, 51, 0.8), rgba(34, 34, 34, 0.8));
-            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
             padding: 25px;
+            border: 2px solid transparent;
             cursor: pointer;
-            transition: var(--transition);
-            border: 2px solid rgba(212, 175, 55, 0.2);
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .game-option-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 5px;
-            height: 100%;
-            background: var(--gold);
-            transition: width 0.4s ease;
-        }
-
-        .game-option-card:hover::before {
-            width: 100%;
-            opacity: 0.1;
+            transition: all 0.3s ease;
         }
 
         .game-option-card:hover {
-            transform: translateX(-10px);
+            transform: translateY(-8px);
             border-color: var(--gold);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
-        }
-
-        .game-icon-container {
-            width: 80px;
-            height: 80px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 2px solid var(--gold);
-            flex-shrink: 0;
+            background: rgba(212, 175, 55, 0.05);
         }
 
         .game-option-icon {
-            font-size: 2.5rem;
+            font-size: 3.5rem;
             color: var(--gold);
-        }
-
-        .game-option-content {
-            flex-grow: 1;
+            margin-bottom: 15px;
+            text-align: center;
         }
 
         .game-option-title {
             font-size: 1.6rem;
             color: var(--gold);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            text-align: center;
         }
 
         .game-option-desc {
-            color: #aaa;
-            font-size: 1.1rem;
+            color: #ccc;
+            text-align: center;
             line-height: 1.5;
+            margin-bottom: 15px;
+            font-size: 1rem;
         }
 
-        .game-stats {
-            display: flex;
-            gap: 15px;
-            margin-top: 10px;
+        .game-option-features {
+            list-style: none;
+            padding: 0;
         }
 
-        .game-stat {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #ddd;
-            border: 1px solid rgba(212, 175, 55, 0.3);
+        .game-option-features li {
+            color: #aaa;
+            padding: 5px 0;
+            position: relative;
+            padding-right: 20px;
         }
 
-        /* صفحه تنظیمات */
-        .settings-panel {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.98), rgba(0, 0, 0, 0.95));
-            z-index: 2000;
-            display: none;
-            flex-direction: column;
-            padding: 30px;
-            overflow-y: auto;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-
-        .settings-panel.active {
-            opacity: 1;
-        }
-
-        .settings-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--gold);
-        }
-
-        .settings-title {
-            font-size: 2.2rem;
+        .game-option-features li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
             color: var(--gold);
-            text-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+            font-weight: bold;
         }
 
-        .close-settings {
-            background: none;
-            border: none;
-            color: var(--gold);
-            font-size: 2.2rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-        }
-
-        .close-settings:hover {
-            transform: scale(1.2);
-            background: rgba(212, 175, 55, 0.1);
-        }
-
-        .settings-sections {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
-
-        .settings-section {
-            background: linear-gradient(135deg, rgba(51, 51, 51, 0.6), rgba(34, 34, 34, 0.6));
-            border-radius: 20px;
-            padding: 25px;
-            border: 2px solid rgba(212, 175, 55, 0.2);
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-            color: var(--gold);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
-        }
-
-        .settings-grid {
+        /* پنل تنظیمات */
+        .settings-options-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
+            gap: 15px;
+            padding: 20px 0;
         }
 
-        .settings-item {
-            background: rgba(0, 0, 0, 0.4);
-            border-radius: 15px;
-            padding: 20px;
+        .settings-option-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border-left: 4px solid var(--gold);
             cursor: pointer;
-            transition: var(--transition);
-            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
             display: flex;
             align-items: center;
             gap: 15px;
         }
 
-        .settings-item:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold);
+        .settings-option-card:hover {
+            transform: translateX(-5px);
             background: rgba(212, 175, 55, 0.1);
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
         }
 
-        .settings-icon {
-            width: 50px;
-            height: 50px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        .settings-option-icon {
             font-size: 1.5rem;
             color: var(--gold);
-            flex-shrink: 0;
+            width: 40px;
+            text-align: center;
         }
 
-        .settings-item-content {
-            flex-grow: 1;
+        .settings-option-content {
+            flex: 1;
         }
 
-        .settings-item-title {
-            font-size: 1.3rem;
+        .settings-option-title {
+            font-size: 1.2rem;
             color: var(--gold);
             margin-bottom: 5px;
         }
 
-        .settings-item-desc {
+        .settings-option-desc {
             color: #aaa;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
-        .soon-badge {
-            background: rgba(212, 175, 55, 0.2);
+        .settings-option-toggle {
+            width: 60px;
+            height: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .settings-option-toggle.active {
+            background: rgba(212, 175, 55, 0.5);
+        }
+
+        .settings-option-toggle::after {
+            content: '';
+            position: absolute;
+            width: 26px;
+            height: 26px;
+            background: var(--gold);
+            border-radius: 50%;
+            top: 2px;
+            right: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-option-toggle.active::after {
+            right: 32px;
+        }
+
+        /* پنل چالش‌ها */
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+
+        .challenge-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .challenge-icon {
+            font-size: 2.5rem;
             color: var(--gold);
-            padding: 3px 10px;
-            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .challenge-title {
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .challenge-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .challenge-progress {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .challenge-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--dark-gold));
+            border-radius: 3px;
+            width: 0%;
+            transition: width 1s ease;
+        }
+
+        .challenge-status {
             font-size: 0.8rem;
-            display: inline-block;
-            margin-top: 5px;
+            color: #aaa;
+        }
+
+        .challenge-status.completed {
+            color: var(--gold);
+        }
+
+        .challenge-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: var(--gold);
+            color: var(--black);
+            font-size: 0.7rem;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+
+        /* پنل مسیرها */
+        .paths-container {
+            padding: 20px 0;
+        }
+
+        .path-track {
+            position: relative;
+            padding: 30px 0;
+        }
+
+        .path-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+        }
+
+        .path-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .path-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .path-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .path-node {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--black);
+            border: 3px solid var(--gold);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+        }
+
+        .path-item.active .path-node {
+            background: var(--gold);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
+        }
+
+        .path-item.completed .path-node {
+            background: var(--dark-gold);
+        }
+
+        .path-content {
+            width: calc(50% - 30px);
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .path-title {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+
+        .path-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* پنل بلیط */
+        .tickets-container {
+            padding: 20px 0;
+        }
+
+        .ticket-card {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(0, 0, 0, 0.3));
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid var(--gold);
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ticket-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, 
+                rgba(212, 175, 55, 0.1), transparent 70%);
+        }
+
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .ticket-type {
+            font-size: 1.4rem;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .ticket-count {
+            font-size: 2rem;
+            color: var(--gold);
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+        }
+
+        .ticket-features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .ticket-features li {
+            color: #ccc;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            padding-right: 25px;
+        }
+
+        .ticket-features li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+
+        .ticket-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .ticket-btn {
+            flex: 1;
+            padding: 10px;
+            background: rgba(212, 175, 55, 0.2);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
+            color: var(--gold);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .ticket-btn:hover {
+            background: rgba(212, 175, 55, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* پنل آنلاین */
+        .online-status {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .online-icon {
+            font-size: 5rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .online-title {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .online-desc {
+            color: #aaa;
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+        }
+
+        .online-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .online-feature {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .online-feature-icon {
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .online-feature-title {
+            font-size: 1.2rem;
+            color: var(--gold);
+            margin-bottom: 10px;
+        }
+
+        .online-feature-desc {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* پنل پیام */
+        .message-panel {
+            max-width: 500px;
+        }
+
+        .message-content {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .message-icon {
+            font-size: 4rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .message-title {
+            font-size: 1.8rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+
+        .message-text {
+            color: #ccc;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
         }
 
         /* صفحه بازی */
@@ -625,7 +1057,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, #0a0a0a, #000000);
+            background-color: var(--black);
             z-index: 1800;
             display: none;
             flex-direction: column;
@@ -637,313 +1069,320 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.8);
-            border-bottom: 2px solid var(--gold);
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid var(--gold);
         }
 
-        .game-stats-container {
+        .game-stats {
             display: flex;
-            gap: 30px;
+            gap: 25px;
         }
 
-        .game-stat-box {
+        .stat {
             display: flex;
             flex-direction: column;
             align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px 20px;
-            border-radius: 15px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            min-width: 120px;
         }
 
         .stat-value {
-            font-size: 2rem;
+            font-size: 1.5rem;
             color: var(--gold);
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
         .stat-label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             color: #aaa;
-            margin-top: 5px;
         }
 
-        .hearts-container {
-            display: flex;
-            gap: 10px;
-        }
-
-        .heart {
-            color: #ff4757;
-            font-size: 2rem;
-            text-shadow: 0 0 10px rgba(255, 71, 87, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .heart.empty {
-            color: #444;
-            text-shadow: none;
-        }
-
-        .game-content {
+        .game-question {
             flex-grow: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 30px;
+            padding: 25px;
             text-align: center;
         }
 
-        .question-container {
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 25px;
-            padding: 40px;
-            max-width: 900px;
-            width: 90%;
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
-            margin-bottom: 40px;
-        }
-
         .question-text {
-            font-size: 2.2rem;
-            line-height: 1.6;
-            color: var(--white);
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            font-size: 1.8rem;
+            margin-bottom: 30px;
+            max-width: 800px;
+            line-height: 1.5;
         }
 
         .answer-input {
             width: 80%;
             max-width: 600px;
-            padding: 25px;
-            font-size: 1.8rem;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid var(--gold);
-            border-radius: 20px;
+            padding: 15px;
+            font-size: 1.3rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--gold);
+            border-radius: 10px;
             color: white;
             text-align: center;
-            margin-bottom: 30px;
-            transition: var(--transition);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+            margin-bottom: 25px;
         }
 
         .answer-input:focus {
             outline: none;
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
-            transform: scale(1.02);
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
         }
 
-        .options-grid {
+        .options-container {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 15px;
             width: 80%;
             max-width: 800px;
         }
 
         .option-btn {
-            padding: 25px;
-            font-size: 1.5rem;
-            background: rgba(0, 0, 0, 0.7);
-            border: 2px solid rgba(212, 175, 55, 0.3);
-            border-radius: 20px;
+            padding: 15px;
+            font-size: 1.1rem;
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--light-gray);
+            border-radius: 10px;
             color: white;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
         }
 
         .option-btn:hover {
-            background: rgba(212, 175, 55, 0.2);
+            background-color: rgba(212, 175, 55, 0.2);
             border-color: var(--gold);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.3);
         }
 
         .game-controls {
+            padding: 15px;
             display: flex;
-            gap: 20px;
-            margin-top: 30px;
+            justify-content: center;
+            gap: 15px;
         }
 
         .control-btn {
-            padding: 18px 35px;
-            font-size: 1.4rem;
+            padding: 12px 25px;
+            font-size: 1.1rem;
             border: none;
-            border-radius: 15px;
+            border-radius: 8px;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             font-weight: bold;
         }
 
         .submit-btn {
-            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            background: linear-gradient(45deg, var(--gold), var(--dark-gold));
             color: var(--black);
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
         }
 
         .skip-btn {
-            background: linear-gradient(135deg, #444, #222);
-            color: var(--white);
-            border: 2px solid rgba(212, 175, 55, 0.3);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--light-gray);
         }
 
-        .control-btn:hover {
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.5);
+        .hearts {
+            display: flex;
+            gap: 8px;
         }
 
-        .back-btn {
+        .heart {
+            color: #ff4757;
+            font-size: 1.5rem;
+        }
+
+        .heart.empty {
+            color: #555;
+        }
+
+        /* دکمه بازگشت به منو */
+        .back-to-menu {
             position: absolute;
             top: 20px;
             left: 20px;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             color: var(--gold);
             border: 2px solid var(--gold);
             border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 1.5rem;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
             cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: var(--transition);
-            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
-            z-index: 2;
+            transition: all 0.3s ease;
+            z-index: 100;
         }
 
-        .back-btn:hover {
-            transform: scale(1.1);
+        .back-to-menu:hover {
+            transform: rotate(-90deg);
             background: rgba(212, 175, 55, 0.1);
         }
 
         /* انیمیشن‌ها */
         @keyframes pulse {
             0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 0.8; }
             100% { transform: scale(1); opacity: 1; }
         }
 
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes shimmer {
-            0% { background-position: -200px 0; }
-            100% { background-position: 200px 0; }
-        }
-
-        .shimmer-bg {
-            background: linear-gradient(90deg, 
-                rgba(212, 175, 55, 0) 0%, 
-                rgba(212, 175, 55, 0.1) 50%, 
-                rgba(212, 175, 55, 0) 100%);
-            background-size: 200px 100%;
-            animation: shimmer 3s infinite;
-        }
-
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .fade-in {
-            animation: fadeIn 0.8s ease forwards;
+            animation: fadeIn 0.5s ease forwards;
         }
 
-        @keyframes slideInUp {
-            from { transform: translateY(100px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* overlay برای پنل‌ها */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2999;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
         }
 
-        .slide-in-up {
-            animation: slideInUp 0.6s ease forwards;
-        }
-
-        /* اسکرول بار سفارشی */
-        .game-options-panel::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .game-options-panel::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 4px;
-        }
-
-        .game-options-panel::-webkit-scrollbar-thumb {
-            background: var(--gold);
-            border-radius: 4px;
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
 
         /* حالت موبایل */
         @media (max-width: 768px) {
+            .splash-logo-container {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .splash-logo {
+                width: 170px;
+                height: 170px;
+            }
+            
+            .splash-text {
+                font-size: 1.6rem;
+            }
+            
+            .splash-subtext {
+                font-size: 1rem;
+            }
+            
             .menu-btn {
-                width: 280px;
-                padding: 18px 30px;
-                font-size: 1.3rem;
+                width: 250px;
+                padding: 15px 25px;
+                font-size: 1.2rem;
             }
             
-            .logo-circle {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .logo-text {
-                font-size: 1.7rem;
-            }
-            
-            .game-select-panel {
-                height: 80%;
-                padding: 20px;
+            .game-options-grid {
+                grid-template-columns: 1fr;
             }
             
             .game-option-card {
-                flex-direction: column;
-                text-align: center;
-                gap: 15px;
+                padding: 20px;
             }
             
-            .game-icon-container {
-                width: 70px;
-                height: 70px;
-            }
-            
-            .game-option-icon {
-                font-size: 2rem;
-            }
-            
-            .options-grid {
+            .options-container {
                 grid-template-columns: 1fr;
             }
             
             .question-text {
-                font-size: 1.7rem;
+                font-size: 1.4rem;
             }
             
             .bottom-nav {
-                padding: 15px 0;
+                padding: 12px 20px;
+                width: 95%;
+            }
+            
+            .nav-item {
+                padding: 8px 12px;
+                min-width: auto;
             }
             
             .nav-text {
                 font-size: 0.9rem;
             }
             
-            .settings-grid {
+            .nav-icon {
+                font-size: 1.3rem;
+            }
+            
+            .modal-panel {
+                width: 95%;
+                max-height: 90vh;
+            }
+            
+            .modal-body {
+                padding: 20px;
+            }
+            
+            .creators-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .challenges-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .path-item {
+                flex-direction: column !important;
+                margin-bottom: 60px;
+            }
+            
+            .path-content {
+                width: 100%;
+                margin-top: 15px;
+            }
+            
+            .path-line {
+                left: 30px;
+            }
+            
+            .path-node {
+                left: 30px;
+            }
+            
+            .online-features {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
+    <!-- صفحه نمایش اولیه (اسپلش اسکرین) -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-light-rays">
+            <div class="splash-ray"></div>
+            <div class="splash-ray"></div>
+            <div class="splash-ray"></div>
+            <div class="splash-ray"></div>
+            <div class="splash-ray"></div>
+            <div class="splash-ray"></div>
+            <div class="splash-ray"></div>
+            <div class="splash-ray"></div>
+        </div>
+        <div class="splash-logo-container">
+            <div class="splash-glow"></div>
+            <img src="https://github.com/ahmadrezaei090-debug/sober/raw/main/InShot_%DB%B2%DB%B0%DB%B2%DB%B5%DB%B1%DB%B2%DB%B3%DB%B1_%DB%B0%DB%B1%DB%B1%DB%B4%DB%B1%DB%B9%DB%B0%DB%B7%DB%B8.jpg" alt="لوگو وید گیمز" class="splash-logo">
+        </div>
+        <div class="splash-text">وید گیمز</div>
+        <div class="splash-subtext">با افتخار تقدیم می‌کند</div>
+    </div>
+
     <!-- صفحه لودینگ -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-image"></div>
-        <div class="loading-text">در حال بارگذاری بازی هوشیار...</div>
+        <div class="loading-text">در حال بارگذاری...</div>
         <div class="loading-bar-container">
             <div class="loading-bar" id="loadingBar"></div>
         </div>
@@ -951,8 +1390,6 @@
 
     <!-- منوی اصلی -->
     <div class="main-menu" id="mainMenu">
-        <div class="menu-overlay"></div>
-        
         <div class="menu-header">
             <div class="logo-circle">
                 <div class="logo-half logo-black"></div>
@@ -967,201 +1404,466 @@
         
         <div class="menu-buttons">
             <button class="menu-btn start-btn" id="startBtn">
-                <i class="fas fa-play-circle"></i> شروع بازی
+                شروع بازی
             </button>
             <button class="menu-btn online-btn" id="onlineBtn">
-                <i class="fas fa-globe"></i> بازی آنلاین
+                بازی آنلاین
             </button>
         </div>
         
+        <!-- نوار پایین ساده‌شده -->
         <div class="bottom-nav">
-            <div class="nav-line"></div>
             <div class="nav-item" id="challengesBtn">
                 <i class="fas fa-trophy nav-icon"></i>
                 <div class="nav-text">چالش‌ها</div>
+                <div class="nav-notification">۳</div>
             </div>
             <div class="nav-item" id="pathsBtn">
-                <i class="fas fa-map-signs nav-icon"></i>
+                <i class="fas fa-road nav-icon"></i>
                 <div class="nav-text">مسیرها</div>
             </div>
             <div class="nav-item" id="ticketsBtn">
                 <i class="fas fa-ticket-alt nav-icon"></i>
                 <div class="nav-text">بلیط</div>
+                <div class="nav-notification">۵</div>
+            </div>
+            <div class="nav-item" id="creatorsNavBtn">
+                <i class="fas fa-users nav-icon"></i>
+                <div class="nav-text">سازندگان</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- پنل سازندگان -->
+    <div class="modal-overlay" id="creatorsOverlay"></div>
+    <div class="modal-panel" id="creatorsPanel">
+        <div class="modal-header">
+            <h2 class="modal-title">تیم سازندگان</h2>
+            <button class="close-modal" id="closeCreatorsBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="creators-grid">
+                <div class="creator-card">
+                    <div class="creator-avatar">
+                        <img src="https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile1.jpg" alt="طراح بازی">
+                    </div>
+                    <h3 class="creator-name">احمد رضایی</h3>
+                    <p class="creator-role">مدیر پروژه و طراح اصلی</p>
+                    <div class="creator-skills">
+                        <span class="skill-tag">Game Design</span>
+                        <span class="skill-tag">UI/UX</span>
+                        <span class="skill-tag">JavaScript</span>
+                    </div>
+                </div>
+                <div class="creator-card">
+                    <div class="creator-avatar">
+                        <img src="https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile2.jpg" alt="برنامه‌نویس">
+                    </div>
+                    <h3 class="creator-name">نیما محمدی</h3>
+                    <p class="creator-role">برنامه‌نویس ارشد</p>
+                    <div class="creator-skills">
+                        <span class="skill-tag">HTML5</span>
+                        <span class="skill-tag">CSS3</span>
+                        <span class="skill-tag">JavaScript</span>
+                    </div>
+                </div>
+                <div class="creator-card">
+                    <div class="creator-avatar">
+                        <img src="https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile3.jpg" alt="گرافیست">
+                    </div>
+                    <h3 class="creator-name">سارا کریمی</h3>
+                    <p class="creator-role">گرافیست و انیماتور</p>
+                    <div class="creator-skills">
+                        <span class="skill-tag">Illustration</span>
+                        <span class="skill-tag">Animation</span>
+                        <span class="skill-tag">UI Design</span>
+                    </div>
+                </div>
+                <div class="creator-card">
+                    <div class="creator-avatar">
+                        <img src="https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile4.jpg" alt="تست‌کننده">
+                    </div>
+                    <h3 class="creator-name">مهران جعفری</h3>
+                    <p class="creator-role">تست و کنترل کیفیت</p>
+                    <div class="creator-skills">
+                        <span class="skill-tag">QA Testing</span>
+                        <span class="skill-tag">Bug Tracking</span>
+                        <span class="skill-tag">User Feedback</span>
+                    </div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+                <p style="color: #aaa; font-size: 1rem;">
+                    بازی هوشیار با ❤️ توسط تیم ایرانی توسعه داده شده است.<br>
+                    نسخه فعلی: ۱.۰.۰ | آخرین بروزرسانی: دی ۱۴۰۳
+                </p>
             </div>
         </div>
     </div>
 
     <!-- پنل انتخاب بازی -->
-    <div class="game-select-panel" id="gameSelectPanel">
-        <div class="panel-header">
-            <h2 class="panel-title">انتخاب نوع بازی</h2>
-            <button class="close-panel" id="closePanelBtn">
+    <div class="modal-overlay" id="gameSelectOverlay"></div>
+    <div class="modal-panel" id="gameSelectPanel">
+        <div class="modal-header">
+            <h2 class="modal-title">انتخاب نوع بازی</h2>
+            <button class="close-modal" id="closeGameSelectBtn">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        
-        <div class="game-options-panel">
-            <div class="game-option-card" id="twoHalfGameOption">
-                <div class="game-icon-container">
-                    <i class="fas fa-brain game-option-icon"></i>
-                </div>
-                <div class="game-option-content">
+        <div class="modal-body">
+            <div class="game-options-grid">
+                <div class="game-option-card" id="twoHalfGame">
+                    <div class="game-option-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
                     <h3 class="game-option-title">دو نیم فلش</h3>
-                    <p class="game-option-desc">در این حالت، چیستان نمایش داده می‌شود و شما باید پاسخ را تایپ کنید. هر سوال ۱۷ ثانیه زمان دارد و ۳ جان در اختیار دارید.</p>
-                    <div class="game-stats">
-                        <span class="game-stat">۱۷ ثانیه</span>
-                        <span class="game-stat">۳ جان</span>
-                        <span class="game-stat">۷۰ سوال</span>
+                    <p class="game-option-desc">
+                        در این حالت، چیستان نمایش داده می‌شود و شما باید پاسخ را تایپ کنید. 
+                        برای هر سوال ۱۷ ثانیه وقت دارید و ۳ جان در اختیار شماست.
+                    </p>
+                    <ul class="game-option-features">
+                        <li>زمان محدود ۱۷ ثانیه‌ای</li>
+                        <li>۳ جان برای هر بازی</li>
+                        <li>۷۰ سوال متنوع</li>
+                        <li>سیستم امتیازدهی پیشرفته</li>
+                    </ul>
+                </div>
+                
+                <div class="game-option-card" id="twoOldGame">
+                    <div class="game-option-icon">
+                        <i class="fas fa-question-circle"></i>
                     </div>
-                </div>
-            </div>
-            
-            <div class="game-option-card" id="twoOldGameOption">
-                <div class="game-icon-container">
-                    <i class="fas fa-question-circle game-option-icon"></i>
-                </div>
-                <div class="game-option-content">
                     <h3 class="game-option-title">دو اولد</h3>
-                    <p class="game-option-desc">در این حالت، چیستان با چهار گزینه نمایش داده می‌شود. شما باید گزینه درست را انتخاب کنید. هیچ محدودیت زمانی و جانی وجود ندارد.</p>
-                    <div class="game-stats">
-                        <span class="game-stat">بدون زمان</span>
-                        <span class="game-stat">بدون محدودیت جان</span>
-                        <span class="game-stat">۷۰ سوال</span>
-                    </div>
+                    <p class="game-option-desc">
+                        در این حالت، چیستان با چهار گزینه نمایش داده می‌شود. 
+                        شما باید گزینه درست را انتخاب کنید. هیچ محدودیت زمانی و جانی در این حالت وجود ندارد.
+                    </p>
+                    <ul class="game-option-features">
+                        <li>بدون محدودیت زمانی</li>
+                        <li>۴ گزینه برای هر سوال</li>
+                        <li>۷۰ سوال چالش‌برانگیز</li>
+                        <li>مناسب برای تمرین ذهن</li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- صفحه تنظیمات -->
-    <div class="settings-panel" id="settingsPanel">
-        <div class="settings-header">
-            <h2 class="settings-title">تنظیمات بازی</h2>
-            <button class="close-settings" id="closeSettingsBtn">
+    <!-- پنل تنظیمات -->
+    <div class="modal-overlay" id="settingsOverlay"></div>
+    <div class="modal-panel" id="settingsPanel">
+        <div class="modal-header">
+            <h2 class="modal-title">تنظیمات</h2>
+            <button class="close-modal" id="closeSettingsBtn">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-        
-        <div class="settings-sections">
-            <div class="settings-section">
-                <h3 class="section-title">اطلاعات و پشتیبانی</h3>
-                <div class="settings-grid">
-                    <div class="settings-item" id="contactItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-envelope"></i>
+        <div class="modal-body">
+            <div class="settings-options-grid">
+                <div class="settings-option-card" id="soundSetting">
+                    <div class="settings-option-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <div class="settings-option-content">
+                        <h3 class="settings-option-title">صدا</h3>
+                        <p class="settings-option-desc">تنظیمات صدا و موسیقی بازی</p>
+                    </div>
+                    <div class="settings-option-toggle active" id="soundToggle"></div>
+                </div>
+                
+                <div class="settings-option-card" id="musicSetting">
+                    <div class="settings-option-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <div class="settings-option-content">
+                        <h3 class="settings-option-title">موسیقی</h3>
+                        <p class="settings-option-desc">موسیقی پس‌زمینه بازی</p>
+                    </div>
+                    <div class="settings-option-toggle active" id="musicToggle"></div>
+                </div>
+                
+                <div class="settings-option-card" id="notificationsSetting">
+                    <div class="settings-option-icon">
+                        <i class="fas fa-bell"></i>
+                    </div>
+                    <div class="settings-option-content">
+                        <h3 class="settings-option-title">اعلان‌ها</h3>
+                        <p class="settings-option-desc">اعلان‌های بازی و رویدادها</p>
+                    </div>
+                    <div class="settings-option-toggle" id="notificationsToggle"></div>
+                </div>
+                
+                <div class="settings-option-card" id="vibrationSetting">
+                    <div class="settings-option-icon">
+                        <i class="fas fa-vibration"></i>
+                    </div>
+                    <div class="settings-option-content">
+                        <h3 class="settings-option-title">لرزش</h3>
+                        <p class="settings-option-desc">فیدبک لمسی برای اقدامات بازی</p>
+                    </div>
+                    <div class="settings-option-toggle active" id="vibrationToggle"></div>
+                </div>
+                
+                <div class="settings-option-card" id="graphicsSetting">
+                    <div class="settings-option-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <div class="settings-option-content">
+                        <h3 class="settings-option-title">گرافیک</h3>
+                        <p class="settings-option-desc">کیفیت گرافیکی بازی</p>
+                    </div>
+                    <div class="settings-option-toggle active" id="graphicsToggle"></div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+                <p style="color: #aaa; font-size: 0.9rem;">
+                    تغییرات به صورت خودکار ذخیره می‌شوند
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- پنل چالش‌ها -->
+    <div class="modal-overlay" id="challengesOverlay"></div>
+    <div class="modal-panel" id="challengesPanel">
+        <div class="modal-header">
+            <h2 class="modal-title">چالش‌های روزانه</h2>
+            <button class="close-modal" id="closeChallengesBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="challenges-grid">
+                <div class="challenge-card">
+                    <div class="challenge-badge">ساده</div>
+                    <div class="challenge-icon">
+                        <i class="fas fa-play-circle"></i>
+                    </div>
+                    <h3 class="challenge-title">شروع بازی</h3>
+                    <p class="challenge-desc">۵ بار بازی را شروع کنید</p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 60%"></div>
+                    </div>
+                    <div class="challenge-status">۳/۵ تکمیل شده</div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="challenge-badge">متوسط</div>
+                    <div class="challenge-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="challenge-title">امتیازدهی</h3>
+                    <p class="challenge-desc">۵۰۰ امتیاز کسب کنید</p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 80%"></div>
+                    </div>
+                    <div class="challenge-status">۴۰۰/۵۰۰ امتیاز</div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="challenge-badge">دشوار</div>
+                    <div class="challenge-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h3 class="challenge-title">قهرمان</h3>
+                    <p class="challenge-desc">۳ بازی را بدون از دست دادن جان به پایان برسانید</p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 33%"></div>
+                    </div>
+                    <div class="challenge-status">۱/۳ تکمیل شده</div>
+                </div>
+                
+                <div class="challenge-card">
+                    <div class="challenge-badge">ساده</div>
+                    <div class="challenge-icon">
+                        <i class="fas fa-share-alt"></i>
+                    </div>
+                    <h3 class="challenge-title">اشتراک‌گذاری</h3>
+                    <p class="challenge-desc">بازی را با دوستان خود به اشتراک بگذارید</p>
+                    <div class="challenge-progress">
+                        <div class="challenge-progress-bar" style="width: 0%"></div>
+                    </div>
+                    <div class="challenge-status">تکمیل نشده</div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+                <p style="color: #aaa; font-size: 0.9rem;">
+                    چالش‌ها هر روز به‌روزرسانی می‌شوند. جوایز در پایان روز اعطا می‌شوند.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- پنل مسیرها -->
+    <div class="modal-overlay" id="pathsOverlay"></div>
+    <div class="modal-panel" id="pathsPanel">
+        <div class="modal-header">
+            <h2 class="modal-title">مسیرهای پیشرفت</h2>
+            <button class="close-modal" id="closePathsBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="paths-container">
+                <div class="path-track">
+                    <div class="path-line"></div>
+                    
+                    <div class="path-item active">
+                        <div class="path-content">
+                            <h3 class="path-title">شروع سفر</h3>
+                            <p class="path-desc">اولین بازی خود را به پایان برسانید</p>
                         </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">ارتباط با ما</h4>
-                            <p class="settings-item-desc">تماس با تیم پشتیبانی بازی</p>
-                        </div>
+                        <div class="path-node"></div>
                     </div>
                     
-                    <div class="settings-item" id="creatorsItem">
-                        <div class="settings-icon">
+                    <div class="path-item">
+                        <div class="path-content">
+                            <h3 class="path-title">حل‌کننده پازل</h3>
+                            <p class="path-desc">۵۰ سوال را به درستی پاسخ دهید</p>
+                        </div>
+                        <div class="path-node"></div>
+                    </div>
+                    
+                    <div class="path-item">
+                        <div class="path-content">
+                            <h3 class="path-title">استاد معما</h3>
+                            <p class="path-desc">۱۰۰۰ امتیاز کسب کنید</p>
+                        </div>
+                        <div class="path-node"></div>
+                    </div>
+                    
+                    <div class="path-item">
+                        <div class="path-content">
+                            <h3 class="path-title">قهرمان هوشیاری</h3>
+                            <p class="path-desc">۱۰ بازی را بدون اشتباه به پایان برسانید</p>
+                        </div>
+                        <div class="path-node"></div>
+                    </div>
+                    
+                    <div class="path-item">
+                        <div class="path-content">
+                            <h3 class="path-title">اسطوره</h3>
+                            <p class="path-desc">به سطح ۱۰۰ برسید و تمام چالش‌ها را کامل کنید</p>
+                        </div>
+                        <div class="path-node"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+                <p style="color: #aaa; font-size: 0.9rem;">
+                    با پیشرفت در مسیرها، جوایز ویژه و قابلیت‌های جدید دریافت خواهید کرد.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- پنل بلیط -->
+    <div class="modal-overlay" id="ticketsOverlay"></div>
+    <div class="modal-panel" id="ticketsPanel">
+        <div class="modal-header">
+            <h2 class="modal-title">بلیط‌های شما</h2>
+            <button class="close-modal" id="closeTicketsBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="tickets-container">
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <div class="ticket-type">بلیط معمولی</div>
+                        <div class="ticket-count">۵</div>
+                    </div>
+                    <ul class="ticket-features">
+                        <li>قابلیت استفاده در تمام حالت‌های بازی</li>
+                        <li>هر بار بازی یک بلیط مصرف می‌شود</li>
+                        <li>هر ۲ ساعت یک بلیط رایگان دریافت کنید</li>
+                    </ul>
+                    <div class="ticket-actions">
+                        <button class="ticket-btn">خرید بلیط</button>
+                        <button class="ticket-btn">هدیه دادن</button>
+                    </div>
+                </div>
+                
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <div class="ticket-type">بلیط ویژه</div>
+                        <div class="ticket-count">۲</div>
+                    </div>
+                    <ul class="ticket-features">
+                        <li>امتیاز ۲ برابر در بازی</li>
+                        <li>زمان اضافی در بازی</li>
+                        <li>قابلیت استفاده در مسابقات ویژه</li>
+                    </ul>
+                    <div class="ticket-actions">
+                        <button class="ticket-btn">خرید ویژه</button>
+                        <button class="ticket-btn">اطلاعات بیشتر</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+                <p style="color: #aaa; font-size: 0.9rem;">
+                    بلیط‌ها هر ۲ ساعت یکبار شارژ می‌شوند. حداکثر تعداد بلیط قابل ذخیره: ۱۰ عدد
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- پنل بازی آنلاین -->
+    <div class="modal-overlay" id="onlineOverlay"></div>
+    <div class="modal-panel" id="onlinePanel">
+        <div class="modal-header">
+            <h2 class="modal-title">بازی آنلاین</h2>
+            <button class="close-modal" id="closeOnlineBtn">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="online-status">
+                <div class="online-icon">
+                    <i class="fas fa-globe"></i>
+                </div>
+                <h2 class="online-title">به زودی...</h2>
+                <p class="online-desc">
+                    در حال حاضر قابلیت بازی آنلاین در دست توسعه است. به زودی می‌توانید با دوستان خود به رقابت بپردازید و در مسابقات جهانی شرکت کنید.
+                </p>
+                
+                <div class="online-features">
+                    <div class="online-feature">
+                        <div class="online-feature-icon">
                             <i class="fas fa-users"></i>
                         </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">سازندگان</h4>
-                            <p class="settings-item-desc">معرفی تیم توسعه‌دهنده بازی</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">ویژگی‌های بازی</h3>
-                <div class="settings-grid">
-                    <div class="settings-item" id="motionGraphicsItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-film"></i>
-                        </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">موشن گرافیک</h4>
-                            <p class="settings-item-desc">فعال‌سازی افکت‌های بصری پیشرفته</p>
-                            <span class="soon-badge">به زودی</span>
-                        </div>
+                        <h3 class="online-feature-title">بازی با دوستان</h3>
+                        <p class="online-feature-desc">با دوستان خود به رقابت بپردازید</p>
                     </div>
                     
-                    <div class="settings-item" id="soundEffectsItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-volume-up"></i>
-                        </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">افکت‌های صوتی</h4>
-                            <p class="settings-item-desc">تنظیم صداها و موسیقی بازی</p>
-                            <span class="soon-badge">به زودی</span>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-item" id="graphicsItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-palette"></i>
-                        </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">گرافیک و کیفیت</h4>
-                            <p class="settings-item-desc">تنظیمات کیفیت گرافیکی بازی</p>
-                            <span class="soon-badge">به زودی</span>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-item" id="controlsItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-gamepad"></i>
-                        </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">کنترل‌ها</h4>
-                            <p class="settings-item-desc">تنظیمات کنترل و ورودی‌ها</p>
-                            <span class="soon-badge">به زودی</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="settings-section">
-                <h3 class="section-title">امکانات آینده</h3>
-                <div class="settings-grid">
-                    <div class="settings-item" id="multiplayerItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-user-friends"></i>
-                        </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">حالت چندنفره</h4>
-                            <p class="settings-item-desc">بازی با دوستان و کاربران دیگر</p>
-                            <span class="soon-badge">به زودی</span>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-item" id="dailyChallengesItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">چالش‌های روزانه</h4>
-                            <p class="settings-item-desc">چالش‌های جدید هر روز</p>
-                            <span class="soon-badge">به زودی</span>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-item" id="leaderboardsItem">
-                        <div class="settings-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">جدول رتبه‌بندی</h4>
-                            <p class="settings-item-desc">مقایسه امتیازات با دیگران</p>
-                            <span class="soon-badge">به زودی</span>
-                        </div>
-                    </div>
-                    
-                    <div class="settings-item" id="achievementsItem">
-                        <div class="settings-icon">
+                    <div class="online-feature">
+                        <div class="online-feature-icon">
                             <i class="fas fa-trophy"></i>
                         </div>
-                        <div class="settings-item-content">
-                            <h4 class="settings-item-title">دستاوردها</h4>
-                            <p class="settings-item-desc">جمع‌آوری دستاوردهای مختلف</p>
-                            <span class="soon-badge">به زودی</span>
+                        <h3 class="online-feature-title">مسابقات جهانی</h3>
+                        <p class="online-feature-desc">در مسابقات بین‌المللی شرکت کنید</p>
+                    </div>
+                    
+                    <div class="online-feature">
+                        <div class="online-feature-icon">
+                            <i class="fas fa-chart-line"></i>
                         </div>
+                        <h3 class="online-feature-title">جدول امتیازات</h3>
+                        <p class="online-feature-desc">رتبه خود را در بین بازیکنان مشاهده کنید</p>
+                    </div>
+                    
+                    <div class="online-feature">
+                        <div class="online-feature-icon">
+                            <i class="fas fa-gift"></i>
+                        </div>
+                        <h3 class="online-feature-title">جوایز ویژه</h3>
+                        <p class="online-feature-desc">جوایز منحصربه‌فرد برای برندگان</p>
                     </div>
                 </div>
             </div>
@@ -1170,76 +1872,67 @@
 
     <!-- صفحه بازی دو نیم فلش -->
     <div class="game-screen" id="twoHalfGameScreen">
-        <button class="back-btn" id="backToPanelBtn">
+        <button class="back-to-menu" id="backToGameSelectBtn">
             <i class="fas fa-arrow-right"></i>
         </button>
         
         <div class="game-header">
-            <div class="game-stats-container">
-                <div class="game-stat-box">
+            <div class="game-stats">
+                <div class="stat">
                     <div class="stat-value" id="timer">۱۷</div>
                     <div class="stat-label">ثانیه باقی‌مانده</div>
                 </div>
-                <div class="game-stat-box">
+                <div class="stat">
                     <div class="stat-value" id="questionNum">۱/۷۰</div>
-                    <div class="stat-label">شماره سوال</div>
+                    <div class="stat-label">سوال</div>
                 </div>
-                <div class="game-stat-box">
+                <div class="stat">
                     <div class="stat-value" id="score">۰</div>
                     <div class="stat-label">امتیاز</div>
                 </div>
             </div>
             
-            <div class="hearts-container" id="heartsContainer">
+            <div class="hearts" id="heartsContainer">
                 <i class="fas fa-heart heart"></i>
                 <i class="fas fa-heart heart"></i>
                 <i class="fas fa-heart heart"></i>
             </div>
         </div>
         
-        <div class="game-content">
-            <div class="question-container">
-                <div class="question-text" id="twoHalfQuestion">سوال اینجا نمایش داده می‌شود</div>
-            </div>
-            
+        <div class="game-question">
+            <div class="question-text" id="twoHalfQuestion">سوال اینجا نمایش داده می‌شود</div>
             <input type="text" class="answer-input" id="answerInput" placeholder="پاسخ خود را اینجا تایپ کنید...">
             
             <div class="game-controls">
-                <button class="control-btn submit-btn" id="submitAnswerBtn">
-                    <i class="fas fa-paper-plane"></i> ثبت پاسخ
-                </button>
-                <button class="control-btn skip-btn" id="skipQuestionBtn">
-                    <i class="fas fa-forward"></i> رد کردن سوال
-                </button>
+                <button class="control-btn submit-btn" id="submitAnswerBtn">ثبت پاسخ</button>
+                <button class="control-btn skip-btn" id="skipQuestionBtn">رد کردن سوال</button>
             </div>
         </div>
     </div>
 
     <!-- صفحه بازی دو اولد -->
     <div class="game-screen" id="twoOldGameScreen">
-        <button class="back-btn" id="backToPanelBtn2">
+        <button class="back-to-menu" id="backToGameSelectBtn2">
             <i class="fas fa-arrow-right"></i>
         </button>
         
         <div class="game-header">
-            <div class="game-stats-container">
-                <div class="game-stat-box">
+            <div class="game-stats">
+                <div class="stat">
                     <div class="stat-value" id="twoOldQuestionNum">۱/۷۰</div>
-                    <div class="stat-label">شماره سوال</div>
+                    <div class="stat-label">سوال</div>
                 </div>
-                <div class="game-stat-box">
+                <div class="stat">
                     <div class="stat-value" id="twoOldScore">۰</div>
                     <div class="stat-label">امتیاز</div>
                 </div>
             </div>
         </div>
         
-        <div class="game-content">
-            <div class="question-container">
-                <div class="question-text" id="twoOldQuestion">سوال اینجا نمایش داده می‌شود</div>
-            </div>
+        <div class="game-question">
+            <div class="question-text" id="twoOldQuestion">سوال اینجا نمایش داده می‌شود</div>
             
-            <div class="options-grid" id="optionsContainer">
+            <div class="options-container" id="optionsContainer">
                 <button class="option-btn" data-option="1">گزینه اول</button>
                 <button class="option-btn" data-option="2">گزینه دوم</button>
                 <button class="option-btn" data-option="3">گزینه سوم</button>
@@ -1261,7 +1954,6 @@
             "روز می‌آید و شب می‌رود، اما هرگز نمی‌توانی ببینی. چیست؟",
             "هر چه بیشتر از آن بردارید، بزرگتر می‌شود. چیست؟",
             "می‌تواند سفر کند به دور دنیا در حالی که در یک گوشه باقی می‌ماند. چیست؟",
-            // 60 سوال دیگر
         ];
 
         const twoOldQuestions = [
@@ -1290,37 +1982,68 @@
                 options: ["سبز", "قرمز", "زرد", "نارنجی"],
                 correct: 4
             },
-            // 65 سوال دیگر
         ];
 
-        // تکمیل داده‌ها به ۷۰ سوال
+        // تکمیل داده‌های نمونه
         for (let i = 6; i <= 70; i++) {
-            twoHalfQuestions.push(`سوال نمونه ${i}: چیزی که می‌تواند بالا برود اما هرگز پایین نمی‌آید چیست؟`);
+            twoHalfQuestions.push(`سوال نمونه ${i} برای دو نیم فلش: هر چه بیشتر از آن بگیری، بیشتر باقی می‌ماند؟`);
             
             twoOldQuestions.push({
-                question: `سوال نمونه ${i}: بزرگ‌ترین اقیانوس جهان کدام است؟`,
-                options: ["اقیانوس آرام", "اقیانوس اطلس", "اقیانوس هند", "اقیانوس منجمد شمالی"],
-                correct: 1
+                question: `سوال نمونه ${i} برای دو اولد: کدام گزینه صحیح است؟`,
+                options: [`گزینه الف برای سوال ${i}`, `گزینه ب برای سوال ${i}`, `گزینه ج برای سوال ${i}`, `گزینه د برای سوال ${i}`],
+                correct: Math.floor(Math.random() * 4) + 1
             });
         }
 
         // عناصر DOM
+        const splashScreen = document.getElementById('splashScreen');
         const loadingScreen = document.getElementById('loadingScreen');
         const loadingBar = document.getElementById('loadingBar');
         const mainMenu = document.getElementById('mainMenu');
         const settingsBtn = document.getElementById('settingsBtn');
-        const settingsPanel = document.getElementById('settingsPanel');
-        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
         const startBtn = document.getElementById('startBtn');
         const onlineBtn = document.getElementById('onlineBtn');
+        
+        // پنل‌ها و overlay‌ها
+        const creatorsPanel = document.getElementById('creatorsPanel');
+        const creatorsOverlay = document.getElementById('creatorsOverlay');
+        const closeCreatorsBtn = document.getElementById('closeCreatorsBtn');
+        const creatorsNavBtn = document.getElementById('creatorsNavBtn');
+        
         const gameSelectPanel = document.getElementById('gameSelectPanel');
-        const closePanelBtn = document.getElementById('closePanelBtn');
-        const twoHalfGameOption = document.getElementById('twoHalfGameOption');
-        const twoOldGameOption = document.getElementById('twoOldGameOption');
+        const gameSelectOverlay = document.getElementById('gameSelectOverlay');
+        const closeGameSelectBtn = document.getElementById('closeGameSelectBtn');
+        
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsOverlay = document.getElementById('settingsOverlay');
+        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+        
+        const challengesPanel = document.getElementById('challengesPanel');
+        const challengesOverlay = document.getElementById('challengesOverlay');
+        const closeChallengesBtn = document.getElementById('closeChallengesBtn');
+        const challengesNavBtn = document.getElementById('challengesBtn');
+        
+        const pathsPanel = document.getElementById('pathsPanel');
+        const pathsOverlay = document.getElementById('pathsOverlay');
+        const closePathsBtn = document.getElementById('closePathsBtn');
+        const pathsNavBtn = document.getElementById('pathsBtn');
+        
+        const ticketsPanel = document.getElementById('ticketsPanel');
+        const ticketsOverlay = document.getElementById('ticketsOverlay');
+        const closeTicketsBtn = document.getElementById('closeTicketsBtn');
+        const ticketsNavBtn = document.getElementById('ticketsBtn');
+        
+        const onlinePanel = document.getElementById('onlinePanel');
+        const onlineOverlay = document.getElementById('onlineOverlay');
+        const closeOnlineBtn = document.getElementById('closeOnlineBtn');
+        
+        // عناصر بازی
+        const twoHalfGame = document.getElementById('twoHalfGame');
+        const twoOldGame = document.getElementById('twoOldGame');
         const twoHalfGameScreen = document.getElementById('twoHalfGameScreen');
         const twoOldGameScreen = document.getElementById('twoOldGameScreen');
-        const backToPanelBtn = document.getElementById('backToPanelBtn');
-        const backToPanelBtn2 = document.getElementById('backToPanelBtn2');
+        const backToGameSelectBtn = document.getElementById('backToGameSelectBtn');
+        const backToGameSelectBtn2 = document.getElementById('backToGameSelectBtn2');
         const answerInput = document.getElementById('answerInput');
         const submitAnswerBtn = document.getElementById('submitAnswerBtn');
         const skipQuestionBtn = document.getElementById('skipQuestionBtn');
@@ -1334,22 +2057,12 @@
         const twoOldQuestionNumElement = document.getElementById('twoOldQuestionNum');
         const twoOldScoreElement = document.getElementById('twoOldScore');
 
-        // عناصر منوی پایین
-        const challengesBtn = document.getElementById('challengesBtn');
-        const pathsBtn = document.getElementById('pathsBtn');
-        const ticketsBtn = document.getElementById('ticketsBtn');
-
-        // عناصر تنظیمات
-        const contactItem = document.getElementById('contactItem');
-        const creatorsItem = document.getElementById('creatorsItem');
-        const motionGraphicsItem = document.getElementById('motionGraphicsItem');
-        const soundEffectsItem = document.getElementById('soundEffectsItem');
-        const graphicsItem = document.getElementById('graphicsItem');
-        const controlsItem = document.getElementById('controlsItem');
-        const multiplayerItem = document.getElementById('multiplayerItem');
-        const dailyChallengesItem = document.getElementById('dailyChallengesItem');
-        const leaderboardsItem = document.getElementById('leaderboardsItem');
-        const achievementsItem = document.getElementById('achievementsItem');
+        // تنظیمات
+        const soundToggle = document.getElementById('soundToggle');
+        const musicToggle = document.getElementById('musicToggle');
+        const notificationsToggle = document.getElementById('notificationsToggle');
+        const vibrationToggle = document.getElementById('vibrationToggle');
+        const graphicsToggle = document.getElementById('graphicsToggle');
 
         // متغیرهای حالت بازی
         let currentGame = null;
@@ -1359,13 +2072,68 @@
         let timer = 17;
         let timerInterval = null;
         let imagesLoaded = 0;
-        const totalImages = 2;
+        let totalImages = 5;
 
         // لیست تصاویر برای چک کردن لود شدن
         const imagesToLoad = [
+            'https://github.com/ahmadrezaei090-debug/sober/raw/main/InShot_%DB%B2%DB%B0%DB%B2%DB%B5%DB%B1%DB%B2%DB%B3%DB%B1_%DB%B0%DB%B1%DB%B1%DB%B4%DB%B1%DB%B9%DB%B0%DB%B7%DB%B8.jpg',
             'https://raw.githubusercontent.com/ahmadrezaei090-debug/soberWeb/main/negin-art-1764247215354.png',
-            'https://raw.githubusercontent.com/ahmadrezaei090-debug/Iran-rap/main/-2147483648_-219133.jpg'
+            'https://raw.githubusercontent.com/ahmadrezaei090-debug/Iran-rap/main/-2147483648_-219133.jpg',
+            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile1.jpg',
+            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile2.jpg'
         ];
+
+        // تابع‌های نمایش پنل
+        function showModal(panel, overlay) {
+            overlay.classList.add('active');
+            panel.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function hideModal(panel, overlay) {
+            panel.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // پنهان کردن تمام overlay‌ها
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.classList.remove('active');
+            });
+            
+            // پنهان کردن تمام پنل‌ها
+            document.querySelectorAll('.modal-panel').forEach(panel => {
+                panel.classList.remove('active');
+            });
+        }
+
+        // نمایش پنل‌های مختلف
+        function showCreatorsPanel() {
+            showModal(creatorsPanel, creatorsOverlay);
+        }
+
+        function showGameSelectPanel() {
+            showModal(gameSelectPanel, gameSelectOverlay);
+        }
+
+        function showSettingsPanel() {
+            showModal(settingsPanel, settingsOverlay);
+        }
+
+        function showChallengesPanel() {
+            showModal(challengesPanel, challengesOverlay);
+        }
+
+        function showPathsPanel() {
+            showModal(pathsPanel, pathsOverlay);
+        }
+
+        function showTicketsPanel() {
+            showModal(ticketsPanel, ticketsOverlay);
+        }
+
+        function showOnlinePanel() {
+            showModal(onlinePanel, onlineOverlay);
+        }
 
         // بررسی لود شدن تصاویر
         function checkImagesLoaded() {
@@ -1401,40 +2169,6 @@
             }, 50);
         }
 
-        // نمایش پنل انتخاب بازی
-        function showGameSelectPanel() {
-            gameSelectPanel.classList.add('active');
-            gameSelectPanel.style.display = 'flex';
-            setTimeout(() => {
-                gameSelectPanel.style.bottom = '0';
-            }, 10);
-        }
-
-        // مخفی کردن پنل انتخاب بازی
-        function hideGameSelectPanel() {
-            gameSelectPanel.style.bottom = '-100%';
-            setTimeout(() => {
-                gameSelectPanel.classList.remove('active');
-                gameSelectPanel.style.display = 'none';
-            }, 700);
-        }
-
-        // نمایش صفحه تنظیمات
-        function showSettingsPanel() {
-            settingsPanel.style.display = 'flex';
-            setTimeout(() => {
-                settingsPanel.classList.add('active');
-            }, 10);
-        }
-
-        // مخفی کردن صفحه تنظیمات
-        function hideSettingsPanel() {
-            settingsPanel.classList.remove('active');
-            setTimeout(() => {
-                settingsPanel.style.display = 'none';
-            }, 500);
-        }
-
         // شروع بازی دو نیم فلش
         function startTwoHalfGame() {
             currentGame = 'twoHalf';
@@ -1442,7 +2176,7 @@
             score = 0;
             lives = 3;
             
-            hideGameSelectPanel();
+            hideModal(gameSelectPanel, gameSelectOverlay);
             
             setTimeout(() => {
                 twoHalfGameScreen.style.display = 'flex';
@@ -1451,7 +2185,7 @@
                     loadTwoHalfQuestion();
                     startTimer();
                 }, 50);
-            }, 700);
+            }, 300);
         }
 
         // شروع بازی دو اولد
@@ -1460,7 +2194,7 @@
             currentQuestionIndex = 0;
             score = 0;
             
-            hideGameSelectPanel();
+            hideModal(gameSelectPanel, gameSelectOverlay);
             
             setTimeout(() => {
                 twoOldGameScreen.style.display = 'flex';
@@ -1468,7 +2202,7 @@
                     twoOldGameScreen.style.opacity = '1';
                     loadTwoOldQuestion();
                 }, 50);
-            }, 700);
+            }, 300);
         }
 
         // بارگذاری سوال دو نیم فلش
@@ -1504,7 +2238,6 @@
                 btn.textContent = question.options[index];
                 btn.classList.remove('correct', 'incorrect');
                 btn.disabled = false;
-                btn.style.opacity = '1';
             });
         }
 
@@ -1515,11 +2248,6 @@
             timerInterval = setInterval(() => {
                 timer--;
                 timerElement.textContent = timer;
-                
-                if (timer <= 5) {
-                    timerElement.style.color = '#ff4757';
-                    timerElement.classList.add('pulse');
-                }
                 
                 if (timer <= 0) {
                     clearInterval(timerInterval);
@@ -1532,9 +2260,6 @@
         function resetTimer() {
             timer = 17;
             timerElement.textContent = timer;
-            timerElement.style.color = '#D4AF37';
-            timerElement.classList.remove('pulse');
-            
             if (currentGame === 'twoHalf') {
                 startTimer();
             }
@@ -1586,12 +2311,12 @@
                 score += 10;
                 scoreElement.textContent = score;
                 answerInput.style.borderColor = '#2ecc71';
-                answerInput.style.boxShadow = '0 0 25px rgba(46, 204, 113, 0.7)';
+                answerInput.style.boxShadow = '0 0 10px rgba(46, 204, 113, 0.5)';
             } else {
                 lives--;
                 updateHearts();
                 answerInput.style.borderColor = '#e74c3c';
-                answerInput.style.boxShadow = '0 0 25px rgba(231, 76, 60, 0.7)';
+                answerInput.style.boxShadow = '0 0 10px rgba(231, 76, 60, 0.5)';
                 
                 if (lives <= 0) {
                     setTimeout(() => {
@@ -1605,7 +2330,7 @@
                 currentQuestionIndex++;
                 loadTwoHalfQuestion();
                 answerInput.style.borderColor = '#D4AF37';
-                answerInput.style.boxShadow = '0 0 20px rgba(212, 175, 55, 0.2)';
+                answerInput.style.boxShadow = 'none';
             }, 1500);
         }
 
@@ -1620,16 +2345,12 @@
             });
             
             if (selectedOption === question.correct) {
-                selectedButton.style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
-                selectedButton.style.color = 'white';
+                selectedButton.classList.add('correct');
                 score += 10;
                 twoOldScoreElement.textContent = score;
             } else {
-                selectedButton.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
-                selectedButton.style.color = 'white';
-                
-                optionButtons[question.correct - 1].style.background = 'linear-gradient(135deg, #2ecc71, #27ae60)';
-                optionButtons[question.correct - 1].style.color = 'white';
+                selectedButton.classList.add('incorrect');
+                optionButtons[question.correct - 1].classList.add('correct');
             }
             
             setTimeout(() => {
@@ -1640,29 +2361,78 @@
 
         // پایان بازی
         function endGame() {
-            const gameType = currentGame === 'twoHalf' ? 'دو نیم فلش' : 'دو اولد';
-            const message = `بازی ${gameType} به پایان رسید!\nامتیاز شما: ${score}\nسوالات پاسخ داده شده: ${currentQuestionIndex}`;
+            // ایجاد پنل پایان بازی
+            createMessagePanel(
+                "پایان بازی!",
+                `بازی به پایان رسید! امتیاز شما: ${score}`,
+                "fas fa-trophy"
+            );
             
-            setTimeout(() => {
-                alert(message);
-                
-                if (currentGame === 'twoHalf') {
-                    twoHalfGameScreen.style.opacity = '0';
-                    setTimeout(() => {
-                        twoHalfGameScreen.style.display = 'none';
-                        showGameSelectPanel();
-                    }, 500);
-                } else {
-                    twoOldGameScreen.style.opacity = '0';
-                    setTimeout(() => {
-                        twoOldGameScreen.style.display = 'none';
-                        showGameSelectPanel();
-                    }, 500);
-                }
-            }, 1000);
+            if (currentGame === 'twoHalf') {
+                twoHalfGameScreen.style.opacity = '0';
+                setTimeout(() => {
+                    twoHalfGameScreen.style.display = 'none';
+                    showMainMenu();
+                }, 500);
+            } else {
+                twoOldGameScreen.style.opacity = '0';
+                setTimeout(() => {
+                    twoOldGameScreen.style.display = 'none';
+                    showMainMenu();
+                }, 500);
+            }
         }
 
-        // بازگشت به پنل انتخاب بازی
+        // ایجاد پنل پیام
+        function createMessagePanel(title, message, icon) {
+            const messagePanel = document.createElement('div');
+            messagePanel.className = 'modal-panel message-panel';
+            messagePanel.id = 'messagePanel';
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.id = 'messageOverlay';
+            
+            messagePanel.innerHTML = `
+                <div class="modal-header">
+                    <h2 class="modal-title">${title}</h2>
+                    <button class="close-modal" id="closeMessageBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="message-content">
+                        <div class="message-icon">
+                            <i class="${icon}"></i>
+                        </div>
+                        <h2 class="message-title">${title}</h2>
+                        <p class="message-text">${message}</p>
+                        <button class="ticket-btn" id="closeMessageBtn2" style="width: 200px; margin: 0 auto;">باشه</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            document.body.appendChild(messagePanel);
+            
+            const closeMessage = () => {
+                hideModal(messagePanel, overlay);
+                setTimeout(() => {
+                    messagePanel.remove();
+                    overlay.remove();
+                }, 300);
+            };
+            
+            setTimeout(() => {
+                showModal(messagePanel, overlay);
+                
+                document.getElementById('closeMessageBtn').addEventListener('click', closeMessage);
+                document.getElementById('closeMessageBtn2').addEventListener('click', closeMessage);
+                overlay.addEventListener('click', closeMessage);
+            }, 50);
+        }
+
+        // بازگشت از صفحه بازی به صفحه انتخاب بازی
         function backToGameSelect() {
             if (currentGame === 'twoHalf') {
                 twoHalfGameScreen.style.opacity = '0';
@@ -1679,26 +2449,66 @@
             }
         }
 
-        // نمایش پیام "به زودی"
-        function showSoonMessage(title) {
-            alert(`ویژگی "${title}" به زودی در دسترس خواهد بود!\nدر حال توسعه...`);
+        // شروع فرآیند نمایش اسپلش اسکرین
+        function startSplashScreen() {
+            // نمایش اسپلش اسکرین برای 3 ثانیه
+            setTimeout(() => {
+                splashScreen.style.opacity = '0';
+                setTimeout(() => {
+                    splashScreen.style.display = 'none';
+                    // نمایش صفحه لودینگ
+                    loadingScreen.style.display = 'flex';
+                    setTimeout(() => {
+                        loadingScreen.style.opacity = '1';
+                        // شروع لودینگ تصاویر
+                        checkImagesLoaded();
+                    }, 50);
+                }, 1000);
+            }, 3000);
         }
 
         // رویدادهای کلیک
         settingsBtn.addEventListener('click', showSettingsPanel);
-        closeSettingsBtn.addEventListener('click', hideSettingsPanel);
         startBtn.addEventListener('click', showGameSelectPanel);
+        onlineBtn.addEventListener('click', showOnlinePanel);
         
-        onlineBtn.addEventListener('click', () => {
-            showSoonMessage('بازی آنلاین');
-        });
+        // رویدادهای پنل سازندگان
+        creatorsNavBtn.addEventListener('click', showCreatorsPanel);
+        closeCreatorsBtn.addEventListener('click', () => hideModal(creatorsPanel, creatorsOverlay));
+        creatorsOverlay.addEventListener('click', () => hideModal(creatorsPanel, creatorsOverlay));
         
-        closePanelBtn.addEventListener('click', hideGameSelectPanel);
-        twoHalfGameOption.addEventListener('click', startTwoHalfGame);
-        twoOldGameOption.addEventListener('click', startTwoOldGame);
+        // رویدادهای پنل انتخاب بازی
+        closeGameSelectBtn.addEventListener('click', () => hideModal(gameSelectPanel, gameSelectOverlay));
+        gameSelectOverlay.addEventListener('click', () => hideModal(gameSelectPanel, gameSelectOverlay));
         
-        backToPanelBtn.addEventListener('click', backToGameSelect);
-        backToPanelBtn2.addEventListener('click', backToGameSelect);
+        twoHalfGame.addEventListener('click', startTwoHalfGame);
+        twoOldGame.addEventListener('click', startTwoOldGame);
+        
+        // رویدادهای پنل تنظیمات
+        closeSettingsBtn.addEventListener('click', () => hideModal(settingsPanel, settingsOverlay));
+        settingsOverlay.addEventListener('click', () => hideModal(settingsPanel, settingsOverlay));
+        
+        // رویدادهای پنل چالش‌ها
+        challengesNavBtn.addEventListener('click', showChallengesPanel);
+        closeChallengesBtn.addEventListener('click', () => hideModal(challengesPanel, challengesOverlay));
+        challengesOverlay.addEventListener('click', () => hideModal(challengesPanel, challengesOverlay));
+        
+        // رویدادهای پنل مسیرها
+        pathsNavBtn.addEventListener('click', showPathsPanel);
+        closePathsBtn.addEventListener('click', () => hideModal(pathsPanel, pathsOverlay));
+        pathsOverlay.addEventListener('click', () => hideModal(pathsPanel, pathsOverlay));
+        
+        // رویدادهای پنل بلیط
+        ticketsNavBtn.addEventListener('click', showTicketsPanel);
+        closeTicketsBtn.addEventListener('click', () => hideModal(ticketsPanel, ticketsOverlay));
+        ticketsOverlay.addEventListener('click', () => hideModal(ticketsPanel, ticketsOverlay));
+        
+        // رویدادهای پنل آنلاین
+        closeOnlineBtn.addEventListener('click', () => hideModal(onlinePanel, onlineOverlay));
+        onlineOverlay.addEventListener('click', () => hideModal(onlinePanel, onlineOverlay));
+        
+        backToGameSelectBtn.addEventListener('click', backToGameSelect);
+        backToGameSelectBtn2.addEventListener('click', backToGameSelect);
         
         submitAnswerBtn.addEventListener('click', checkAnswer);
         skipQuestionBtn.addEventListener('click', () => {
@@ -1720,68 +2530,35 @@
             }
         });
         
-        // رویدادهای منوی پایین
-        challengesBtn.addEventListener('click', () => {
-            showSoonMessage('چالش‌ها');
-        });
-        
-        pathsBtn.addEventListener('click', () => {
-            showSoonMessage('مسیرهای بازی');
-        });
-        
-        ticketsBtn.addEventListener('click', () => {
-            showSoonMessage('سیستم بلیط');
-        });
-        
         // رویدادهای تنظیمات
-        contactItem.addEventListener('click', () => {
-            alert('برای ارتباط با ما:\nایمیل: support@hoshyar-game.ir\nتلفن: ۰۲۱-۱۲۳۴۵۶۷۸\nساعات پاسخگویی: ۹ صبح تا ۵ بعدازظهر');
+        soundToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
         });
         
-        creatorsItem.addEventListener('click', () => {
-            alert('تیم توسعه‌دهندگان بازی هوشیار:\n\n• مدیر پروژه: رضا احمدی\n• طراح گرافیک: سارا محمدی\n• برنامه‌نویس: علی کریمی\n• طراح بازی: مریم حسینی\n\nاین بازی با عشق و افتخار در ایران توسعه یافته است.');
+        musicToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
         });
         
-        motionGraphicsItem.addEventListener('click', () => {
-            showSoonMessage('موشن گرافیک');
+        notificationsToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
         });
         
-        soundEffectsItem.addEventListener('click', () => {
-            showSoonMessage('افکت‌های صوتی');
+        vibrationToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
         });
         
-        graphicsItem.addEventListener('click', () => {
-            showSoonMessage('گرافیک و کیفیت');
-        });
-        
-        controlsItem.addEventListener('click', () => {
-            showSoonMessage('کنترل‌ها');
-        });
-        
-        multiplayerItem.addEventListener('click', () => {
-            showSoonMessage('حالت چندنفره');
-        });
-        
-        dailyChallengesItem.addEventListener('click', () => {
-            showSoonMessage('چالش‌های روزانه');
-        });
-        
-        leaderboardsItem.addEventListener('click', () => {
-            showSoonMessage('جدول رتبه‌بندی');
-        });
-        
-        achievementsItem.addEventListener('click', () => {
-            showSoonMessage('دستاوردها');
+        graphicsToggle.addEventListener('click', function() {
+            this.classList.toggle('active');
         });
 
-        // شروع فرآیند لودینگ
-        checkImagesLoaded();
+        // شروع فرآیند
+        startSplashScreen();
         
         // شبیه‌سازی لودینگ برای نمایش بهتر
         let simulatedProgress = 0;
         const simulateLoading = setInterval(() => {
-            simulatedProgress += Math.random() * 8;
-            if (simulatedProgress > 85) {
+            simulatedProgress += Math.random() * 10;
+            if (simulatedProgress > 90) {
                 clearInterval(simulateLoading);
             }
             if (simulatedProgress > 100) simulatedProgress = 100;
