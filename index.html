@@ -1070,8 +1070,9 @@
             justify-content: space-between;
             align-items: center;
             padding: 15px;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.9);
             border-bottom: 1px solid var(--gold);
+            z-index: 10;
         }
 
         .game-stats {
@@ -1096,6 +1097,7 @@
             color: #aaa;
         }
 
+        /* قسمت سوال و جواب با پس‌زمینه جدید */
         .game-question {
             flex-grow: 1;
             display: flex;
@@ -1104,6 +1106,27 @@
             align-items: center;
             padding: 25px;
             text-align: center;
+            background-image: url('https://raw.githubusercontent.com/ahmadrezaei090-debug/sober/main/IMG_%DB%B2%DB%B0%DB%B2%DB%B6%DB%B0%DB%B1%DB%B0%DB%B1_%DB%B1%DB%B7%DB%B3%DB%B4%DB%B0%DB%B5.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .game-question::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+
+        .game-question > * {
+            position: relative;
+            z-index: 2;
         }
 
         .question-text {
@@ -1111,6 +1134,8 @@
             margin-bottom: 30px;
             max-width: 800px;
             line-height: 1.5;
+            color: var(--white);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
         }
 
         .answer-input {
@@ -1118,17 +1143,19 @@
             max-width: 600px;
             padding: 15px;
             font-size: 1.3rem;
-            background-color: rgba(255, 255, 255, 0.1);
-            border: 1px solid var(--gold);
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--gold);
             border-radius: 10px;
             color: white;
             text-align: center;
             margin-bottom: 25px;
+            backdrop-filter: blur(5px);
         }
 
         .answer-input:focus {
             outline: none;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
+            background-color: rgba(0, 0, 0, 0.8);
         }
 
         .options-container {
@@ -1142,17 +1169,29 @@
         .option-btn {
             padding: 15px;
             font-size: 1.1rem;
-            background-color: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--light-gray);
+            background-color: rgba(0, 0, 0, 0.7);
+            border: 2px solid var(--gold);
             border-radius: 10px;
             color: white;
             cursor: pointer;
             transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
         }
 
         .option-btn:hover {
-            background-color: rgba(212, 175, 55, 0.2);
-            border-color: var(--gold);
+            background-color: rgba(212, 175, 55, 0.3);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .option-btn.correct {
+            background-color: rgba(46, 204, 113, 0.8);
+            border-color: #27ae60;
+        }
+
+        .option-btn.incorrect {
+            background-color: rgba(231, 76, 60, 0.8);
+            border-color: #c0392b;
         }
 
         .game-controls {
@@ -1160,6 +1199,8 @@
             display: flex;
             justify-content: center;
             gap: 15px;
+            position: relative;
+            z-index: 2;
         }
 
         .control-btn {
@@ -1178,9 +1219,19 @@
         }
 
         .skip-btn {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: white;
-            border: 1px solid var(--light-gray);
+            background-color: rgba(0, 0, 0, 0.7);
+            color: var(--gold);
+            border: 2px solid var(--gold);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
+        }
+
+        .skip-btn:hover {
+            background-color: rgba(212, 175, 55, 0.2);
+            transform: translateY(-3px);
         }
 
         .hearts {
@@ -1297,6 +1348,16 @@
             
             .question-text {
                 font-size: 1.4rem;
+                padding: 0 10px;
+            }
+            
+            .answer-input {
+                width: 95%;
+                font-size: 1.1rem;
+            }
+            
+            .game-question {
+                padding: 15px;
             }
             
             .bottom-nav {
@@ -1354,6 +1415,30 @@
             
             .online-features {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .answer-input {
+                font-size: 1rem;
+                padding: 12px;
+            }
+            
+            .option-btn {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            
+            .game-stats {
+                gap: 15px;
+            }
+            
+            .stat-value {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -1551,325 +1636,6 @@
         </div>
     </div>
 
-    <!-- پنل تنظیمات -->
-    <div class="modal-overlay" id="settingsOverlay"></div>
-    <div class="modal-panel" id="settingsPanel">
-        <div class="modal-header">
-            <h2 class="modal-title">تنظیمات</h2>
-            <button class="close-modal" id="closeSettingsBtn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="settings-options-grid">
-                <div class="settings-option-card" id="soundSetting">
-                    <div class="settings-option-icon">
-                        <i class="fas fa-volume-up"></i>
-                    </div>
-                    <div class="settings-option-content">
-                        <h3 class="settings-option-title">صدا</h3>
-                        <p class="settings-option-desc">تنظیمات صدا و موسیقی بازی</p>
-                    </div>
-                    <div class="settings-option-toggle active" id="soundToggle"></div>
-                </div>
-                
-                <div class="settings-option-card" id="musicSetting">
-                    <div class="settings-option-icon">
-                        <i class="fas fa-music"></i>
-                    </div>
-                    <div class="settings-option-content">
-                        <h3 class="settings-option-title">موسیقی</h3>
-                        <p class="settings-option-desc">موسیقی پس‌زمینه بازی</p>
-                    </div>
-                    <div class="settings-option-toggle active" id="musicToggle"></div>
-                </div>
-                
-                <div class="settings-option-card" id="notificationsSetting">
-                    <div class="settings-option-icon">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <div class="settings-option-content">
-                        <h3 class="settings-option-title">اعلان‌ها</h3>
-                        <p class="settings-option-desc">اعلان‌های بازی و رویدادها</p>
-                    </div>
-                    <div class="settings-option-toggle" id="notificationsToggle"></div>
-                </div>
-                
-                <div class="settings-option-card" id="vibrationSetting">
-                    <div class="settings-option-icon">
-                        <i class="fas fa-vibration"></i>
-                    </div>
-                    <div class="settings-option-content">
-                        <h3 class="settings-option-title">لرزش</h3>
-                        <p class="settings-option-desc">فیدبک لمسی برای اقدامات بازی</p>
-                    </div>
-                    <div class="settings-option-toggle active" id="vibrationToggle"></div>
-                </div>
-                
-                <div class="settings-option-card" id="graphicsSetting">
-                    <div class="settings-option-icon">
-                        <i class="fas fa-palette"></i>
-                    </div>
-                    <div class="settings-option-content">
-                        <h3 class="settings-option-title">گرافیک</h3>
-                        <p class="settings-option-desc">کیفیت گرافیکی بازی</p>
-                    </div>
-                    <div class="settings-option-toggle active" id="graphicsToggle"></div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
-                <p style="color: #aaa; font-size: 0.9rem;">
-                    تغییرات به صورت خودکار ذخیره می‌شوند
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- پنل چالش‌ها -->
-    <div class="modal-overlay" id="challengesOverlay"></div>
-    <div class="modal-panel" id="challengesPanel">
-        <div class="modal-header">
-            <h2 class="modal-title">چالش‌های روزانه</h2>
-            <button class="close-modal" id="closeChallengesBtn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="challenges-grid">
-                <div class="challenge-card">
-                    <div class="challenge-badge">ساده</div>
-                    <div class="challenge-icon">
-                        <i class="fas fa-play-circle"></i>
-                    </div>
-                    <h3 class="challenge-title">شروع بازی</h3>
-                    <p class="challenge-desc">۵ بار بازی را شروع کنید</p>
-                    <div class="challenge-progress">
-                        <div class="challenge-progress-bar" style="width: 60%"></div>
-                    </div>
-                    <div class="challenge-status">۳/۵ تکمیل شده</div>
-                </div>
-                
-                <div class="challenge-card">
-                    <div class="challenge-badge">متوسط</div>
-                    <div class="challenge-icon">
-                        <i class="fas fa-star"></i>
-                    </div>
-                    <h3 class="challenge-title">امتیازدهی</h3>
-                    <p class="challenge-desc">۵۰۰ امتیاز کسب کنید</p>
-                    <div class="challenge-progress">
-                        <div class="challenge-progress-bar" style="width: 80%"></div>
-                    </div>
-                    <div class="challenge-status">۴۰۰/۵۰۰ امتیاز</div>
-                </div>
-                
-                <div class="challenge-card">
-                    <div class="challenge-badge">دشوار</div>
-                    <div class="challenge-icon">
-                        <i class="fas fa-trophy"></i>
-                    </div>
-                    <h3 class="challenge-title">قهرمان</h3>
-                    <p class="challenge-desc">۳ بازی را بدون از دست دادن جان به پایان برسانید</p>
-                    <div class="challenge-progress">
-                        <div class="challenge-progress-bar" style="width: 33%"></div>
-                    </div>
-                    <div class="challenge-status">۱/۳ تکمیل شده</div>
-                </div>
-                
-                <div class="challenge-card">
-                    <div class="challenge-badge">ساده</div>
-                    <div class="challenge-icon">
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                    <h3 class="challenge-title">اشتراک‌گذاری</h3>
-                    <p class="challenge-desc">بازی را با دوستان خود به اشتراک بگذارید</p>
-                    <div class="challenge-progress">
-                        <div class="challenge-progress-bar" style="width: 0%"></div>
-                    </div>
-                    <div class="challenge-status">تکمیل نشده</div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
-                <p style="color: #aaa; font-size: 0.9rem;">
-                    چالش‌ها هر روز به‌روزرسانی می‌شوند. جوایز در پایان روز اعطا می‌شوند.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- پنل مسیرها -->
-    <div class="modal-overlay" id="pathsOverlay"></div>
-    <div class="modal-panel" id="pathsPanel">
-        <div class="modal-header">
-            <h2 class="modal-title">مسیرهای پیشرفت</h2>
-            <button class="close-modal" id="closePathsBtn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="paths-container">
-                <div class="path-track">
-                    <div class="path-line"></div>
-                    
-                    <div class="path-item active">
-                        <div class="path-content">
-                            <h3 class="path-title">شروع سفر</h3>
-                            <p class="path-desc">اولین بازی خود را به پایان برسانید</p>
-                        </div>
-                        <div class="path-node"></div>
-                    </div>
-                    
-                    <div class="path-item">
-                        <div class="path-content">
-                            <h3 class="path-title">حل‌کننده پازل</h3>
-                            <p class="path-desc">۵۰ سوال را به درستی پاسخ دهید</p>
-                        </div>
-                        <div class="path-node"></div>
-                    </div>
-                    
-                    <div class="path-item">
-                        <div class="path-content">
-                            <h3 class="path-title">استاد معما</h3>
-                            <p class="path-desc">۱۰۰۰ امتیاز کسب کنید</p>
-                        </div>
-                        <div class="path-node"></div>
-                    </div>
-                    
-                    <div class="path-item">
-                        <div class="path-content">
-                            <h3 class="path-title">قهرمان هوشیاری</h3>
-                            <p class="path-desc">۱۰ بازی را بدون اشتباه به پایان برسانید</p>
-                        </div>
-                        <div class="path-node"></div>
-                    </div>
-                    
-                    <div class="path-item">
-                        <div class="path-content">
-                            <h3 class="path-title">اسطوره</h3>
-                            <p class="path-desc">به سطح ۱۰۰ برسید و تمام چالش‌ها را کامل کنید</p>
-                        </div>
-                        <div class="path-node"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
-                <p style="color: #aaa; font-size: 0.9rem;">
-                    با پیشرفت در مسیرها، جوایز ویژه و قابلیت‌های جدید دریافت خواهید کرد.
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- پنل بلیط -->
-    <div class="modal-overlay" id="ticketsOverlay"></div>
-    <div class="modal-panel" id="ticketsPanel">
-        <div class="modal-header">
-            <h2 class="modal-title">بلیط‌های شما</h2>
-            <button class="close-modal" id="closeTicketsBtn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="tickets-container">
-                <div class="ticket-card">
-                    <div class="ticket-header">
-                        <div class="ticket-type">بلیط معمولی</div>
-                        <div class="ticket-count">۵</div>
-                    </div>
-                    <ul class="ticket-features">
-                        <li>قابلیت استفاده در تمام حالت‌های بازی</li>
-                        <li>هر بار بازی یک بلیط مصرف می‌شود</li>
-                        <li>هر ۲ ساعت یک بلیط رایگان دریافت کنید</li>
-                    </ul>
-                    <div class="ticket-actions">
-                        <button class="ticket-btn">خرید بلیط</button>
-                        <button class="ticket-btn">هدیه دادن</button>
-                    </div>
-                </div>
-                
-                <div class="ticket-card">
-                    <div class="ticket-header">
-                        <div class="ticket-type">بلیط ویژه</div>
-                        <div class="ticket-count">۲</div>
-                    </div>
-                    <ul class="ticket-features">
-                        <li>امتیاز ۲ برابر در بازی</li>
-                        <li>زمان اضافی در بازی</li>
-                        <li>قابلیت استفاده در مسابقات ویژه</li>
-                    </ul>
-                    <div class="ticket-actions">
-                        <button class="ticket-btn">خرید ویژه</button>
-                        <button class="ticket-btn">اطلاعات بیشتر</button>
-                    </div>
-                </div>
-            </div>
-            
-            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid rgba(212, 175, 55, 0.2);">
-                <p style="color: #aaa; font-size: 0.9rem;">
-                    بلیط‌ها هر ۲ ساعت یکبار شارژ می‌شوند. حداکثر تعداد بلیط قابل ذخیره: ۱۰ عدد
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- پنل بازی آنلاین -->
-    <div class="modal-overlay" id="onlineOverlay"></div>
-    <div class="modal-panel" id="onlinePanel">
-        <div class="modal-header">
-            <h2 class="modal-title">بازی آنلاین</h2>
-            <button class="close-modal" id="closeOnlineBtn">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="online-status">
-                <div class="online-icon">
-                    <i class="fas fa-globe"></i>
-                </div>
-                <h2 class="online-title">به زودی...</h2>
-                <p class="online-desc">
-                    در حال حاضر قابلیت بازی آنلاین در دست توسعه است. به زودی می‌توانید با دوستان خود به رقابت بپردازید و در مسابقات جهانی شرکت کنید.
-                </p>
-                
-                <div class="online-features">
-                    <div class="online-feature">
-                        <div class="online-feature-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <h3 class="online-feature-title">بازی با دوستان</h3>
-                        <p class="online-feature-desc">با دوستان خود به رقابت بپردازید</p>
-                    </div>
-                    
-                    <div class="online-feature">
-                        <div class="online-feature-icon">
-                            <i class="fas fa-trophy"></i>
-                        </div>
-                        <h3 class="online-feature-title">مسابقات جهانی</h3>
-                        <p class="online-feature-desc">در مسابقات بین‌المللی شرکت کنید</p>
-                    </div>
-                    
-                    <div class="online-feature">
-                        <div class="online-feature-icon">
-                            <i class="fas fa-chart-line"></i>
-                        </div>
-                        <h3 class="online-feature-title">جدول امتیازات</h3>
-                        <p class="online-feature-desc">رتبه خود را در بین بازیکنان مشاهده کنید</p>
-                    </div>
-                    
-                    <div class="online-feature">
-                        <div class="online-feature-icon">
-                            <i class="fas fa-gift"></i>
-                        </div>
-                        <h3 class="online-feature-title">جوایز ویژه</h3>
-                        <p class="online-feature-desc">جوایز منحصربه‌فرد برای برندگان</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- صفحه بازی دو نیم فلش -->
     <div class="game-screen" id="twoHalfGameScreen">
         <button class="back-to-menu" id="backToGameSelectBtn">
@@ -1942,58 +1708,138 @@
     </div>
 
     <script>
-        // داده‌های نمونه برای بازی
+        // داده‌های نمونه برای بازی - چیستان‌های جدید
         const twoHalfQuestions = [
-            "چه چیزی می‌آید اما هرگز نمی‌رسد؟",
-            "من شهرها دارم اما خانه‌ای ندارم، جنگل دارم اما درخت ندارم، رودخانه دارم اما آب ندارم. من چه هستم؟",
-            "هر چه بیشترش را بگیری، بیشترش باقی می‌ماند. چیست؟",
-            "می‌توانی مرا بشکنی بدون اینکه مرا لمس یا دیده‌ای؟",
-            "همیشه در مقابلت است اما نمی‌توانی آن را ببینی. چیست؟",
-            "اگر مرا دارید، می‌خواهید مرا به اشتراک بگذارید. اگر مرا به اشتراک بگذارید، مرا ندارید. من چه هستم؟",
-            "پدر و مادری دارم اما هرگز به دنیا نیامده‌ام. من چه هستم؟",
-            "روز می‌آید و شب می‌رود، اما هرگز نمی‌توانی ببینی. چیست؟",
-            "هر چه بیشتر از آن بردارید، بزرگتر می‌شود. چیست؟",
-            "می‌تواند سفر کند به دور دنیا در حالی که در یک گوشه باقی می‌ماند. چیست؟",
+            "ان چیست که در روز هست و در شب نیست؟",
+            "ان چیست که بالا می‌رود اما هرگز پایین نمی‌آید؟",
+            "ان چیست که هر چه بیشتر از آن بخوری، گرسنه‌تر می‌شوی؟",
+            "ان چیست که همه آن را دارند اما کسی آن را نمی‌بیند؟",
+            "ان چیست که می‌تواند رودخانه را رد کند اما آب نمی‌خورد؟",
+            "ان چیست که از خودش سبک‌تر است اما نمی‌تواند پرواز کند؟",
+            "ان چیست که یک سر دارد، یک دم دارد، اما بدن ندارد؟",
+            "ان چیست که می‌شکند اما هرگز به زمین نمی‌افتد؟",
+            "ان چیست که در تابستان پیدا می‌شود و در زمستان پنهان می‌شود؟",
+            "ان چیست که در دریا زندگی می‌کند اما آب نمی‌خورد؟",
+            "ان چیست که همیشه در حال دویدن است اما هرگز از جای خود تکان نمی‌خورد؟",
+            "ان چیست که پر از سوراخ است اما آب را نگه می‌دارد؟",
+            "ان چیست که هر چه پیرتر می‌شود، جوان‌تر می‌شود؟",
+            "ان چیست که می‌تواند صحبت کند اما زبان ندارد؟",
+            "ان چیست که وقتی نامش را می‌بری، ناپدید می‌شود؟",
+            "ان چیست که همیشه گرسنه است و هر چه می‌خورد بزرگتر می‌شود؟",
+            "ان چیست که می‌تواند سفر کند اما جای خود را ترک نمی‌کند؟",
+            "ان چیست که همه از آن می‌ترسند اما همه به آن نیاز دارند؟",
+            "ان چیست که از آهن قوی‌تر است اما از باد می‌ترسد؟",
+            "ان چیست که درخت دارد اما برگ ندارد؟",
+            "ان چیست که خانه دارد اما در آن زندگی نمی‌کند؟",
+            "ان چیست که چهار پا دارد اما نمی‌تواند راه برود؟",
+            "ان چیست که پر است اما خالی به نظر می‌رسد؟",
+            "ان چیست که همیشه خیس است اما هرگز خشک نمی‌شود؟",
+            "ان چیست که می‌تواند شکسته شود اما هرگز خم نمی‌شود؟",
+            "ان چیست که در زمستان سبز است و در تابستان سفید؟",
+            "ان چیست که پر از دانش است اما چیزی نمی‌داند؟",
+            "ان چیست که اگر آن را بشکنی، بهتر کار می‌کند؟",
+            "ان چیست که هر چه بیشتر داشته باشی، کمتر می‌بینی؟",
+            "ان چیست که همیشه پیروی می‌کند اما هرگز رهبری نمی‌کند؟",
+            "ان چیست که هر چه بیشتر بگیری، بیشتر باقی می‌ماند؟",
+            "ان چیست که می‌تواند نوری را روشن کند اما خودش تاریک است؟",
+            "ان چیست که بدون آن می‌میریم اما از آن می‌ترسیم؟",
+            "ان چیست که دور جهان می‌گردد اما در یک گوشه می‌ماند؟",
+            "ان چیست که می‌تواند بخورد اما گرسنه نمی‌شود؟",
+            "ان چیست که همه جا را می‌بیند اما خودش دیده نمی‌شود؟",
+            "ان چیست که بزرگتر از کوه است اما از مورچه کوچک‌تر است؟",
+            "ان چیست که اگر آن را نام ببری، از بین می‌رود؟",
+            "ان چیست که با یک پا می‌ایستد اما با هزار پا می‌رود؟",
+            "ان چیست که هر چه بیشتر بدوی، کمتر پیش می‌روی؟",
+            "ان چیست که هنگام تولد چهار پا دارد، هنگام جوانی دو پا، و هنگام پیری سه پا؟",
+            "ان چیست که در آسمان است اما روی زمین نیست؟",
+            "ان چیست که همیشه می‌آید اما هرگز نمی‌رسد؟",
+            "ان چیست که در هر خانه‌ای پیدا می‌شود اما کسی آن را نمی‌خرد؟",
+            "ان چیست که می‌تواند صحبت کند اما صدایی ندارد؟",
+            "ان چیست که وقتی ساکت است، صدایش را می‌شوند؟",
+            "ان چیست که هر چه بیشتر بشویید، کثیف‌تر می‌شود؟",
+            "ان چیست که در روز می‌میرد و در شب زنده می‌شود؟",
+            "ان چیست که یک چشم دارد اما نمی‌تواند ببیند؟",
+            "ان چیست که چرخ دارد اما نمی‌تواند حرکت کند؟",
+            "ان چیست که می‌تواند بخواند اما نمی‌تواند بنویسد؟",
+            "ان چیست که وقتی می‌افتد، نمی‌شکند؟",
+            "ان چیست که هر چه بیشتر یاد می‌گیری، کمتر می‌دانی؟",
+            "ان چیست که در زمستان گرم است و در تابستان سرد؟",
+            "ان چیست که همیشه در حال تغییر است اما همیشه ثابت می‌ماند؟",
+            "ان چیست که هر چه بیشتر آن را پنهان کنی، بیشتر دیده می‌شود؟",
+            "ان چیست که می‌تواند بدود اما نمی‌تواند راه برود؟",
+            "ان چیست که هر چه بیشتر آن را تقسیم کنی، بزرگتر می‌شود؟",
+            "ان چیست که در جنگل پیدا می‌شود اما هرگز رشد نمی‌کند؟",
+            "ان چیست که وقتی به آن نیاز داری دور می‌اندازی؟",
+            "ان چیست که همیشه در حال فرار است اما هرگز حرکت نمی‌کند؟",
+            "ان چیست که می‌تواند سقوط کند اما هرگز بالا نمی‌رود؟",
+            "ان چیست که از پنجره می‌تواند وارد شود اما از در نمی‌تواند خارج شود؟",
+            "ان چیست که در بهار سبز، در تابستان زرد، در پاییز قرمز و در زمستان سفید است؟",
+            "ان چیست که وقتی آن را می‌خوری، بیشتر می‌شود؟",
+            "ان چیست که می‌تواند صحبت کند اما حرف نمی‌زند؟",
+            "ان چیست که وقتی آن را پیدا می‌کنی، آن را از دست می‌دهی؟",
+            "ان چیست که وقتی آن را نگه می‌داری، آن را نمی‌بینی؟",
+            "ان چیست که هر چه بزرگتر می‌شود، سبک‌تر می‌شود؟",
+            "ان چیست که هر چه بیشتر بگیری، سنگین‌تر می‌شود؟",
+            "ان چیست که می‌تواند سفر کند اما جای خود را ترک نمی‌کند؟",
+            "ان چیست که در تاریکی پیدا می‌شود اما نور می‌آورد؟",
+            "ان چیست که پر از حافظه است اما چیزی به خاطر نمی‌آورد؟",
+            "ان چیست که همیشه در حال کار است اما هرگز خسته نمی‌شود؟"
         ];
 
         const twoOldQuestions = [
             {
-                question: "پایتخت ایران کدام شهر است؟",
-                options: ["تهران", "مشهد", "اصفهان", "شیراز"],
+                question: "ان چیست که در روز هست و در شب نیست؟",
+                options: ["خورشید", "ماه", "ستاره", "سایه"],
                 correct: 1
             },
             {
-                question: "بلندترین کوه ایران کدام است؟",
-                options: ["دماوند", "زردکوه", "سبلان", "البرز"],
+                question: "ان چیست که بالا می‌رود اما هرگز پایین نمی‌آید؟",
+                options: ["سن", "دود", "نردبان", "بادکنک"],
                 correct: 1
             },
             {
-                question: "کدام سیاره به خاطر حلقه‌هایش معروف است؟",
-                options: ["مریخ", "زحل", "زهره", "مشتری"],
-                correct: 2
-            },
-            {
-                question: "چه تعداد قاره در جهان وجود دارد؟",
-                options: ["5", "6", "7", "8"],
+                question: "ان چیست که هر چه بیشتر از آن بخوری، گرسنه‌تر می‌شوی؟",
+                options: ["آب", "هوا", "دانش", "نور"],
                 correct: 3
             },
             {
-                question: "رنگ برگ درختان در پاییز بیشتر چه رنگی است؟",
-                options: ["سبز", "قرمز", "زرد", "نارنجی"],
-                correct: 4
+                question: "ان چیست که همه آن را دارند اما کسی آن را نمی‌بیند؟",
+                options: ["نام", "سایه", "هوا", "فکر"],
+                correct: 2
             },
+            {
+                question: "ان چیست که می‌تواند رودخانه را رد کند اما آب نمی‌خورد؟",
+                options: ["پل", "قایق", "پلنگ", "پل چوبی"],
+                correct: 1
+            }
         ];
 
-        // تکمیل داده‌های نمونه
+        // تکمیل داده‌های نمونه برای دو اولد
         for (let i = 6; i <= 70; i++) {
-            twoHalfQuestions.push(`سوال نمونه ${i} برای دو نیم فلش: هر چه بیشتر از آن بگیری، بیشتر باقی می‌ماند؟`);
-            
             twoOldQuestions.push({
-                question: `سوال نمونه ${i} برای دو اولد: کدام گزینه صحیح است؟`,
-                options: [`گزینه الف برای سوال ${i}`, `گزینه ب برای سوال ${i}`, `گزینه ج برای سوال ${i}`, `گزینه د برای سوال ${i}`],
+                question: `ان چیست که ${i % 2 === 0 ? "در روز دیده می‌شود" : "در شب پیدا می‌شود"}؟`,
+                options: [`گزینه اول سوال ${i}`, `گزینه دوم سوال ${i}`, `گزینه سوم سوال ${i}`, `گزینه چهارم سوال ${i}`],
                 correct: Math.floor(Math.random() * 4) + 1
             });
         }
+
+        // پاسخ‌های صحیح برای دو نیم فلش
+        const twoHalfAnswers = [
+            "نور", "سن", "دانش", "سایه", "پل", 
+            "دود", "سکه", "آب", "برف", "ماهی", 
+            "زمان", "اسفنج", "شمع", "پژواک", "سکوت", 
+            "آتش", "کتاب", "مرگ", "آهن‌ربا", "جنگل", 
+            "میز", "صندلی", "حباب", "زبان", "یخ", 
+            "برف", "کتابخانه", "تخم‌مرغ", "تاریکی", "سایه", 
+            "سوراخ", "شمع", "خواب", "تمبر", "ماشین", 
+            "چشم", "سایه", "نام", "ساعت", "جا", 
+            "انسان", "ابر", "فردا", "گرد و غبار", "کتاب", 
+            "پژواک", "آب", "شمع", "سوزن", "میز", 
+            "کتاب", "حباب", "جهل", "یخچال", "رودخانه", 
+            "سایه", "رود", "سوراخ", "مسیر", "طناب", 
+            "گیاه", "لنز", "کتاب", "ماشین زمان", "نور", 
+            "کامپیوتر", "زمین", "یخچال", "قایق", "شمع"
+        ];
 
         // عناصر DOM
         const splashScreen = document.getElementById('splashScreen');
@@ -2013,29 +1859,6 @@
         const gameSelectPanel = document.getElementById('gameSelectPanel');
         const gameSelectOverlay = document.getElementById('gameSelectOverlay');
         const closeGameSelectBtn = document.getElementById('closeGameSelectBtn');
-        
-        const settingsPanel = document.getElementById('settingsPanel');
-        const settingsOverlay = document.getElementById('settingsOverlay');
-        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-        
-        const challengesPanel = document.getElementById('challengesPanel');
-        const challengesOverlay = document.getElementById('challengesOverlay');
-        const closeChallengesBtn = document.getElementById('closeChallengesBtn');
-        const challengesNavBtn = document.getElementById('challengesBtn');
-        
-        const pathsPanel = document.getElementById('pathsPanel');
-        const pathsOverlay = document.getElementById('pathsOverlay');
-        const closePathsBtn = document.getElementById('closePathsBtn');
-        const pathsNavBtn = document.getElementById('pathsBtn');
-        
-        const ticketsPanel = document.getElementById('ticketsPanel');
-        const ticketsOverlay = document.getElementById('ticketsOverlay');
-        const closeTicketsBtn = document.getElementById('closeTicketsBtn');
-        const ticketsNavBtn = document.getElementById('ticketsBtn');
-        
-        const onlinePanel = document.getElementById('onlinePanel');
-        const onlineOverlay = document.getElementById('onlineOverlay');
-        const closeOnlineBtn = document.getElementById('closeOnlineBtn');
         
         // عناصر بازی
         const twoHalfGame = document.getElementById('twoHalfGame');
@@ -2057,12 +1880,10 @@
         const twoOldQuestionNumElement = document.getElementById('twoOldQuestionNum');
         const twoOldScoreElement = document.getElementById('twoOldScore');
 
-        // تنظیمات
-        const soundToggle = document.getElementById('soundToggle');
-        const musicToggle = document.getElementById('musicToggle');
-        const notificationsToggle = document.getElementById('notificationsToggle');
-        const vibrationToggle = document.getElementById('vibrationToggle');
-        const graphicsToggle = document.getElementById('graphicsToggle');
+        // منوی پایین
+        const challengesBtn = document.getElementById('challengesBtn');
+        const pathsBtn = document.getElementById('pathsBtn');
+        const ticketsBtn = document.getElementById('ticketsBtn');
 
         // متغیرهای حالت بازی
         let currentGame = null;
@@ -2072,7 +1893,7 @@
         let timer = 17;
         let timerInterval = null;
         let imagesLoaded = 0;
-        let totalImages = 5;
+        let totalImages = 6;
 
         // لیست تصاویر برای چک کردن لود شدن
         const imagesToLoad = [
@@ -2080,7 +1901,8 @@
             'https://raw.githubusercontent.com/ahmadrezaei090-debug/soberWeb/main/negin-art-1764247215354.png',
             'https://raw.githubusercontent.com/ahmadrezaei090-debug/Iran-rap/main/-2147483648_-219133.jpg',
             'https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile1.jpg',
-            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile2.jpg'
+            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile2.jpg',
+            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sober/main/IMG_%DB%B2%DB%B0%DB%B2%DB%B6%DB%B0%DB%B1%DB%B0%DB%B1_%DB%B1%DB%B7%DB%B3%DB%B4%DB%B0%DB%B5.jpg'
         ];
 
         // تابع‌های نمایش پنل
@@ -2115,24 +1937,65 @@
             showModal(gameSelectPanel, gameSelectOverlay);
         }
 
-        function showSettingsPanel() {
-            showModal(settingsPanel, settingsOverlay);
-        }
-
-        function showChallengesPanel() {
-            showModal(challengesPanel, challengesOverlay);
-        }
-
-        function showPathsPanel() {
-            showModal(pathsPanel, pathsOverlay);
-        }
-
-        function showTicketsPanel() {
-            showModal(ticketsPanel, ticketsOverlay);
-        }
-
-        function showOnlinePanel() {
-            showModal(onlinePanel, onlineOverlay);
+        // ایجاد و نمایش پنل "به زودی فعال می‌شود"
+        function showSoonPanel(title = "به زودی...") {
+            // اگر پنل پیام از قبل وجود دارد، آن را حذف کن
+            const existingPanel = document.getElementById('soonPanel');
+            const existingOverlay = document.getElementById('soonOverlay');
+            
+            if (existingPanel) {
+                existingPanel.remove();
+            }
+            if (existingOverlay) {
+                existingOverlay.remove();
+            }
+            
+            // ایجاد پنل جدید
+            const soonPanel = document.createElement('div');
+            soonPanel.className = 'modal-panel message-panel';
+            soonPanel.id = 'soonPanel';
+            
+            const soonOverlay = document.createElement('div');
+            soonOverlay.className = 'modal-overlay';
+            soonOverlay.id = 'soonOverlay';
+            
+            soonPanel.innerHTML = `
+                <div class="modal-header">
+                    <h2 class="modal-title">${title}</h2>
+                    <button class="close-modal" id="closeSoonBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="message-content">
+                        <div class="message-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <h2 class="message-title">${title}</h2>
+                        <p class="message-text">این بخش به زودی فعال می‌شود. در حال حاضر در دست توسعه است.</p>
+                        <button class="ticket-btn" id="closeSoonBtn2" style="width: 200px; margin: 0 auto;">باشه</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(soonOverlay);
+            document.body.appendChild(soonPanel);
+            
+            const closeSoon = () => {
+                hideModal(soonPanel, soonOverlay);
+                setTimeout(() => {
+                    soonPanel.remove();
+                    soonOverlay.remove();
+                }, 300);
+            };
+            
+            setTimeout(() => {
+                showModal(soonPanel, soonOverlay);
+                
+                document.getElementById('closeSoonBtn').addEventListener('click', closeSoon);
+                document.getElementById('closeSoonBtn2').addEventListener('click', closeSoon);
+                soonOverlay.addEventListener('click', closeSoon);
+            }, 50);
         }
 
         // بررسی لود شدن تصاویر
@@ -2214,6 +2077,7 @@
             
             twoHalfQuestionElement.textContent = twoHalfQuestions[currentQuestionIndex];
             questionNumElement.textContent = `${currentQuestionIndex + 1}/${twoHalfQuestions.length}`;
+            scoreElement.textContent = score;
             answerInput.value = '';
             answerInput.focus();
             
@@ -2295,16 +2159,16 @@
         // بررسی پاسخ در بازی دو نیم فلش
         function checkAnswer() {
             const userAnswer = answerInput.value.trim().toLowerCase();
-            const correctAnswers = [
-                "فردا", "نقشه", "چاله", "قول", "آینده", "راز", 
-                "امید", "سایه", "سوراخ", "تمبر"
-            ];
-            
             let isCorrect = false;
-            if (currentQuestionIndex < correctAnswers.length) {
-                isCorrect = userAnswer === correctAnswers[currentQuestionIndex];
+            
+            if (currentQuestionIndex < twoHalfAnswers.length) {
+                const correctAnswer = twoHalfAnswers[currentQuestionIndex].toLowerCase();
+                isCorrect = userAnswer === correctAnswer || 
+                           userAnswer.includes(correctAnswer) || 
+                           correctAnswer.includes(userAnswer);
             } else {
-                isCorrect = userAnswer.length > 2;
+                // برای سوالات اضافی، هر پاسخی که طول معقولی داشته باشد قبول کن
+                isCorrect = userAnswer.length > 1;
             }
             
             if (isCorrect) {
@@ -2381,6 +2245,12 @@
                     showMainMenu();
                 }, 500);
             }
+            
+            // ریست متغیرهای بازی
+            currentGame = null;
+            currentQuestionIndex = 0;
+            score = 0;
+            lives = 3;
         }
 
         // ایجاد پنل پیام
@@ -2468,9 +2338,9 @@
         }
 
         // رویدادهای کلیک
-        settingsBtn.addEventListener('click', showSettingsPanel);
+        settingsBtn.addEventListener('click', () => showSoonPanel("تنظیمات"));
         startBtn.addEventListener('click', showGameSelectPanel);
-        onlineBtn.addEventListener('click', showOnlinePanel);
+        onlineBtn.addEventListener('click', () => showSoonPanel("بازی آنلاین"));
         
         // رویدادهای پنل سازندگان
         creatorsNavBtn.addEventListener('click', showCreatorsPanel);
@@ -2484,28 +2354,10 @@
         twoHalfGame.addEventListener('click', startTwoHalfGame);
         twoOldGame.addEventListener('click', startTwoOldGame);
         
-        // رویدادهای پنل تنظیمات
-        closeSettingsBtn.addEventListener('click', () => hideModal(settingsPanel, settingsOverlay));
-        settingsOverlay.addEventListener('click', () => hideModal(settingsPanel, settingsOverlay));
-        
-        // رویدادهای پنل چالش‌ها
-        challengesNavBtn.addEventListener('click', showChallengesPanel);
-        closeChallengesBtn.addEventListener('click', () => hideModal(challengesPanel, challengesOverlay));
-        challengesOverlay.addEventListener('click', () => hideModal(challengesPanel, challengesOverlay));
-        
-        // رویدادهای پنل مسیرها
-        pathsNavBtn.addEventListener('click', showPathsPanel);
-        closePathsBtn.addEventListener('click', () => hideModal(pathsPanel, pathsOverlay));
-        pathsOverlay.addEventListener('click', () => hideModal(pathsPanel, pathsOverlay));
-        
-        // رویدادهای پنل بلیط
-        ticketsNavBtn.addEventListener('click', showTicketsPanel);
-        closeTicketsBtn.addEventListener('click', () => hideModal(ticketsPanel, ticketsOverlay));
-        ticketsOverlay.addEventListener('click', () => hideModal(ticketsPanel, ticketsOverlay));
-        
-        // رویدادهای پنل آنلاین
-        closeOnlineBtn.addEventListener('click', () => hideModal(onlinePanel, onlineOverlay));
-        onlineOverlay.addEventListener('click', () => hideModal(onlinePanel, onlineOverlay));
+        // رویدادهای منوی پایین
+        challengesBtn.addEventListener('click', () => showSoonPanel("چالش‌ها"));
+        pathsBtn.addEventListener('click', () => showSoonPanel("مسیرها"));
+        ticketsBtn.addEventListener('click', () => showSoonPanel("بلیط‌ها"));
         
         backToGameSelectBtn.addEventListener('click', backToGameSelect);
         backToGameSelectBtn2.addEventListener('click', backToGameSelect);
@@ -2528,27 +2380,6 @@
                 const selectedOption = parseInt(e.target.getAttribute('data-option'));
                 checkTwoOldAnswer(selectedOption);
             }
-        });
-        
-        // رویدادهای تنظیمات
-        soundToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-        });
-        
-        musicToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-        });
-        
-        notificationsToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-        });
-        
-        vibrationToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
-        });
-        
-        graphicsToggle.addEventListener('click', function() {
-            this.classList.toggle('active');
         });
 
         // شروع فرآیند
