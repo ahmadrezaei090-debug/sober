@@ -22,6 +22,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -32,15 +33,26 @@
             width: 100vw;
         }
 
-        /* حذف outline آبی هنگام کلیک */
-        button:focus, input:focus, select:focus, textarea:focus {
+        /* حذف کامل outline آبی در تمام مرورگرها */
+        *:focus {
+            outline: none !important;
+        }
+
+        button, input, select, textarea, .nav-item, .game-option-card {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
             outline: none !important;
             box-shadow: none !important;
         }
 
-        .option-btn:focus, .menu-btn:focus, .control-btn:focus {
+        button:active, button:focus, 
+        input:active, input:focus,
+        .nav-item:active, .nav-item:focus,
+        .game-option-card:active, .game-option-card:focus {
             outline: none !important;
             box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* صفحه اسپلش اولیه با افکت نور */
@@ -377,6 +389,8 @@
             overflow: hidden;
             z-index: 1;
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .start-btn {
@@ -398,6 +412,8 @@
 
         .menu-btn:active {
             transform: translateY(0);
+            outline: none !important;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
         }
 
         /* نوار پایین منو - ساده و مدرن */
@@ -429,6 +445,8 @@
             position: relative;
             min-width: 80px;
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .nav-item:hover {
@@ -496,11 +514,18 @@
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .settings-btn:hover {
             transform: rotate(90deg);
             background: rgba(212, 175, 55, 0.1);
+        }
+
+        .settings-btn:active {
+            outline: none !important;
+            transform: rotate(90deg) scale(0.95);
         }
 
         /* پنل‌های مودال - یکپارچه */
@@ -558,11 +583,18 @@
             justify-content: center;
             transition: all 0.3s ease;
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .close-modal:hover {
             transform: rotate(90deg);
             background: rgba(212, 175, 55, 0.2);
+        }
+
+        .close-modal:active {
+            outline: none !important;
+            transform: rotate(90deg) scale(0.95);
         }
 
         .modal-body {
@@ -656,12 +688,19 @@
             cursor: pointer;
             transition: all 0.3s ease;
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .game-option-card:hover {
             transform: translateY(-8px);
             border-color: var(--gold);
             background: rgba(212, 175, 55, 0.05);
+        }
+
+        .game-option-card:active {
+            outline: none !important;
+            transform: translateY(-4px);
         }
 
         .game-option-icon {
@@ -1019,11 +1058,18 @@
             transition: all 0.3s ease;
             font-weight: bold;
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .ticket-btn:hover {
             background: rgba(212, 175, 55, 0.3);
             transform: translateY(-2px);
+        }
+
+        .ticket-btn:active {
+            outline: none !important;
+            transform: translateY(0);
         }
 
         /* پنل آنلاین */
@@ -1216,6 +1262,9 @@
             margin-bottom: 25px;
             backdrop-filter: blur(5px);
             outline: none !important;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
         }
 
         .answer-input:focus {
@@ -1243,12 +1292,19 @@
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .option-btn:hover {
             background-color: rgba(212, 175, 55, 0.3);
             transform: translateY(-3px);
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        .option-btn:active {
+            outline: none !important;
+            transform: translateY(0);
         }
 
         .option-btn.correct {
@@ -1279,6 +1335,8 @@
             transition: all 0.3s ease;
             font-weight: bold;
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .submit-btn {
@@ -1297,9 +1355,19 @@
             box-shadow: 0 5px 15px rgba(212, 175, 55, 0.5);
         }
 
+        .submit-btn:active {
+            outline: none !important;
+            transform: translateY(0);
+        }
+
         .skip-btn:hover {
             background-color: rgba(212, 175, 55, 0.2);
             transform: translateY(-3px);
+        }
+
+        .skip-btn:active {
+            outline: none !important;
+            transform: translateY(0);
         }
 
         .hearts {
@@ -1335,11 +1403,18 @@
             transition: all 0.3s ease;
             z-index: 100;
             outline: none !important;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
 
         .back-to-menu:hover {
             transform: rotate(-90deg);
             background: rgba(212, 175, 55, 0.1);
+        }
+
+        .back-to-menu:active {
+            outline: none !important;
+            transform: rotate(-90deg) scale(0.95);
         }
 
         /* پنل پایان دمو */
@@ -2533,6 +2608,24 @@
                 e.target.blur();
             }
         });
+
+        document.addEventListener('mousedown', function(e) {
+            if (e.target.tagName === 'BUTTON' || 
+                e.target.tagName === 'INPUT' || 
+                e.target.classList.contains('nav-item') ||
+                e.target.classList.contains('game-option-card') ||
+                e.target.classList.contains('ticket-btn') ||
+                e.target.classList.contains('close-modal') ||
+                e.target.classList.contains('settings-btn') ||
+                e.target.classList.contains('menu-btn') ||
+                e.target.classList.contains('control-btn') ||
+                e.target.classList.contains('option-btn') ||
+                e.target.classList.contains('back-to-menu')) {
+                
+                e.preventDefault();
+                e.stopPropagation();
+            }
+        }, true);
 
         // شروع فرآیند
         startSplashScreen();
