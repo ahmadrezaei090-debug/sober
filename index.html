@@ -32,6 +32,17 @@
             width: 100vw;
         }
 
+        /* حذف outline آبی هنگام کلیک */
+        button:focus, input:focus, select:focus, textarea:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        .option-btn:focus, .menu-btn:focus, .control-btn:focus {
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
         /* صفحه اسپلش اولیه با افکت نور */
         .splash-screen {
             position: fixed;
@@ -173,6 +184,54 @@
         @keyframes fadeInOut {
             0%, 100% { opacity: 0.7; }
             50% { opacity: 1; }
+        }
+
+        /* صفحه استدیو اسکورت */
+        .studio-splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000000;
+            z-index: 1999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1.5s ease;
+        }
+
+        .studio-splash-screen.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .studio-logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .studio-logo {
+            width: 300px;
+            height: 300px;
+            object-fit: contain;
+            margin-bottom: 30px;
+        }
+
+        .studio-text {
+            color: var(--gold);
+            font-size: 2rem;
+            text-align: center;
+            text-shadow: 0 0 15px rgba(212, 175, 55, 0.8);
+            animation: textGlow 2s infinite alternate;
+            margin-top: 20px;
+            font-weight: bold;
         }
 
         /* صفحه لودینگ */
@@ -317,6 +376,7 @@
             position: relative;
             overflow: hidden;
             z-index: 1;
+            outline: none !important;
         }
 
         .start-btn {
@@ -368,6 +428,7 @@
             border-radius: 10px;
             position: relative;
             min-width: 80px;
+            outline: none !important;
         }
 
         .nav-item:hover {
@@ -434,6 +495,7 @@
             align-items: center;
             transition: all 0.3s ease;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            outline: none !important;
         }
 
         .settings-btn:hover {
@@ -495,6 +557,7 @@
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
+            outline: none !important;
         }
 
         .close-modal:hover {
@@ -592,6 +655,7 @@
             border: 2px solid transparent;
             cursor: pointer;
             transition: all 0.3s ease;
+            outline: none !important;
         }
 
         .game-option-card:hover {
@@ -954,6 +1018,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
+            outline: none !important;
         }
 
         .ticket-btn:hover {
@@ -1150,10 +1215,11 @@
             text-align: center;
             margin-bottom: 25px;
             backdrop-filter: blur(5px);
+            outline: none !important;
         }
 
         .answer-input:focus {
-            outline: none;
+            outline: none !important;
             box-shadow: 0 0 15px rgba(212, 175, 55, 0.7);
             background-color: rgba(0, 0, 0, 0.8);
         }
@@ -1176,6 +1242,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             backdrop-filter: blur(5px);
+            outline: none !important;
         }
 
         .option-btn:hover {
@@ -1211,6 +1278,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: bold;
+            outline: none !important;
         }
 
         .submit-btn {
@@ -1266,11 +1334,17 @@
             align-items: center;
             transition: all 0.3s ease;
             z-index: 100;
+            outline: none !important;
         }
 
         .back-to-menu:hover {
             transform: rotate(-90deg);
             background: rgba(212, 175, 55, 0.1);
+        }
+
+        /* پنل پایان دمو */
+        .demo-end-panel {
+            max-width: 600px;
         }
 
         /* انیمیشن‌ها */
@@ -1326,6 +1400,15 @@
             
             .splash-subtext {
                 font-size: 1rem;
+            }
+            
+            .studio-logo {
+                width: 200px;
+                height: 200px;
+            }
+            
+            .studio-text {
+                font-size: 1.6rem;
             }
             
             .menu-btn {
@@ -1444,7 +1527,7 @@
     </style>
 </head>
 <body>
-    <!-- صفحه نمایش اولیه (اسپلش اسکرین) -->
+    <!-- صفحه نمایش اولیه (وید گیمز) -->
     <div class="splash-screen" id="splashScreen">
         <div class="splash-light-rays">
             <div class="splash-ray"></div>
@@ -1462,6 +1545,14 @@
         </div>
         <div class="splash-text">وید گیمز</div>
         <div class="splash-subtext">با افتخار تقدیم می‌کند</div>
+    </div>
+
+    <!-- صفحه استدیو اسکورت -->
+    <div class="studio-splash-screen" id="studioSplashScreen">
+        <div class="studio-logo-container">
+            <img src="https://raw.githubusercontent.com/ahmadrezaei090-debug/sober/main/InShot_%DB%B2%DB%B0%DB%B2%DB%B5%DB%B1%DB%B2%DB%B1%DB%B4_%DB%B0%DB%B0%DB%B1%DB%B6%DB%B5%DB%B1%DB%B8%DB%B4%DB%B0.jpg" alt="لوگو استدیو اسکورت" class="studio-logo">
+            <div class="studio-text">استدیو اسکورت گیم با افتخار تقدیم میکند...</div>
+        </div>
     </div>
 
     <!-- صفحه لودینگ -->
@@ -1649,7 +1740,7 @@
                     <div class="stat-label">ثانیه باقی‌مانده</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value" id="questionNum">۱/۷۰</div>
+                    <div class="stat-value" id="questionNum">۱</div>
                     <div class="stat-label">سوال</div>
                 </div>
                 <div class="stat">
@@ -1685,7 +1776,7 @@
         <div class="game-header">
             <div class="game-stats">
                 <div class="stat">
-                    <div class="stat-value" id="twoOldQuestionNum">۱/۷۰</div>
+                    <div class="stat-value" id="twoOldQuestionNum">۱</div>
                     <div class="stat-label">سوال</div>
                 </div>
                 <div class="stat">
@@ -1843,6 +1934,7 @@
 
         // عناصر DOM
         const splashScreen = document.getElementById('splashScreen');
+        const studioSplashScreen = document.getElementById('studioSplashScreen');
         const loadingScreen = document.getElementById('loadingScreen');
         const loadingBar = document.getElementById('loadingBar');
         const mainMenu = document.getElementById('mainMenu');
@@ -1902,7 +1994,8 @@
             'https://raw.githubusercontent.com/ahmadrezaei090-debug/Iran-rap/main/-2147483648_-219133.jpg',
             'https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile1.jpg',
             'https://raw.githubusercontent.com/ahmadrezaei090-debug/sobreWeb/main/profile2.jpg',
-            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sober/main/IMG_%DB%B2%DB%B0%DB%B2%DB%B6%DB%B0%DB%B1%DB%B0%DB%B1_%DB%B1%DB%B7%DB%B3%DB%B4%DB%B0%DB%B5.jpg'
+            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sober/main/IMG_%DB%B2%DB%B0%DB%B2%DB%B6%DB%B0%DB%B1%DB%B0%DB%B1_%DB%B1%DB%B7%DB%B3%DB%B4%DB%B0%DB%B5.jpg',
+            'https://raw.githubusercontent.com/ahmadrezaei090-debug/sober/main/InShot_%DB%B2%DB%B0%DB%B2%DB%B5%DB%B1%DB%B2%DB%B1%DB%B4_%DB%B0%DB%B0%DB%B1%DB%B6%DB%B5%DB%B1%DB%B8%DB%B4%DB%B0.jpg'
         ];
 
         // تابع‌های نمایش پنل
@@ -1998,6 +2091,71 @@
             }, 50);
         }
 
+        // ایجاد و نمایش پنل پایان نسخه دمو
+        function showDemoEndPanel() {
+            const demoEndPanel = document.createElement('div');
+            demoEndPanel.className = 'modal-panel demo-end-panel message-panel';
+            demoEndPanel.id = 'demoEndPanel';
+            
+            const demoOverlay = document.createElement('div');
+            demoOverlay.className = 'modal-overlay';
+            demoOverlay.id = 'demoOverlay';
+            
+            demoEndPanel.innerHTML = `
+                <div class="modal-header">
+                    <h2 class="modal-title">پایان نسخه دمو</h2>
+                    <button class="close-modal" id="closeDemoBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="message-content">
+                        <div class="message-icon">
+                            <i class="fas fa-flag-checkered"></i>
+                        </div>
+                        <h2 class="message-title">نسخه دمو به پایان رسید!</h2>
+                        <p class="message-text">شما با موفقیت تمامی سوالات نسخه دمو را به پایان رساندید. منتظر نسخه اصلی بازی باشید که به زودی منتشر خواهد شد!</p>
+                        <p class="message-text" style="color: var(--gold); margin-top: 15px;">امتیاز نهایی شما: ${score}</p>
+                        <button class="ticket-btn" id="closeDemoBtn2" style="width: 200px; margin: 0 auto; margin-top: 20px;">بازگشت به منو</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(demoOverlay);
+            document.body.appendChild(demoEndPanel);
+            
+            const closeDemo = () => {
+                hideModal(demoEndPanel, demoOverlay);
+                setTimeout(() => {
+                    demoEndPanel.remove();
+                    demoOverlay.remove();
+                    
+                    // بازگشت به منوی اصلی
+                    if (currentGame === 'twoHalf') {
+                        twoHalfGameScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            twoHalfGameScreen.style.display = 'none';
+                            showMainMenu();
+                        }, 500);
+                    } else {
+                        twoOldGameScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            twoOldGameScreen.style.display = 'none';
+                            showMainMenu();
+                        }, 500);
+                    }
+                }, 300);
+            };
+            
+            setTimeout(() => {
+                showModal(demoEndPanel, demoOverlay);
+                
+                document.getElementById('closeDemoBtn').addEventListener('click', closeDemo);
+                document.getElementById('closeDemoBtn2').addEventListener('click', closeDemo);
+                demoOverlay.addEventListener('click', closeDemo);
+            }, 50);
+        }
+
         // بررسی لود شدن تصاویر
         function checkImagesLoaded() {
             imagesToLoad.forEach(src => {
@@ -2071,12 +2229,13 @@
         // بارگذاری سوال دو نیم فلش
         function loadTwoHalfQuestion() {
             if (currentQuestionIndex >= twoHalfQuestions.length) {
-                endGame();
+                // نمایش پنل پایان دمو
+                showDemoEndPanel();
                 return;
             }
             
             twoHalfQuestionElement.textContent = twoHalfQuestions[currentQuestionIndex];
-            questionNumElement.textContent = `${currentQuestionIndex + 1}/${twoHalfQuestions.length}`;
+            questionNumElement.textContent = currentQuestionIndex + 1; // حذف 70/1
             scoreElement.textContent = score;
             answerInput.value = '';
             answerInput.focus();
@@ -2088,13 +2247,14 @@
         // بارگذاری سوال دو اولد
         function loadTwoOldQuestion() {
             if (currentQuestionIndex >= twoOldQuestions.length) {
-                endGame();
+                // نمایش پنل پایان دمو
+                showDemoEndPanel();
                 return;
             }
             
             const question = twoOldQuestions[currentQuestionIndex];
             twoOldQuestionElement.textContent = question.question;
-            twoOldQuestionNumElement.textContent = `${currentQuestionIndex + 1}/${twoOldQuestions.length}`;
+            twoOldQuestionNumElement.textContent = currentQuestionIndex + 1; // حذف 70/1
             twoOldScoreElement.textContent = score;
             
             const optionButtons = optionsContainer.querySelectorAll('.option-btn');
@@ -2147,7 +2307,8 @@
             updateHearts();
             
             if (lives <= 0) {
-                endGame();
+                // نمایش پنل پایان دمو
+                showDemoEndPanel();
             } else {
                 currentQuestionIndex++;
                 setTimeout(() => {
@@ -2184,7 +2345,8 @@
                 
                 if (lives <= 0) {
                     setTimeout(() => {
-                        endGame();
+                        // نمایش پنل پایان دمو
+                        showDemoEndPanel();
                     }, 1500);
                     return;
                 }
@@ -2221,36 +2383,6 @@
                 currentQuestionIndex++;
                 loadTwoOldQuestion();
             }, 2000);
-        }
-
-        // پایان بازی
-        function endGame() {
-            // ایجاد پنل پایان بازی
-            createMessagePanel(
-                "پایان بازی!",
-                `بازی به پایان رسید! امتیاز شما: ${score}`,
-                "fas fa-trophy"
-            );
-            
-            if (currentGame === 'twoHalf') {
-                twoHalfGameScreen.style.opacity = '0';
-                setTimeout(() => {
-                    twoHalfGameScreen.style.display = 'none';
-                    showMainMenu();
-                }, 500);
-            } else {
-                twoOldGameScreen.style.opacity = '0';
-                setTimeout(() => {
-                    twoOldGameScreen.style.display = 'none';
-                    showMainMenu();
-                }, 500);
-            }
-            
-            // ریست متغیرهای بازی
-            currentGame = null;
-            currentQuestionIndex = 0;
-            score = 0;
-            lives = 3;
         }
 
         // ایجاد پنل پیام
@@ -2326,13 +2458,23 @@
                 splashScreen.style.opacity = '0';
                 setTimeout(() => {
                     splashScreen.style.display = 'none';
-                    // نمایش صفحه لودینگ
-                    loadingScreen.style.display = 'flex';
+                    // نمایش صفحه استدیو اسکورت
+                    studioSplashScreen.classList.add('active');
+                    
+                    // نمایش صفحه استدیو برای 3 ثانیه
                     setTimeout(() => {
-                        loadingScreen.style.opacity = '1';
-                        // شروع لودینگ تصاویر
-                        checkImagesLoaded();
-                    }, 50);
+                        studioSplashScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            studioSplashScreen.classList.remove('active');
+                            // نمایش صفحه لودینگ
+                            loadingScreen.style.display = 'flex';
+                            setTimeout(() => {
+                                loadingScreen.style.opacity = '1';
+                                // شروع لودینگ تصاویر
+                                checkImagesLoaded();
+                            }, 50);
+                        }, 1000);
+                    }, 3000);
                 }, 1000);
             }, 3000);
         }
@@ -2342,8 +2484,11 @@
         startBtn.addEventListener('click', showGameSelectPanel);
         onlineBtn.addEventListener('click', () => showSoonPanel("بازی آنلاین"));
         
-        // رویدادهای پنل سازندگان
-        creatorsNavBtn.addEventListener('click', showCreatorsPanel);
+        // تغییر عملکرد دکمه سازندگان - نمایش پیام "به زودی"
+        creatorsNavBtn.addEventListener('click', () => {
+            showSoonPanel("سازندگان");
+        });
+        
         closeCreatorsBtn.addEventListener('click', () => hideModal(creatorsPanel, creatorsOverlay));
         creatorsOverlay.addEventListener('click', () => hideModal(creatorsPanel, creatorsOverlay));
         
@@ -2379,6 +2524,13 @@
             if (e.target.classList.contains('option-btn') && !e.target.disabled) {
                 const selectedOption = parseInt(e.target.getAttribute('data-option'));
                 checkTwoOldAnswer(selectedOption);
+            }
+        });
+
+        // حذف outline آبی از تمام دکمه‌ها هنگام کلیک
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                e.target.blur();
             }
         });
 
